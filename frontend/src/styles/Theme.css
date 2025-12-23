@@ -1,0 +1,130 @@
+:root {
+    /* ==================== GENERAL SETTINGS ==================== */
+    /* Font Sizes */
+    --font-size-base: 1rem;       /* 16px */
+    --font-size-md: 1.125rem;     /* 18px */
+    --font-size-lg: 1.5rem;       /* 24px */
+    --font-size-xl: 2rem;         /* 32px */
+    --font-size-xxl: 2.5rem;      /* 42px */
+
+    /* ==================== STANDARD COLORS ==================== */
+
+    /* Text Colors */
+    --primary-text-color-light: #000000;
+    --primary-text-color-dark: #ffffff;
+
+    --disabled-color: #a0a0a0;
+
+    /* Status Colors */
+    --error-color: #FF0000;
+    --warning-color: #FFD700;
+    --success-color: #32CD32;
+    --info-color: #1E90FF;
+
+    --success-background-color: #32CD329d;
+    --warning-background-color: #FFD7009d;
+    --error-background-color: #FF00009d;
+    --info-background-color: #1E90FF9d;
+
+
+    /* Accent Colors */
+    --accent-1-light: #f6b7c9; /* soft blush pink */
+    --accent-2-light: #f2a7bc; /* muted rose */
+    --accent-3-light: #ee97af; /* dusty pink */
+    --accent-4-light: #e887a3; /* soft raspberry pink */
+    --accent-5-light: #e17795; /* gentle berry pink */
+
+    --accent-1-dark: #f9c6d6;  /* lighter pastel pink */
+    --accent-2-dark: #f5b6cb;  /* warm rose pink */
+    --accent-3-dark: #f1a6c0;  /* soft mauve-pink */
+    --accent-4-dark:  #ed9fb6; /* pastel raspberry */
+    --accent-5-dark:  #e88faa; /* warm berry pastel */
+
+
+    /* Accent Background Colors */
+    --accent-1-background-light: #f6b7c933;
+    --accent-2-background-light: #f2a7bc33;
+    --accent-3-background-light: #ee97af33;
+    --accent-4-background-light: #e887a333;
+    --accent-5-background-light: #e1779533;
+
+    --accent-1-background-dark: #f9c6d633;
+    --accent-2-background-dark: #f5b6cb33;
+    --accent-3-background-dark: #f1a6c033;
+    --accent-4-background-dark:  #ed9fb633;
+    --accent-5-background-dark:  #e88faa33;
+
+
+    /* Main Background Colors */
+    --background-1-light: #ffffff;
+    --background-2-light: #f8f9fa;
+    --background-3-light: #e9ecef;
+    --background-4-light: #dee2e6;
+    --frosted-background-light: rgba(18, 18, 18, 0.6);
+
+    --background-1-dark: #121212;
+    --background-2-dark: #36393f;
+    --background-3-dark: #2f3136;
+    --background-4-dark: #202225;
+    --frosted-background-dark: rgba(255, 255, 255, 0.6);
+
+
+    /* Applied Colors (Default Light Mode) */
+    --primary-text-color: var(--primary-text-color-light);
+
+    --background-1: var(--background-1-light);
+    --background-2: var(--background-2-light);
+    --background-3: var(--background-3-light);
+    --background-4: var(--background-4-light);
+
+    --accent-1: var(--accent-1-light);
+    --accent-2: var(--accent-2-light);
+    --accent-3: var(--accent-3-light);
+
+    --accent-1-background: var(--accent-1-background-light);
+    --accent-2-background: var(--accent-2-background-light);
+    --accent-3-background: var(--accent-3-background-light);
+}
+
+
+/* ==================== THEME OVERRIDES ==================== */
+
+/* Dark Theme */
+[data-theme="dark"] {
+    --primary-text-color: var(--primary-text-color-dark);
+    --background-1: var(--background-1-dark);
+    --background-2: var(--background-2-dark);
+    --background-3: var(--background-3-dark);
+    --background-4: var(--background-4-dark);
+
+    --accent-1: var(--accent-1-dark);
+    --accent-2: var(--accent-2-dark);
+    --accent-3: var(--accent-3-dark);
+
+    --accent-1-background: var(--accent-1-background-dark);
+    --accent-2-background: var(--accent-2-background-dark);
+    --accent-3-background: var(--accent-3-background-dark);
+}
+
+
+/* ===================== Page & Page Content ==================== */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  background: linear-gradient(
+    135deg,
+    var(--background-1) 0%,
+    var(--background-1) 50%,
+    var(--background-2) 50%,
+    var(--background-2) 100%
+  );
+  background-attachment: fixed;
+}
+
+
+/* ==================== ANIMATION OVERRIDE ==================== */
+[data-no-animations="true"] * {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+}
