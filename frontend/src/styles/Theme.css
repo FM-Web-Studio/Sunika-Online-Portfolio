@@ -27,32 +27,32 @@
     --info-background-color: #1E90FF9d;
 
 
-    /* Accent Colors */
-    --accent-1-light: #f6b7c9; /* soft blush pink */
-    --accent-2-light: #f2a7bc; /* muted rose */
-    --accent-3-light: #ee97af; /* dusty pink */
-    --accent-4-light: #e887a3; /* soft raspberry pink */
-    --accent-5-light: #e17795; /* gentle berry pink */
+    /* Accent Colors — Bright Wide Pink Gradient */
+    --accent-1-light: #ff2f92; /* vibrant hot pink */
+    --accent-2-light: #ff4fa3; /* vivid rose pink */
+    --accent-3-light: #ff6fb5; /* bright bubblegum */
+    --accent-4-light: #ff8fc7; /* soft candy pink */
+    --accent-5-light: #ffadd8; /* light pastel pink */
 
-    --accent-1-dark: #f9c6d6;  /* lighter pastel pink */
-    --accent-2-dark: #f5b6cb;  /* warm rose pink */
-    --accent-3-dark: #f1a6c0;  /* soft mauve-pink */
-    --accent-4-dark:  #ed9fb6; /* pastel raspberry */
-    --accent-5-dark:  #e88faa; /* warm berry pastel */
+    --accent-1-dark: #ff5fb0;  /* bright neon pastel */
+    --accent-2-dark: #ff7fc1;  /* luminous rose */
+    --accent-3-dark: #ff9fd1;  /* soft glowing pink */
+    --accent-4-dark: #ffb7dd;  /* airy pastel */
+    --accent-5-dark: #ffd0ea;  /* very soft blush */
 
 
-    /* Accent Background Colors */
-    --accent-1-background-light: #f6b7c933;
-    --accent-2-background-light: #f2a7bc33;
-    --accent-3-background-light: #ee97af33;
-    --accent-4-background-light: #e887a333;
-    --accent-5-background-light: #e1779533;
+    /* Accent Background Colors (same colors, transparent) */
+    --accent-1-background-light: #ff2f9233;
+    --accent-2-background-light: #ff4fa333;
+    --accent-3-background-light: #ff6fb533;
+    --accent-4-background-light: #ff8fc733;
+    --accent-5-background-light: #ffadd833;
 
-    --accent-1-background-dark: #f9c6d633;
-    --accent-2-background-dark: #f5b6cb33;
-    --accent-3-background-dark: #f1a6c033;
-    --accent-4-background-dark:  #ed9fb633;
-    --accent-5-background-dark:  #e88faa33;
+    --accent-1-background-dark: #ff5fb033;
+    --accent-2-background-dark: #ff7fc133;
+    --accent-3-background-dark: #ff9fd133;
+    --accent-4-background-dark: #ffb7dd33;
+    --accent-5-background-dark: #ffd0ea33;
 
 
     /* Main Background Colors */

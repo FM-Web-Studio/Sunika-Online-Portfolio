@@ -1,7 +1,7 @@
 import React, { Suspense, useCallback, useMemo } from 'react';
 import { Routes, Route, useNavigate, Outlet } from 'react-router-dom';
 import { NotFound, Loading } from './pages';
-import { NavigationBar, ToastProvider, Settings } from './components';
+import { NavigationBar, Settings } from './components';
 import { useTheme } from './hooks';
 
 /* Styling */
@@ -100,9 +100,7 @@ const App = () => {
   useTheme();
 
   return (
-    <ToastProvider>
-      <AppContent />
-    </ToastProvider>
+    <AppContent />
   );
 };
 

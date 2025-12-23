@@ -5,684 +5,340 @@
   background: transparent;
   padding: 0;
   min-height: 0;
+  box-sizing: border-box;
 }
 
-.burgerContainer {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* ==================== COLORFUL BURGER BUTTON ==================== */
-.burger {
-  position: relative;
-  cursor: pointer;
-  border: none;
-  background: var(--background-1);
-  padding: 0;
+.burgerRow {
   display: flex;
   align-items: center;
-  justify-content: center;
-  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  outline: none;
-  border-radius: 50%;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  overflow: visible;
+  background: none;
+  box-sizing: border-box;
 }
 
-.burger:hover {
-  transform: scale(1.15) rotate(180deg);
-  box-shadow: 0 12px 48px rgba(255, 107, 157, 0.4);
-}
-
-.burger:active {
-  transform: scale(1.05) rotate(180deg);
-}
-
-/* Rainbow gradient spinning background */
-.burgerRainbow {
-  position: absolute;
-  inset: -8px;
-  background: conic-gradient(
-    from 0deg,
-    #FF6B9D 0deg,
-    #C44569 60deg,
-    #F8B500 120deg,
-    #4ECDC4 180deg,
-    #95E1D3 240deg,
-    #AA96DA 300deg,
-    #FF6B9D 360deg
-  );
-  border-radius: 50%;
-  animation: rainbowSpin 3s linear infinite;
-  opacity: 0.8;
-  filter: blur(8px);
-}
-
-@keyframes rainbowSpin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Paint drips falling from burger */
-.paintDrips {
-  position: absolute;
+/* ==================== BURGER MENU BUTTON ==================== */
+.burger {
   width: 100%;
   height: 100%;
-  pointer-events: none;
-}
-
-.drip {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  width: 4px;
-  height: 0;
-  background: var(--drip-color);
-  border-radius: 0 0 2px 2px;
-  transform: translateX(-50%);
-  animation: dripFall 2s ease-in infinite;
-  animation-delay: var(--drip-delay);
-  opacity: 0.7;
-}
-
-@keyframes dripFall {
-  0% {
-    height: 0;
-    opacity: 0.7;
-  }
-  50% {
-    height: 20px;
-    opacity: 1;
-  }
-  100% {
-    height: 30px;
-    opacity: 0;
-    transform: translateX(-50%) translateY(10px);
-  }
-}
-
-/* Burger lines with vibrant colors */
-.burgerLines {
-  position: relative;
+  min-width: 0;
+  min-height: 0;
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  background: none !important;
+  border: none !important;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  width: 50%;
-  height: 50%;
-  z-index: 2;
+  outline: none;
+  position: relative;
+  transition: transform 0.3s ease;
+  box-sizing: border-box;
+  overflow: visible;
+  margin: 0;
 }
 
+.burger:hover {
+  transform: scale(1.05);
+}
+
+.burger:active {
+  transform: scale(0.95);
+}
+
+/* Burger Lines */
 .burgerLine {
-  width: 100%;
-  height: 4px;
-  border-radius: 10px;
-  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  box-shadow: 0 0 15px currentColor;
+  width: 28px;
+  height: 3px;
+  background-color: var(--accent-1);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  display: block;
 }
 
-/* Open state - colorful X */
-.burgerOpen {
-  transform: rotate(180deg);
+.burger:hover .burgerLine {
+  background-color: var(--accent-2);
+  box-shadow: 0 0 8px var(--accent-2);
 }
 
-.burgerOpen .burgerLines {
-  gap: 0;
-}
-
+/* Open state - transform to X */
 .burgerOpen .burgerLine:nth-child(1) {
-  transform: translateY(5px) rotate(45deg);
-  background: #FF6B9D !important;
+  transform: translateY(9px) rotate(45deg);
 }
 
 .burgerOpen .burgerLine:nth-child(2) {
   opacity: 0;
-  transform: scaleX(0);
+  transform: translateX(-20px);
 }
 
 .burgerOpen .burgerLine:nth-child(3) {
-  transform: translateY(-5px) rotate(-45deg);
-  background: #4ECDC4 !important;
+  transform: translateY(-9px) rotate(-45deg);
 }
+
+/* ==================== ANIMATIONS ==================== */
 
 /* ==================== MENU DROPDOWN ==================== */
 .menuDropdown {
   position: absolute;
-  top: calc(100% + 1.5rem);
+  top: 100%;
   left: 0;
-  min-width: 380px;
-  max-width: 480px;
-  background: var(--background-1);
-  border-radius: 40px;
+  min-width: 320px;
+  max-width: 420px;
+  background: linear-gradient(145deg, 
+    var(--background-1) 0%, 
+    var(--background-2) 100%);
+  backdrop-filter: blur(20px) saturate(1.3);
+  border: 2px solid var(--accent-1);
+  border-radius: 16px;
   box-shadow: 
-    0 25px 70px rgba(0, 0, 0, 0.35),
-    0 0 0 3px rgba(255, 255, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  padding: 2.5rem;
+    0 12px 48px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(240, 230, 140, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  margin-top: 1rem;
+  box-sizing: border-box;
   opacity: 0;
-  transform: translateY(-40px) scale(0.85) rotateX(-20deg);
-  transform-origin: top left;
+  transform: translateY(-15px) scale(0.95);
   transition: 
-    opacity 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55),
-    transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    opacity 0.4s cubic-bezier(.4, 2, .6, 1), 
+    transform 0.4s cubic-bezier(.4, 2, .6, 1);
   pointer-events: none;
   z-index: 299;
+  position: relative;
   overflow: hidden;
-  perspective: 1200px;
+}
+
+/* ==================== BACKDROP (page blur) ==================== */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.36);
+  backdrop-filter: blur(4px);
+  z-index: 298;
+  animation: nbFadeIn 0.28s ease;
+}
+
+@keyframes nbFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .menuDropdownOpen {
   opacity: 1;
-  transform: translateY(0) scale(1) rotateX(0deg);
+  transform: translateY(0) scale(1);
   pointer-events: auto;
 }
 
-/* ==================== COLORFUL BACKGROUND BLOBS ==================== */
-.colorfulBg {
+/* ==================== ARMOR BACKGROUND DECORATION ==================== */
+.armorBackground {
   position: absolute;
   inset: 0;
   pointer-events: none;
   overflow: hidden;
-  border-radius: 40px;
-  opacity: 0.2;
+  opacity: 0.08;
+  z-index: 0;
+  border-radius: 16px;
 }
 
-.colorBlob {
+.armorIconBg {
   position: absolute;
-  width: 250px;
-  height: 250px;
-  border-radius: 50%;
-  background: var(--blob-color);
-  filter: blur(60px);
-  animation: blobFloat 8s ease-in-out infinite;
-  animation-delay: calc(var(--blob-index) * 0.8s);
+  font-size: 3.5rem;
+  color: var(--accent-1);
+  filter: blur(1px);
+  animation: floatArmor 8s ease-in-out infinite;
 }
 
-.colorBlob:nth-child(1) { top: -50px; right: -50px; }
-.colorBlob:nth-child(2) { bottom: -80px; left: -60px; }
-.colorBlob:nth-child(3) { top: 50%; left: 50%; transform: translate(-50%, -50%); }
-.colorBlob:nth-child(4) { top: 20%; left: -40px; }
-.colorBlob:nth-child(5) { bottom: 30%; right: -50px; }
+.armorIconBg:nth-child(1) { top: 5%; left: 5%; animation-delay: 0s; }
+.armorIconBg:nth-child(2) { top: 10%; right: 8%; animation-delay: 1s; }
+.armorIconBg:nth-child(3) { bottom: 15%; left: 10%; animation-delay: 2s; }
+.armorIconBg:nth-child(4) { top: 50%; left: 2%; animation-delay: 3s; }
+.armorIconBg:nth-child(5) { bottom: 25%; right: 5%; animation-delay: 4s; }
+.armorIconBg:nth-child(6) { top: 70%; left: 50%; animation-delay: 5s; }
+.armorIconBg:nth-child(7) { bottom: 5%; right: 15%; animation-delay: 6s; }
 
-@keyframes blobFloat {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-  }
-  33% {
-    transform: translate(30px, -30px) scale(1.15);
-  }
-  66% {
-    transform: translate(-30px, 30px) scale(0.9);
-  }
+@keyframes floatArmor {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(5deg); }
 }
 
-/* ==================== ARTIST BRUSH STROKES ==================== */
-.brushCanvas {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  border-radius: 40px;
-  overflow: hidden;
-  z-index: 10;
-}
-
-.brushStroke {
-  position: absolute;
-  left: var(--brush-start-x);
-  top: var(--brush-start-y);
-  width: 300px;
-  height: 80px;
-  transform: translate(-50%, -50%) rotate(var(--brush-angle));
-  animation: brushSweep 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-  transform-origin: left center;
-}
-
-@keyframes brushSweep {
-  0% {
-    transform: translate(-50%, -50%) rotate(var(--brush-angle)) scaleX(0);
-    opacity: 0;
-  }
-  30% {
-    opacity: 0.9;
-  }
-  100% {
-    transform: translate(-50%, -50%) rotate(var(--brush-angle)) scaleX(1);
-    opacity: 0;
-  }
-}
-
-/* Main paint brush stroke path */
-.brushPath {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--brush-color) 20%,
-    var(--brush-color) 80%,
-    transparent 100%
-  );
-  border-radius: 40% 60% 40% 60%;
-  filter: blur(3px);
-  opacity: 0.7;
-  animation: brushPathReveal 1.2s ease-out forwards;
-}
-
-@keyframes brushPathReveal {
-  0% {
-    transform: scaleX(0) scaleY(0.5);
-    opacity: 0;
-  }
-  50% {
-    transform: scaleX(1) scaleY(1.2);
-    opacity: 0.9;
-  }
-  100% {
-    transform: scaleX(1) scaleY(0.8);
-    opacity: 0;
-  }
-}
-
-/* Paint splatters along the brush stroke */
-.brushSplatter1,
-.brushSplatter2,
-.brushSplatter3 {
-  position: absolute;
-  background: var(--brush-color);
-  border-radius: 50%;
-  opacity: 0;
-  animation: splatterPop 0.8s ease-out forwards;
-}
-
-.brushSplatter1 {
-  width: 25px;
-  height: 25px;
-  top: -10px;
-  left: 40%;
-  animation-delay: 0.2s;
-}
-
-.brushSplatter2 {
-  width: 18px;
-  height: 18px;
-  bottom: -8px;
-  left: 60%;
-  animation-delay: 0.35s;
-}
-
-.brushSplatter3 {
-  width: 22px;
-  height: 22px;
-  top: 50%;
-  left: 80%;
-  transform: translateY(-50%);
-  animation-delay: 0.5s;
-}
-
-@keyframes splatterPop {
-  0% {
-    transform: scale(0);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.3);
-    opacity: 0.9;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 0;
-  }
-}
-
-/* ==================== NAVIGATION LINKS LIST ==================== */
-.linksList {
-  position: relative;
-  z-index: 1;
+/* ==================== VERTICAL MAIN LINKS ==================== */
+.mainLinks {
+  display: flex;
+  flex-direction: column;
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.linkItem {
-  list-style: none;
-  opacity: 0;
-  transform: translateX(-50px) rotate(-5deg);
-  animation: linkBounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-  animation-delay: calc(var(--link-index) * 0.1s + 0.2s);
-}
-
-@keyframes linkBounceIn {
-  0% {
-    opacity: 0;
-    transform: translateX(-50px) rotate(-5deg);
-  }
-  60% {
-    transform: translateX(5px) rotate(2deg);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0) rotate(0deg);
-  }
-}
-
-/* ==================== INDIVIDUAL LINK STYLING ==================== */
-.link {
+  gap: 0.75rem;
+  box-sizing: border-box;
   position: relative;
+  z-index: 1;
+}
+
+.mainLinkItem {
+  position: relative;
+  box-sizing: border-box;
+  list-style: none;
+}
+
+/* Main Navigation Link */
+.mainLink {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 1rem;
   width: 100%;
-  padding: 1.4rem 1.75rem;
-  background: var(--background-2);
-  border: 3px solid transparent;
-  border-radius: 25px;
+  color: var(--primary-text-color);
+  font-size: var(--font-size-base);
+  font-weight: 500;
   cursor: pointer;
-  overflow: hidden;
-  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  text-align: left;
+  border: 1.5px solid transparent;
+  background: linear-gradient(135deg, 
+    var(--background-2) 0%, 
+    var(--background-3) 100%);
   outline: none;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  box-sizing: border-box;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(.4, 2, .6, 1);
+  padding: 1rem 1.25rem;
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-/* Paint stroke background that appears on hover */
-.paintStroke {
+.mainLink::before {
+  content: "";
   position: absolute;
-  inset: -5px;
-  background: linear-gradient(135deg, var(--link-color), transparent);
+  inset: 0;
+  background: linear-gradient(135deg, 
+    var(--accent-1-background) 0%, 
+    var(--accent-2-background) 100%);
   opacity: 0;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  border-radius: 25px;
+  transition: opacity 0.3s ease;
   z-index: 0;
 }
 
-/* Icon wrapper with colorful burst effect */
-.linkIconWrapper {
+/* Armor Icon in Link */
+.armorIcon {
   position: relative;
   z-index: 2;
+  font-size: 2rem;
+  color: var(--accent-2);
+  transition: all 0.3s cubic-bezier(.4, 2, .6, 1);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
-  background: var(--background-1);
-  border-radius: 50%;
-  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  min-width: 32px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
-.linkIcon {
-  font-size: 1.75rem;
-  color: var(--link-color);
-  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));
-}
-
-/* Color burst effect behind icon */
-.colorBurst {
-  position: absolute;
-  inset: -15px;
-  background: radial-gradient(circle, var(--link-color), transparent 70%);
-  opacity: 0;
-  transition: all 0.5s ease;
-  border-radius: 50%;
-  filter: blur(15px);
-  animation: burstPulse 2s ease-in-out infinite;
-}
-
-@keyframes burstPulse {
-  0%, 100% {
-    transform: scale(0.8);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-}
-
-/* Text wrapper */
-.linkTextWrapper {
+/* Link Content */
+.linkContent {
   position: relative;
   z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.25rem;
   flex: 1;
 }
 
-.linkLabel {
-  font-size: var(--font-size-lg);
-  font-weight: 700;
-  color: var(--primary-text-color);
-  letter-spacing: 0.5px;
-  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.linkSubtext {
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--link-color);
-  opacity: 0.8;
+.mainLinkText {
+  font-size: 1rem;
+  font-weight: 600;
   letter-spacing: 0.3px;
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
+  color: var(--primary-text-color);
 }
 
-/* Paint drip decoration on the right */
-.paintDripDecor {
-  position: absolute;
-  right: 1.5rem;
-  top: 100%;
-  width: 6px;
-  height: 0;
-  background: var(--link-color);
-  border-radius: 0 0 3px 3px;
-  transition: height 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  opacity: 0;
-  z-index: 2;
+.armorName {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--accent-2);
+  opacity: 0.7;
+  transition: all 0.3s ease;
+  letter-spacing: 0.2px;
 }
 
-/* ==================== HOVER EFFECTS ==================== */
-.link:hover,
-.link:focus,
-.linkHovered {
-  transform: translateX(15px) scale(1.03);
-  border-color: var(--link-color);
+/* Hover Effects */
+.mainLink:hover,
+.mainLink:focus,
+.mainLinkHovered {
+  border-color: var(--accent-1);
+  transform: translateX(5px);
   box-shadow: 
-    0 10px 40px rgba(0, 0, 0, 0.2),
-    0 0 30px var(--link-color);
-  background: var(--background-1);
+    0 6px 20px var(--accent-1-background),
+    0 0 24px var(--accent-1),
+    inset 0 1px 0 var(--accent-1-background);
 }
 
-.link:hover .paintStroke,
-.link:focus .paintStroke,
-.linkHovered .paintStroke {
-  opacity: 0.3;
-  transform: scaleX(1);
-}
-
-.link:hover .linkIconWrapper,
-.link:focus .linkIconWrapper,
-.linkHovered .linkIconWrapper {
-  transform: scale(1.2) rotate(-15deg);
-  box-shadow: 0 8px 24px var(--link-color);
-}
-
-.link:hover .linkIcon,
-.link:focus .linkIcon,
-.linkHovered .linkIcon {
-  transform: scale(1.1);
-  filter: drop-shadow(0 0 12px var(--link-color));
-}
-
-.link:hover .colorBurst,
-.link:focus .colorBurst,
-.linkHovered .colorBurst {
-  opacity: 0.6;
-}
-
-.link:hover .linkLabel,
-.link:focus .linkLabel,
-.linkHovered .linkLabel {
-  color: var(--link-color);
-  transform: translateX(8px);
-  text-shadow: 0 0 20px var(--link-color);
-}
-
-.link:hover .linkSubtext,
-.link:focus .linkSubtext,
-.linkHovered .linkSubtext {
+.mainLink:hover::before,
+.mainLink:focus::before,
+.mainLinkHovered::before {
   opacity: 1;
-  transform: translateX(8px);
 }
 
-.link:hover .paintDripDecor,
-.link:focus .paintDripDecor,
-.linkHovered .paintDripDecor {
-  height: 25px;
-  opacity: 0.8;
+.mainLink:hover .armorIcon,
+.mainLink:focus .armorIcon,
+.mainLinkHovered .armorIcon {
+  color: var(--accent-1);
+  transform: scale(1.15) rotate(-5deg);
+  filter: drop-shadow(0 0 8px var(--accent-1));
 }
 
-/* ==================== CLICKED/ACTIVE STATE WITH BRUSH SWEEP ==================== */
-.linkClicked {
-  animation: clickShake 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  border-color: var(--link-color);
-  background: var(--background-1);
+.mainLink:hover .mainLinkText,
+.mainLink:focus .mainLinkText,
+.mainLinkHovered .mainLinkText {
+  color: var(--accent-1);
+  transform: translateX(2px);
 }
 
-@keyframes clickShake {
-  0%, 100% {
-    transform: translateX(0) scale(1);
-  }
-  25% {
-    transform: translateX(8px) scale(1.02) rotate(2deg);
-  }
-  50% {
-    transform: translateX(-5px) scale(1.05) rotate(-2deg);
-  }
-  75% {
-    transform: translateX(3px) scale(1.02) rotate(1deg);
-  }
-}
-
-.linkClicked .linkIconWrapper {
-  animation: iconJump 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  box-shadow: 0 12px 32px var(--link-color);
-}
-
-@keyframes iconJump {
-  0% {
-    transform: scale(1) translateY(0) rotate(0deg);
-  }
-  30% {
-    transform: scale(1.3) translateY(-8px) rotate(-20deg);
-  }
-  60% {
-    transform: scale(0.9) translateY(4px) rotate(10deg);
-  }
-  100% {
-    transform: scale(1.2) translateY(0) rotate(0deg);
-  }
-}
-
-.linkClicked .colorBurst {
+.mainLink:hover .armorName,
+.mainLink:focus .armorName,
+.mainLinkHovered .armorName {
   opacity: 1;
-  animation: burstFlash 0.6s ease-out;
+  color: var(--accent-1);
 }
 
-@keyframes burstFlash {
-  0% {
-    transform: scale(0.5);
-    opacity: 0;
-  }
-  30% {
-    transform: scale(2.5);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(3.5);
-    opacity: 0;
-  }
-}
-
-.linkClicked .linkLabel {
-  animation: textPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-@keyframes textPop {
-  0%, 100% {
-    transform: translateX(0) scale(1);
-  }
-  50% {
-    transform: translateX(12px) scale(1.08);
-    color: var(--link-color);
-  }
-}
-
-/* ==================== BACKDROP ==================== */
-.backdrop {
-  position: fixed;
-  inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 107, 157, 0.1) 0%,
-    rgba(78, 205, 196, 0.1) 50%,
-    rgba(248, 181, 0, 0.1) 100%
-  );
-  backdrop-filter: blur(10px) saturate(1.4);
-  z-index: 298;
-  animation: backdropFadeIn 0.5s ease;
-}
-
-@keyframes backdropFadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+.mainLink:active {
+  transform: translateX(2px) scale(0.98);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* ==================== RESPONSIVE DESIGN ==================== */
 @media (max-width: 768px) {
   .menuDropdown {
-    min-width: 340px;
-    max-width: 92vw;
-    padding: 2rem;
+    min-width: 300px;
+    max-width: 95vw;
+    left: -0.5rem;
+    padding: 1.2rem;
   }
   
-  .linksList {
-    gap: 0.85rem;
+  .armorIconBg {
+    font-size: 3rem;
   }
   
-  .link {
-    padding: 1.2rem 1.4rem;
-    gap: 1rem;
+  .mainLinks {
+    gap: 0.6rem;
   }
   
-  .linkIconWrapper {
-    width: 45px;
-    height: 45px;
+  .mainLink {
+    padding: 0.9rem 1rem;
   }
   
-  .linkIcon {
-    font-size: 1.5rem;
+  .armorIcon {
+    font-size: 1.4rem;
   }
   
-  .linkLabel {
-    font-size: var(--font-size-md);
+  .mainLinkText {
+    font-size: 0.95rem;
   }
   
-  .linkSubtext {
-    font-size: 0.8rem;
+  .armorName {
+    font-size: 0.7rem;
   }
 }
 
@@ -692,44 +348,34 @@
   }
 
   .menuDropdown {
-    min-width: 310px;
-    padding: 1.75rem;
+    min-width: 280px;
+    left: -1rem;
+    padding: 1rem;
   }
   
-  .linksList {
-    gap: 0.75rem;
+  .armorIconBg {
+    font-size: 2.5rem;
   }
   
-  .link {
-    padding: 1.1rem 1.2rem;
-    gap: 0.9rem;
+  .mainLinks {
+    gap: 0.5rem;
   }
   
-  .linkIconWrapper {
-    width: 42px;
-    height: 42px;
+  .mainLink {
+    padding: 0.8rem 0.9rem;
+    gap: 0.8rem;
   }
   
-  .linkIcon {
-    font-size: 1.4rem;
+  .armorIcon {
+    font-size: 1.3rem;
+    min-width: 28px;
   }
   
-  .linkLabel {
-    font-size: var(--font-size-base);
+  .mainLinkText {
+    font-size: 0.9rem;
   }
   
-  .linkSubtext {
-    font-size: 0.75rem;
-  }
-}
-
-/* Accessibility: Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  .armorName {
+    font-size: 0.65rem;
   }
 }
