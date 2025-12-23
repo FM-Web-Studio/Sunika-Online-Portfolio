@@ -20,6 +20,14 @@ const NAVIGATION_PAGES = [
     label: 'Home',
     to: '/'
   },
+  {
+    label: 'Not Found',
+    to: '/not-found'
+  },
+  {
+    label: 'Loading',
+    to: '/loading'
+  }
 ];
 
 // ============================================================================
@@ -85,6 +93,8 @@ const AppContent = () => {
     <Routes>
       <Route path="/" element={<MemoizedAppLayout />}>
         <Route index element={<Home />} />
+        <Route path="loading" element={<Loading />} />
+        <Route path="not-found" element={<NotFound />} />
         {/* 404 Not Found - handle unknown routes inside app layout */}
         <Route path="*" element={<NotFound />} />
       </Route>

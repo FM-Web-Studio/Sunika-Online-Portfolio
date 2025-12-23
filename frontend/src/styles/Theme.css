@@ -80,10 +80,14 @@
     --accent-1: var(--accent-1-light);
     --accent-2: var(--accent-2-light);
     --accent-3: var(--accent-3-light);
+    --accent-4: var(--accent-4-light);
+    --accent-5: var(--accent-5-light);
 
     --accent-1-background: var(--accent-1-background-light);
     --accent-2-background: var(--accent-2-background-light);
     --accent-3-background: var(--accent-3-background-light);
+    --accent-4-background: var(--accent-4-background-light);
+    --accent-5-background: var(--accent-5-background-light);
 }
 
 
@@ -100,10 +104,14 @@
     --accent-1: var(--accent-1-dark);
     --accent-2: var(--accent-2-dark);
     --accent-3: var(--accent-3-dark);
+    --accent-4: var(--accent-4-dark);
+    --accent-5: var(--accent-5-dark);
 
     --accent-1-background: var(--accent-1-background-dark);
     --accent-2-background: var(--accent-2-background-dark);
     --accent-3-background: var(--accent-3-background-dark);
+    --accent-4-background: var(--accent-4-background-dark);
+    --accent-5-background: var(--accent-5-background-dark);
 }
 
 
