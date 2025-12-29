@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useTheme } from '../../hooks/useTheme';
 
 /* Styling */
@@ -7,132 +7,139 @@ import '../../styles/Theme.css';
 import '../../styles/Components.css';
 import '../../styles/Wrappers.css';
 
-const Loading = ({ message = 'Loading...' }) => {
+const Loading = ({ message = 'Preparing the gallery...' }) => {
   const { theme } = useTheme();
-  const [stars, setStars] = useState([]);
+  const canvasRef = useRef(null);
+  const rafRef = useRef(null);
 
-  // Generate random stars on mount
   useEffect(() => {
-    const generateStars = () => {
-      const starArray = [];
-      for (let i = 0; i < 150; i++) {
-        starArray.push({
-          id: i,
-          left: Math.random() * 100,
-          top: Math.random() * 100,
-          size: Math.random() * 3 + 1,
-          duration: Math.random() * 3 + 2,
-          delay: Math.random() * 3
-        });
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    const rootStyle = getComputedStyle(document.documentElement);
+    const accent1 = rootStyle.getPropertyValue('--accent-1') || '#ff2f92';
+    const accent2 = rootStyle.getPropertyValue('--accent-2') || '#ff4fa3';
+
+    const particleCount = Math.round((width * height) / 90000) + 25;
+    const particles = [];
+
+    function rand(min, max) { return Math.random() * (max - min) + min; }
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        r: rand(0.6, 2.6),
+        vx: rand(-0.15, 0.15),
+        vy: rand(-0.04, 0.04),
+        hue: Math.random() > 0.6 ? accent1.trim() : accent2.trim(),
+        alpha: rand(0.06, 0.22)
+      });
+    }
+
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resize);
+
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
+      // subtle gradient overlay for depth
+      const g = ctx.createLinearGradient(0, 0, width, height);
+      g.addColorStop(0, 'rgba(0,0,0,0)');
+      g.addColorStop(1, 'rgba(0,0,0,0.25)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, width, height);
+
+      for (const p of particles) {
+        p.x += p.vx;
+        p.y += p.vy + Math.sin((p.x + p.y) * 0.001) * 0.2;
+        if (p.x < -20) p.x = width + 20;
+        if (p.x > width + 20) p.x = -20;
+        if (p.y < -20) p.y = height + 20;
+        if (p.y > height + 20) p.y = -20;
+
+        ctx.beginPath();
+        ctx.fillStyle = p.hue;
+        ctx.globalAlpha = p.alpha;
+        ctx.shadowBlur = p.r * 5;
+        ctx.shadowColor = p.hue;
+        ctx.ellipse(p.x, p.y, p.r * 1.4, p.r, 0, 0, Math.PI * 2);
+        ctx.fill();
       }
-      setStars(starArray);
+      ctx.globalAlpha = 1;
+      rafRef.current = requestAnimationFrame(draw);
+    }
+
+    rafRef.current = requestAnimationFrame(draw);
+
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      window.removeEventListener('resize', resize);
     };
-    generateStars();
   }, []);
 
-  // no verses displayed on loading screen
-
   return (
-    <div className={styles.loadingScreenWrapper} data-theme={theme}>
-      {/* Starfield Background */}
-      <div className={styles.starfield}>
-        {stars.map(star => (
-          <div
-            key={star.id}
-            className={styles.star}
-            style={{
-              left: `${star.left}%`,
-              top: `${star.top}%`,
-              width: `${star.size}px`,
-              height: `${star.size}px`,
-              animationDuration: `${star.duration}s`,
-              animationDelay: `${star.delay}s`
-            }}
-          />
-        ))}
+    <div className={styles.loadingScreen} data-theme={theme}>
+      <canvas ref={canvasRef} className={styles.particleCanvas} aria-hidden="true" />
+
+      <div className={styles.bubbles} aria-hidden>
+        <span className={styles.bubble} />
+        <span className={styles.bubble} />
+        <span className={styles.bubble} />
+        <span className={styles.bubble} />
+        <span className={styles.bubble} />
+        <span className={styles.bubble} />
+        <span className={styles.bubble} />
+        <span className={styles.bubble} />
       </div>
 
-      {/* Constellation Lines */}
-      <svg className={styles.constellationSvg} viewBox="0 0 1920 1080">
-        {/* Major constellation pattern */}
-        <g className={styles.constellation}>
-          <line x1="300" y1="200" x2="450" y2="180" />
-          <line x1="450" y1="180" x2="550" y2="250" />
-          <line x1="550" y1="250" x2="650" y2="200" />
-          <line x1="450" y1="180" x2="480" y2="320" />
-          <line x1="480" y1="320" x2="550" y2="250" />
-          <circle cx="300" cy="200" r="4" />
-          <circle cx="450" cy="180" r="4" />
-          <circle cx="550" cy="250" r="4" />
-          <circle cx="650" cy="200" r="4" />
-          <circle cx="480" cy="320" r="4" />
-        </g>
+      <div className={styles.centerCard} role="status" aria-live="polite">
+        <svg className={styles.logo} viewBox="0 0 600 200" preserveAspectRatio="xMidYMid meet" aria-hidden>
+          <defs>
+            <linearGradient id="g1" x1="0%" x2="100%" y1="0%" y2="100%">
+              <stop offset="0%" stopColor="var(--accent-1)" />
+              <stop offset="100%" stopColor="var(--accent-2)" />
+            </linearGradient>
+          </defs>
+          <path className={styles.brush} d="M40 140 C140 10, 260 10, 360 120 C420 180, 540 160, 560 100"
+            stroke="url(#g1)" strokeWidth="16" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          <circle className={styles.logoDot} cx="560" cy="100" r="6" fill="var(--accent-2)" />
+        </svg>
 
-        {/* Secondary constellation */}
-        <g className={`${styles.constellation} ${styles.constellation2}`}>
-          <line x1="1400" y1="300" x2="1500" y2="350" />
-          <line x1="1500" y1="350" x2="1550" y2="450" />
-          <line x1="1550" y1="450" x2="1450" y2="500" />
-          <line x1="1450" y1="500" x2="1400" y2="400" />
-          <line x1="1400" y1="400" x2="1400" y2="300" />
-          <circle cx="1400" cy="300" r="4" />
-          <circle cx="1500" cy="350" r="4" />
-          <circle cx="1550" cy="450" r="4" />
-          <circle cx="1450" cy="500" r="4" />
-          <circle cx="1400" cy="400" r="4" />
-        </g>
+        <div className={styles.textWrap}>
+          <h2 className={styles.title}>{message}</h2>
+          <p className={styles.sub}>Curating visuals &amp; color — please wait a moment</p>
 
-        {/* Bottom constellation */}
-        <g className={`${styles.constellation} ${styles.constellation3}`}>
-          <line x1="800" y1="850" x2="900" y2="820" />
-          <line x1="900" y1="820" x2="950" y2="900" />
-          <line x1="950" y1="900" x2="1050" y2="880" />
-          <circle cx="800" cy="850" r="4" />
-          <circle cx="900" cy="820" r="4" />
-          <circle cx="950" cy="900" r="4" />
-          <circle cx="1050" cy="880" r="4" />
-        </g>
-      </svg>
+          <div className={styles.loaderArt} aria-hidden>
+            <svg className={styles.loaderSvg} viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="lg1" x1="0%" x2="100%">
+                  <stop offset="0%" stopColor="var(--accent-1)" />
+                  <stop offset="100%" stopColor="var(--accent-2)" />
+                </linearGradient>
+              </defs>
+              <g>
+                <circle className={`${styles.arc} ${styles.arc1}`} cx="60" cy="60" r="38" fill="none" stroke="url(#lg1)" />
+                <circle className={`${styles.arc} ${styles.arc2}`} cx="60" cy="60" r="26" fill="none" stroke="url(#lg1)" />
+                <circle className={`${styles.arc} ${styles.arc3}`} cx="60" cy="60" r="14" fill="none" stroke="url(#lg1)" />
 
-      {/* Nebula Effects */}
-      <div className={styles.nebula}>
-        <div className={styles.nebulaOrb1}></div>
-        <div className={styles.nebulaOrb2}></div>
-        <div className={styles.nebulaOrb3}></div>
-      </div>
-
-      {/* Main Content */}
-      <div className={styles.content}>
-        {/* Celestial Loading Spinner */}
-        <div className={styles.celestialSpinner}>
-          <div className={styles.orbitRing}>
-            <div className={styles.planet}></div>
-          </div>
-          <div className={styles.orbitRing2}>
-            <div className={styles.planet2}></div>
-          </div>
-          <div className={styles.orbitRing3}>
-            <div className={styles.planet3}></div>
-          </div>
-          <div className={styles.centerStar}></div>
-        </div>
-
-        {/* Loading Message */}
-        <div className={styles.messageContainer}>
-          <h2 className={styles.message}>{message}</h2>
-          <div className={styles.progressBar}>
-            <div className={styles.progressFill}></div>
+                <g className={styles.tipGroup}>
+                  <circle className={styles.tip} cx="60" cy="22" r="3.5" />
+                </g>
+              </g>
+            </svg>
           </div>
         </div>
-
-        {/* Verses removed — only show loading UI */}
       </div>
 
-      {/* Corner Decorations */}
-      <div className={styles.cornerDecoration} style={{ top: '20px', left: '20px' }}>✦</div>
-      <div className={styles.cornerDecoration} style={{ top: '20px', right: '20px' }}>✦</div>
-      <div className={styles.cornerDecoration} style={{ bottom: '20px', left: '20px' }}>✦</div>
-      <div className={styles.cornerDecoration} style={{ bottom: '20px', right: '20px' }}>✦</div>
+      {/* corner mark removed as requested */}
     </div>
   );
 };

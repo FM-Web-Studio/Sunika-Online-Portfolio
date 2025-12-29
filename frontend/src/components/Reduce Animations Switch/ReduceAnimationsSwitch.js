@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Paintbrush, PaintbrushVertical } from 'lucide-react';
 
 import styles from './ReduceAnimationsSwitch.module.css';
 import '../../styles/Theme.css';
@@ -32,14 +33,28 @@ const ReduceAnimationsSwitch = ({ size = 22 }) => {
 
   return (
     <button
-      className={`${styles.switch} ${enabled ? styles.checked : ''}`}
+      className={`${styles.artistSwitch} ${enabled ? styles.active : ''}`}
       onClick={toggle}
       role="switch"
       aria-checked={enabled}
       aria-label="Reduce Animations"
       type="button"
     >
-      <span className={styles.thumb}></span>
+      <div className={styles.canvas}>
+        <div className={styles.paintTrail}></div>
+        <div className={styles.brushThumb}>
+          {enabled ? (
+            <PaintbrushVertical size={16} strokeWidth={2.5} />
+          ) : (
+            <Paintbrush size={16} strokeWidth={2.5} />
+          )}
+        </div>
+        <div className={styles.splatterEffect}>
+          <span className={styles.dot}></span>
+          <span className={styles.dot}></span>
+          <span className={styles.dot}></span>
+        </div>
+      </div>
     </button>
   );
 };

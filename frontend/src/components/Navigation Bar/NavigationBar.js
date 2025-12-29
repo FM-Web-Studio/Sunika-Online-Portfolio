@@ -1,55 +1,33 @@
 import React, { useState, useRef, useEffect } from "react";
-import { GiShield, GiChestArmor, GiBootKick, GiBeltArmor, GiHelmet, GiSwordsEmblem, GiHolyHandGrenade } from 'react-icons/gi';
-
-/* Styling */
+import { Palette, Paintbrush, Droplets, Sparkles, ImageIcon, Mail, User } from 'lucide-react';
 import styles from "./NavigationBar.module.css";
-import '../../styles/Theme.css';
-import '../../styles/Components.css';
-import '../../styles/Wrappers.css';
 
-// The 7 pieces of Armor of God with corresponding icons
-const ARMOR_OF_GOD = [
-  { icon: GiBeltArmor, name: "Belt of Truth", description: "Stand firm with truth" },
-  { icon: GiChestArmor, name: "Breastplate of Righteousness", description: "Protected by righteousness" },
-  { icon: GiBootKick, name: "Shoes of Peace", description: "Walk in peace" },
-  { icon: GiShield, name: "Shield of Faith", description: "Faith protects us" },
-  { icon: GiHelmet, name: "Helmet of Salvation", description: "Salvation guards our minds" },
-  { icon: GiSwordsEmblem, name: "Sword of the Spirit", description: "The Word of God" },
-  { icon: GiHolyHandGrenade, name: "Prayer", description: "Pray in the Spirit" }
-];
-
-/**
- * Christian-themed NavigationBar with burger menu icon
- * Features the 7 pieces of Armor of God as navigation links
- */
-const NavigationBar = function NavigationBar({ 
+const NavigationBar = ({ 
   links, 
   onNavigate, 
   burgerSize = 44,
   className = ""
-}) {
+}) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [hoveredLink, setHoveredLink] = useState(null);
   const wrapperRef = useRef();
   const menuRef = useRef();
 
-  // Handle burger button click - toggle open/close
+  const ICONS = [Palette, Paintbrush, Droplets, Sparkles, ImageIcon, Mail, User];
+
   const handleBurgerClick = () => {
     setMenuOpen(prev => !prev);
   };
 
-  // Handle link click
-  const handleLinkClick = (link, index) => {
+  const handleLinkClick = (link) => {
     if (link.onClick) link.onClick();
     if (link.to) onNavigate(link.to);
     setMenuOpen(false);
     setHoveredLink(null);
   };
 
-  // Close menu when clicking outside of button or menu
   useEffect(() => {
     const handleClickOutside = (event) => {
-      // Check if click is outside both the wrapper (button) and menu
       const clickedOutsideWrapper = wrapperRef.current && !wrapperRef.current.contains(event.target);
       const clickedOutsideMenu = menuRef.current && !menuRef.current.contains(event.target);
       
@@ -68,7 +46,6 @@ const NavigationBar = function NavigationBar({
     };
   }, [menuOpen]);
 
-  // Handle escape key
   useEffect(() => {
     const handleEscape = (event) => {
       if (event.key === 'Escape') {
@@ -82,81 +59,58 @@ const NavigationBar = function NavigationBar({
   }, []);
 
   return (
-    <nav 
-      className={`${styles.navbar} ${className}`}
-    >
-      {/* Burger Menu Button */}
-      <div className={styles.burgerRow} ref={wrapperRef}>
+    <nav className={`${styles.navbar} ${className}`}>
+      <div className={styles.burgerContainer} ref={wrapperRef}>
         <button
-          className={`${styles.burger} ${menuOpen ? styles.burgerOpen : ""}`}
+          className={`${styles.burger} ${menuOpen ? styles.burgerActive : ''}`}
+          onClick={handleBurgerClick}
           aria-label="Toggle navigation menu"
           aria-expanded={menuOpen}
-          onClick={handleBurgerClick}
           type="button"
           style={{
             width: burgerSize,
             height: burgerSize,
-            minWidth: burgerSize,
-            minHeight: burgerSize,
           }}
         >
-          {/* Burger Lines */}
-          <span className={styles.burgerLine}></span>
-          <span className={styles.burgerLine}></span>
-          <span className={styles.burgerLine}></span>
+          <div className={styles.burgerInner}>
+            <span className={styles.burgerBar}></span>
+            <span className={styles.burgerBar}></span>
+            <span className={styles.burgerBar}></span>
+          </div>
+          <svg className={styles.splatter} viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="40" />
+          </svg>
         </button>
       </div>
 
-      {/* Navigation Menu */}
       {menuOpen && (
-        <div 
-          className={`${styles.menuDropdown} ${styles.menuDropdownOpen}`}
-          ref={menuRef}
-        >
-          {/* Armor of God background decorations */}
-          <div className={styles.armorBackground}>
-            {ARMOR_OF_GOD.map((armor, index) => {
-              const ArmorIcon = armor.icon;
-              return (
-                <div 
-                  key={`armor-bg-${index}`} 
-                  className={styles.armorIconBg}
-                  style={{ '--armor-index': index }}
-                >
-                  <ArmorIcon />
-                </div>
-              );
-            })}
+        <div className={`${styles.menu} ${styles.menuActive}`} ref={menuRef}>
+          <div className={styles.paintSplash}>
+            <div className={styles.splash} style={{ '--delay': '0s', '--size': '80px', '--x': '10%', '--y': '5%' }}></div>
+            <div className={styles.splash} style={{ '--delay': '0.5s', '--size': '60px', '--x': '85%', '--y': '15%' }}></div>
+            <div className={styles.splash} style={{ '--delay': '1s', '--size': '70px', '--x': '5%', '--y': '80%' }}></div>
+            <div className={styles.splash} style={{ '--delay': '1.5s', '--size': '50px', '--x': '90%', '--y': '75%' }}></div>
           </div>
 
-          {/* Main Navigation Links - Vertical */}
-          <ul className={styles.mainLinks}>
-            {links.slice(0, 7).map((link, index) => {
-              const ArmorIcon = ARMOR_OF_GOD[index]?.icon || GiShield;
-              const armorPiece = ARMOR_OF_GOD[index];
+          <ul className={styles.linkList}>
+            {links && links.slice(0, 7).map((link, index) => {
+              const Icon = ICONS[index] || Palette;
               
               return (
-                <li 
-                  key={`${link.label}-${index}`} 
-                  className={styles.mainLinkItem}
-                  onMouseEnter={() => setHoveredLink(index)}
-                  onMouseLeave={() => setHoveredLink(null)}
-                >
+                <li key={`nav-${index}`} className={styles.linkItem}>
                   <button
-                    className={`${styles.mainLink} ${hoveredLink === index ? styles.mainLinkHovered : ""}`}
-                    onClick={() => handleLinkClick(link, index)}
+                    className={`${styles.link} ${hoveredLink === index ? styles.linkActive : ''}`}
+                    onClick={() => handleLinkClick(link)}
+                    onMouseEnter={() => setHoveredLink(index)}
+                    onMouseLeave={() => setHoveredLink(null)}
                     type="button"
-                    title={armorPiece?.description}
                   >
-                    <span className={styles.armorIcon}>
-                      <ArmorIcon />
-                    </span>
-                    <span className={styles.linkContent}>
-                      <span className={styles.mainLinkText}>{link.label}</span>
-                      {armorPiece && (
-                        <span className={styles.armorName}>{armorPiece.name}</span>
-                      )}
-                    </span>
+                    <div className={styles.linkBg}></div>
+                    <div className={styles.linkIcon}>
+                      <Icon size={20} strokeWidth={2.5} />
+                    </div>
+                    <span className={styles.linkLabel}>{link.label}</span>
+                    <div className={styles.inkDrip}></div>
                   </button>
                 </li>
               );
@@ -164,8 +118,16 @@ const NavigationBar = function NavigationBar({
           </ul>
         </div>
       )}
-      {/* Backdrop overlay to blur the rest of the page when menu is open */}
-      {menuOpen && <div className={styles.backdrop} onClick={() => { setMenuOpen(false); setHoveredLink(null); }}></div>}
+
+      {menuOpen && (
+        <div 
+          className={styles.backdrop} 
+          onClick={() => {
+            setMenuOpen(false);
+            setHoveredLink(null);
+          }}
+        />
+      )}
     </nav>
   );
 };
