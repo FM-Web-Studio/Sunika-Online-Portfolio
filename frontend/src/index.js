@@ -31,7 +31,7 @@ function ErrorBoundaryWrapper({ children }) {
 (() => {
   try {
     // Known repo/site bases to map into hash routing
-    const bases = ['/Sunika-Website', '/Francois0203'];
+    const bases = ['/Sunika-Online-Portfolio'];
     const { pathname, hash, origin, search } = window.location;
     if (!hash || hash === '' || hash === '#') {
       const matched = bases.find(b => pathname.startsWith(b));
