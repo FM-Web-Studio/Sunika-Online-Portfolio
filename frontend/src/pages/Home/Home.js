@@ -1,253 +1,240 @@
-// Home.js
 import React, { useEffect, useRef, useState } from 'react';
-import { MdAutoAwesome, MdColorLens, MdCreate, MdDraw, MdFilterVintage, MdLocalFlorist } from 'react-icons/md';
-import { BiPaint } from 'react-icons/bi';
-import { BsStars, BsCloudMoon } from 'react-icons/bs';
+import { useTheme } from '../../hooks/useTheme';
 import styles from './Home.module.css';
 
 const Home = () => {
+  const { theme } = useTheme();
   const [isVisible, setIsVisible] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [scrollY, setScrollY] = useState(0);
-  const containerRef = useRef(null);
-  const floatingRef = useRef(null);
+  const canvasRef = useRef(null);
+  const animationRef = useRef(null);
+  const particlesRef = useRef([]);
+  const timeRef = useRef(0);
 
   useEffect(() => {
     setIsVisible(true);
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
 
-  const handleMouseMove = (e) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
-    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
-    setMousePos({ x, y });
-  };
-
-  // Dreamy floating elements
-  useEffect(() => {
-    const container = floatingRef.current;
-    if (!container) return;
-
-    const elements = [
-      { icon: '✨', size: 1.2 },
-      { icon: '🌙', size: 1.5 },
-      { icon: '⭐', size: 1 },
-      { icon: '🌸', size: 1.3 },
-      { icon: '☁️', size: 1.8 },
-      { icon: '🦋', size: 1.4 },
-      { icon: '🌿', size: 1.1 },
-      { icon: '💫', size: 1.2 },
-    ];
-    
-    let mounted = true;
-    const activeElements = [];
-
-    const createFloatingElement = () => {
-      if (!mounted || activeElements.length >= 20) return;
-
-      const el = document.createElement('div');
-      const item = elements[Math.floor(Math.random() * elements.length)];
-      el.className = styles.floatElement;
-      el.textContent = item.icon;
-      el.style.left = `${Math.random() * 100}%`;
-      el.style.top = `${Math.random() * 100}%`;
-      el.style.fontSize = `${item.size}rem`;
-      
-      const duration = 25 + Math.random() * 20;
-      el.style.setProperty('--float-duration', `${duration}s`);
-      el.style.setProperty('--float-delay', `${Math.random() * 5}s`);
-      el.style.setProperty('--float-x', `${(Math.random() - 0.5) * 100}px`);
-      el.style.setProperty('--float-y', `${-150 - Math.random() * 100}px`);
-      
-      container.appendChild(el);
-      activeElements.push(el);
-
-      setTimeout(() => {
-        if (el.parentNode) el.remove();
-        const idx = activeElements.indexOf(el);
-        if (idx !== -1) activeElements.splice(idx, 1);
-      }, duration * 1000);
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      initParticles();
     };
 
-    for (let i = 0; i < 15; i++) {
-      setTimeout(() => createFloatingElement(), i * 400);
-    }
+    const initParticles = () => {
+      particlesRef.current = [];
+      const count = Math.floor((canvas.width * canvas.height) / 12000);
+      
+      for (let i = 0; i < count; i++) {
+        particlesRef.current.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 2 + 0.5,
+          vx: (Math.random() - 0.5) * 0.15,
+          vy: (Math.random() - 0.5) * 0.15,
+          opacity: Math.random() * 0.4 + 0.1,
+          angle: Math.random() * Math.PI * 2,
+          orbitRadius: Math.random() * 30 + 10,
+          speed: Math.random() * 0.02 + 0.01,
+        });
+      }
+    };
 
-    const interval = setInterval(() => {
-      if (Math.random() > 0.65) createFloatingElement();
-    }, 3500);
+    const animate = () => {
+      timeRef.current += 0.008;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Flowing gradient background
+      const gradient1 = ctx.createRadialGradient(
+        canvas.width * 0.2 + Math.sin(timeRef.current) * 100,
+        canvas.height * 0.3 + Math.cos(timeRef.current) * 100,
+        0,
+        canvas.width * 0.3,
+        canvas.height * 0.3,
+        canvas.width * 0.5
+      );
+      gradient1.addColorStop(0, 'rgba(255, 47, 146, 0.04)');
+      gradient1.addColorStop(1, 'transparent');
+      ctx.fillStyle = gradient1;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const gradient2 = ctx.createRadialGradient(
+        canvas.width * 0.8 + Math.cos(timeRef.current * 0.8) * 100,
+        canvas.height * 0.7 + Math.sin(timeRef.current * 0.8) * 100,
+        0,
+        canvas.width * 0.7,
+        canvas.height * 0.7,
+        canvas.width * 0.5
+      );
+      gradient2.addColorStop(0, 'rgba(255, 111, 181, 0.03)');
+      gradient2.addColorStop(1, 'transparent');
+      ctx.fillStyle = gradient2;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw particles with orbital motion
+      particlesRef.current.forEach((p, i) => {
+        p.angle += p.speed;
+        const baseX = p.x + p.vx;
+        const baseY = p.y + p.vy;
+        
+        const x = baseX + Math.cos(p.angle) * p.orbitRadius;
+        const y = baseY + Math.sin(p.angle) * p.orbitRadius;
+
+        p.x = baseX;
+        p.y = baseY;
+
+        if (p.x < -20) p.x = canvas.width + 20;
+        if (p.x > canvas.width + 20) p.x = -20;
+        if (p.y < -20) p.y = canvas.height + 20;
+        if (p.y > canvas.height + 20) p.y = -20;
+
+        const pulse = Math.sin(timeRef.current * 2 + i) * 0.3 + 0.7;
+
+        ctx.save();
+        ctx.globalAlpha = p.opacity * pulse;
+        ctx.fillStyle = 'rgba(255, 95, 176, 0.6)';
+        ctx.shadowBlur = p.radius * 4;
+        ctx.shadowColor = 'rgba(255, 95, 176, 0.3)';
+        ctx.beginPath();
+        ctx.arc(x, y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        // Connect nearby particles
+        particlesRef.current.forEach((p2, j) => {
+          if (i >= j) return;
+          const p2x = p2.x + Math.cos(p2.angle) * p2.orbitRadius;
+          const p2y = p2.y + Math.sin(p2.angle) * p2.orbitRadius;
+          const dx = x - p2x;
+          const dy = y - p2y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < 100) {
+            ctx.save();
+            ctx.globalAlpha = (1 - distance / 100) * 0.1 * pulse;
+            ctx.strokeStyle = 'rgba(255, 95, 176, 0.4)';
+            ctx.lineWidth = 0.5;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(p2x, p2y);
+            ctx.stroke();
+            ctx.restore();
+          }
+        });
+      });
+
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
+    resize();
+    animate();
+    window.addEventListener('resize', resize);
 
     return () => {
-      mounted = false;
-      clearInterval(interval);
-      activeElements.forEach(el => el.remove());
+      window.removeEventListener('resize', resize);
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
     };
   }, []);
 
   return (
-    <div 
-      ref={containerRef} 
-      className={styles.homeWrapper}
-      onMouseMove={handleMouseMove}
-    >
-      {/* Dreamy gradient background */}
-      <div 
-        className={styles.dreamyBg}
-        style={{
-          transform: `translate(${mousePos.x * 5}px, ${mousePos.y * 5}px) translateY(${scrollY * 0.3}px)`
-        }}
-      />
+    <div className={styles.homeWrapper} data-theme={theme}>
+      <canvas ref={canvasRef} className={styles.backgroundCanvas} aria-hidden="true" />
 
-      {/* Floating elements container */}
-      <div 
-        ref={floatingRef}
-        className={styles.floatingContainer}
-        style={{
-          transform: `translate(${mousePos.x * 10}px, ${mousePos.y * 10}px)`
-        }}
-      />
-
-      {/* Soft gradient orbs */}
-      <div className={styles.orbsWrapper}>
-        <div 
-          className={`${styles.softOrb} ${styles.orb1}`}
-          style={{
-            transform: `translate(${mousePos.x * -20}px, ${mousePos.y * -20}px)`
-          }}
-        />
-        <div 
-          className={`${styles.softOrb} ${styles.orb2}`}
-          style={{
-            transform: `translate(${mousePos.x * 15}px, ${mousePos.y * 15}px)`
-          }}
-        />
-        <div 
-          className={`${styles.softOrb} ${styles.orb3}`}
-          style={{
-            transform: `translate(${mousePos.x * -10}px, ${mousePos.y * 20}px)`
-          }}
-        />
+      <div className={styles.glowOrbs} aria-hidden="true">
+        <div className={styles.orb1}></div>
+        <div className={styles.orb2}></div>
       </div>
 
-      {/* Main content */}
-      <div className={`${styles.contentWrapper} ${isVisible ? styles.visible : ''}`}>
-        
-        {/* Hero Section */}
-        <div className={styles.heroContainer}>
-          {/* Decorative elements */}
-          <div className={styles.heroDecorLeft}>
-            <MdLocalFlorist size={40} />
-          </div>
-          <div className={styles.heroDecorRight}>
-            <BsStars size={35} />
-          </div>
+      <div className={`${styles.content} ${isVisible ? styles.visible : ''}`}>
+        <div className={styles.glassContainer}>
+          
+          {/* Hero Section */}
+          <section className={styles.heroSection}>
+            <div className={styles.badge}>
+              <span className={styles.badgeDot}></span>
+              <span>Available for Commissions</span>
+            </div>
 
-          {/* Hero badge */}
-          <div className={styles.heroBadge}>
-            <BsCloudMoon size={14} />
-            <span>Creative Artist & Designer</span>
-            <MdAutoAwesome size={14} />
-          </div>
+            <h1 className={styles.mainTitle}>Sunika Lombard</h1>
 
-          {/* Main title */}
-          <h1 className={styles.mainTitle}>
-            <span className={styles.titleLine}>Sunika</span>
-            <span className={styles.titleLine}>Lombard</span>
-          </h1>
+            <p className={styles.subtitle}>
+              Communication Design · Illustration · Baking Artisan
+            </p>
 
-          {/* Decorative line */}
-          <div className={styles.decorativeLine}>
-            <span className={styles.lineDecor}>✦</span>
-            <span className={styles.lineFill}></span>
-            <span className={styles.lineDecor}>✦</span>
-          </div>
+            <p className={styles.description}>
+              Creating visual stories through art and design, while crafting 
+              delightful meringues and baked creations.
+            </p>
 
-          {/* Subtitle */}
-          <p className={styles.heroSubtitle}>
-            Communication Design & Illustration
-          </p>
+            <div className={styles.ctaButtons}>
+              <a href="/portfolio" className={styles.btnPrimary}>
+                View Portfolio
+              </a>
+              <a href="/contact" className={styles.btnSecondary}>
+                Get in Touch
+              </a>
+            </div>
+          </section>
 
-          {/* Description */}
-          <p className={styles.heroDescription}>
-            Blending traditional artistry with digital innovation to craft 
-            meaningful visual stories. Currently studying at OpenWindow, 
-            where creativity meets professional excellence.
-          </p>
+          <div className={styles.divider}></div>
 
-          {/* CTA Buttons */}
-          <div className={styles.ctaContainer}>
-            <a href="/portfolio" className={styles.btnPrimary}>
-              <BiPaint size={20} />
-              <span>Explore Portfolio</span>
-            </a>
-            <a href="/contact" className={styles.btnSecondary}>
-              <MdCreate size={20} />
-              <span>Let's Connect</span>
-            </a>
-          </div>
+          {/* Services Section */}
+          <section className={styles.servicesSection}>
+            <h2 className={styles.sectionTitle}>Services</h2>
+            
+            <div className={styles.servicesGrid}>
+              <div className={styles.serviceCard}>
+                <div className={styles.serviceIcon}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" />
+                    <path d="M2 17L12 22L22 17" />
+                    <path d="M2 12L12 17L22 12" />
+                  </svg>
+                </div>
+                <h3 className={styles.serviceTitle}>Design & Illustration</h3>
+                <p className={styles.serviceDesc}>
+                  Custom illustrations and communication design for brands and personal projects.
+                </p>
+              </div>
+
+              <div className={styles.serviceCard}>
+                <div className={styles.serviceIcon}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                    <circle cx="8.5" cy="8.5" r="1.5" />
+                    <path d="M21 15L16 10L5 21" />
+                  </svg>
+                </div>
+                <h3 className={styles.serviceTitle}>Traditional Art</h3>
+                <p className={styles.serviceDesc}>
+                  Paintings and handcrafted artwork using various traditional mediums.
+                </p>
+              </div>
+
+              <div className={styles.serviceCard}>
+                <div className={styles.serviceIcon}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M20 21V7C20 5.89543 19.1046 5 18 5H6C4.89543 5 4 5.89543 4 7V21" />
+                    <path d="M4 21H20" />
+                    <path d="M12 5V3" />
+                    <path d="M8 3H16" />
+                  </svg>
+                </div>
+                <h3 className={styles.serviceTitle}>Artisan Baking</h3>
+                <p className={styles.serviceDesc}>
+                  Handcrafted meringues and custom baked goods made with care.
+                </p>
+              </div>
+            </div>
+          </section>
+
         </div>
-
-        {/* Skills Section */}
-        <div className={styles.skillsGrid}>
-          <div className={styles.skillCard}>
-            <div className={styles.skillIconWrapper}>
-              <BiPaint size={30} className={styles.skillIcon} />
-            </div>
-            <h3 className={styles.skillTitle}>Traditional Painting</h3>
-            <p className={styles.skillDesc}>
-              Masterful techniques in watercolor, acrylic, and oil painting
-            </p>
-          </div>
-
-          <div className={styles.skillCard}>
-            <div className={styles.skillIconWrapper}>
-              <MdDraw size={30} className={styles.skillIcon} />
-            </div>
-            <h3 className={styles.skillTitle}>Digital Illustration</h3>
-            <p className={styles.skillDesc}>
-              Creating stunning digital artwork with modern tools
-            </p>
-          </div>
-
-          <div className={styles.skillCard}>
-            <div className={styles.skillIconWrapper}>
-              <MdColorLens size={30} className={styles.skillIcon} />
-            </div>
-            <h3 className={styles.skillTitle}>Design & Craft</h3>
-            <p className={styles.skillDesc}>
-              Handcrafted creations combining art and imagination
-            </p>
-          </div>
-
-          <div className={styles.skillCard}>
-            <div className={styles.skillIconWrapper}>
-              <MdFilterVintage size={30} className={styles.skillIcon} />
-            </div>
-            <h3 className={styles.skillTitle}>Communication Design</h3>
-            <p className={styles.skillDesc}>
-              Visual storytelling through thoughtful design principles
-            </p>
-          </div>
-        </div>
-
-        {/* Quote Section */}
-        <div className={styles.quoteSection}>
-          <div className={styles.quoteIcon}>
-            <MdAutoAwesome size={24} />
-          </div>
-          <blockquote className={styles.quote}>
-            "Art is not what you see, but what you make others see."
-          </blockquote>
-          <p className={styles.quoteAuthor}>— Edgar Degas</p>
-        </div>
-
       </div>
     </div>
   );

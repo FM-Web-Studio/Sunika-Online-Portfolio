@@ -2,11 +2,15 @@
 .loadingScreen {
   position: fixed;
   inset: 0;
-  display: grid;
-  place-items: center;
-  background: radial-gradient(1200px 600px at 20% 20%, rgba(0,0,0,0.08), transparent 10%),
-              radial-gradient(1000px 500px at 80% 80%, rgba(0,0,0,0.06), transparent 12%),
-              linear-gradient(180deg, var(--background-3) 0%, var(--background-4) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    var(--background-1) 0%,
+    var(--background-2) 50%,
+    var(--background-3) 100%
+  );
   overflow: hidden;
   z-index: 9999;
   -webkit-font-smoothing: antialiased;
@@ -20,267 +24,596 @@
   height: 100%;
   display: block;
   pointer-events: none;
+  opacity: 0.9;
+}
+
+.ambientGlow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.glowOrb1,
+.glowOrb2,
+.glowOrb3 {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.15;
+}
+
+.glowOrb1 {
+  width: 500px;
+  height: 500px;
+  top: -10%;
+  left: -10%;
+  background: radial-gradient(circle, var(--accent-1), transparent);
+  animation: float1 15s ease-in-out infinite;
+}
+
+.glowOrb2 {
+  width: 600px;
+  height: 600px;
+  bottom: -15%;
+  right: -15%;
+  background: radial-gradient(circle, var(--accent-2), transparent);
+  animation: float2 18s ease-in-out infinite;
+}
+
+.glowOrb3 {
+  width: 400px;
+  height: 400px;
+  top: 30%;
+  right: 20%;
+  background: radial-gradient(circle, var(--accent-3), transparent);
+  animation: float3 12s ease-in-out infinite;
+}
+
+@keyframes float1 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(50px, 80px) scale(1.1);
+  }
+}
+
+@keyframes float2 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-60px, -70px) scale(1.15);
+  }
+}
+
+@keyframes float3 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(40px, -50px) scale(1.05);
+  }
 }
 
 .centerCard {
   position: relative;
-  z-index: 6;
-  width: min(880px, calc(100vw - 48px));
-  max-width: 920px;
-  padding: 2.25rem 2.5rem;
+  z-index: 10;
+  width: min(700px, calc(100vw - 48px));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  backdrop-filter: blur(30px) saturate(180%);
+  border-radius: 32px;
+  padding: 48px 40px;
+  border: 1px solid rgba(255, 95, 176, 0.15);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.2),
+    0 0 100px rgba(255, 95, 176, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
   display: flex;
-  gap: 1.5rem;
+  flex-direction: column;
+  gap: 32px;
+  animation: cardFadeIn 1s ease-out, cardFloat 6s ease-in-out infinite;
+}
+
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes cardFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.logoSection {
+  display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-start;
-  background: linear-gradient(180deg, var(--frosted-background), rgba(255,255,255,0.02));
-  border-radius: 18px;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.02);
-  border: 1px solid var(--accent-1-background);
-  backdrop-filter: blur(8px) saturate(1.05);
-  align-self: center;
-  animation: floatCard 6s ease-in-out infinite;
 }
 
 .logo {
-  width: 180px;
-  height: 80px;
-  flex: 0 0 180px;
-  overflow: visible;
+  width: 200px;
+  height: 200px;
+  filter: drop-shadow(0 8px 24px rgba(255, 95, 176, 0.3));
 }
 
-.brush {
-  stroke-width: 16;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dasharray: 800;
-  stroke-dashoffset: 800;
-  filter: drop-shadow(0 12px 28px rgba(0,0,0,0.55));
-  animation: paintStroke 1.6s cubic-bezier(.2,.9,.2,1) forwards;
-}
-
-.logoDot {
+.brushStrokes {
   transform-origin: center;
+}
+
+.stroke {
+  stroke-dasharray: 300;
+  stroke-dashoffset: 300;
   opacity: 0;
-  animation: popDot 0.8s 1.4s cubic-bezier(.2,.9,.2,1) forwards;
+}
+
+.stroke1 {
+  animation: drawStroke 2s ease-out forwards, breathe 3s ease-in-out infinite;
+  animation-delay: 0s, 2s;
+}
+
+.stroke2 {
+  animation: drawStroke 1.8s ease-out forwards, breathe 3s ease-in-out infinite;
+  animation-delay: 0.3s, 2.3s;
+}
+
+@keyframes drawStroke {
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes breathe {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.dot {
+  opacity: 0;
+  transform: scale(0);
+  transform-origin: center;
+  animation: popIn 0.6s ease-out 1.8s forwards, pulse 2s ease-in-out infinite;
+  animation-delay: 1.8s, 2.4s;
+}
+
+@keyframes popIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.7;
+  }
+}
+
+.contentSection {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .textWrap {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  flex: 1 1 auto;
+  gap: 8px;
+  text-align: center;
 }
 
 .title {
   margin: 0;
-  color: var(--primary-text-color);
-  font-size: 1.25rem;
+  font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 700;
-  letter-spacing: 0.02em;
-  background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+  background: linear-gradient(
+    135deg,
+    var(--accent-1) 0%,
+    var(--accent-2) 50%,
+    var(--accent-3) 100%
+  );
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em;
+  animation: fadeInText 1s ease-out 0.5s backwards;
 }
 
-.sub {
+.subtitle {
   margin: 0;
-  color: rgba(255,255,255,0.78);
-  font-size: 0.95rem;
-  opacity: 0.92;
+  font-size: var(--font-size-base);
+  color: var(--primary-text-color);
+  opacity: 0.7;
+  animation: fadeInText 1s ease-out 0.7s backwards;
+}
+
+@keyframes fadeInText {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.progressContainer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  animation: fadeInText 1s ease-out 0.9s backwards;
 }
 
 .progressBar {
   position: relative;
-  width: 100%;
+  flex: 1;
   height: 8px;
-  margin-top: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 999px;
   overflow: hidden;
-  background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.progressTrack {
+.progressFill {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, var(--accent-1-background), var(--accent-2-background));
-  filter: blur(6px);
-  opacity: 0.9;
-}
-
-.progressArm {
-  position: absolute;
-  left: -30%;
   top: 0;
-  bottom: 0;
-  width: 36%;
+  left: 0;
+  height: 100%;
   background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
   border-radius: 999px;
-  transform: translateX(-8%);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.45), 0 0 30px var(--accent-1);
-  animation: armMove 2.2s cubic-bezier(.2,.9,.2,1) infinite;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 20px rgba(255, 95, 176, 0.5);
 }
 
-.progressArm::after {
-  content: '';
+.progressGlow {
   position: absolute;
-  inset: 0;
-  left: -40%;
-  width: 200%;
-  background: linear-gradient(90deg, rgba(255,255,255,0.18), rgba(255,255,255,0.02), rgba(255,255,255,0.06));
-  transform: skewX(-18deg) translateX(-100%);
-  filter: blur(8px) saturate(1.1);
-  opacity: 0.9;
-  animation: sheen 2.8s linear infinite;
-  pointer-events: none;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shimmer 2s ease-in-out infinite;
 }
 
-@keyframes sheen {
-  0% { transform: skewX(-18deg) translateX(-100%); opacity: 0.2 }
-  50% { transform: skewX(-18deg) translateX(10%); opacity: 0.9 }
-  100% { transform: skewX(-18deg) translateX(120%); opacity: 0.2 }
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
-@keyframes armMove {
-  0% { transform: translateX(-8%) scaleX(0.9); }
-  50% { transform: translateX(50%) scaleX(1.02); }
-  100% { transform: translateX(120%) scaleX(0.9); }
-}
-
-@keyframes paintStroke {
-  to { stroke-dashoffset: 0; }
-}
-
-@keyframes popDot {
-  to { opacity: 1; transform: scale(1.1); }
-}
-
-.cornerMark {
+.progressShimmer {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 0;
+  right: 0;
+  width: 30%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  animation: progressShine 1.5s ease-in-out infinite;
+}
+
+@keyframes progressShine {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.progressText {
+  font-size: 0.875rem;
+  font-weight: 600;
   color: var(--accent-1);
-  opacity: 0.6;
-  font-size: 1.5rem;
-  filter: drop-shadow(0 6px 18px rgba(0,0,0,0.45));
-  transform-origin: center;
-  animation: cornerPulse 5s ease-in-out infinite;
+  min-width: 45px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
-@keyframes cornerPulse {
-  0%,100% { transform: scale(1); opacity: 0.6 }
-  50% { transform: scale(1.12) rotate(18deg); opacity: 1 }
-}
-
-/* Floating subtle motion for center card */
-@keyframes floatCard {
-  0% { transform: translateY(0) rotate(0deg); }
-  25% { transform: translateY(-6px) rotate(-0.4deg); }
-  50% { transform: translateY(0) rotate(0deg); }
-  75% { transform: translateY(-4px) rotate(0.4deg); }
-  100% { transform: translateY(0) rotate(0deg); }
-}
-
-/* Bubbles in background */
-.bubbles {
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-  overflow: visible;
-}
-
-.bubbles .bubble {
-  position: absolute;
-  bottom: -18vh;
-  border-radius: 50%;
-  mix-blend-mode: screen;
-  opacity: 0.18;
-  filter: blur(14px);
-  background: radial-gradient(circle at 30% 30%, var(--accent-1), transparent 45%), radial-gradient(circle at 70% 70%, var(--accent-2), transparent 45%);
-  transform: translateY(0) scale(1);
-}
-
-.bubbles .bubble:nth-child(1) { left: 6%; width: 120px; height: 120px; animation: bubbleRise 28s linear infinite; animation-delay: 0s; }
-.bubbles .bubble:nth-child(2) { left: 22%; width: 64px; height: 64px; animation: bubbleRise 18s linear infinite; animation-delay: -4s; opacity: 0.14; }
-.bubbles .bubble:nth-child(3) { left: 36%; width: 90px; height: 90px; animation: bubbleRise 24s linear infinite; animation-delay: -8s; }
-.bubbles .bubble:nth-child(4) { left: 52%; width: 48px; height: 48px; animation: bubbleRise 16s linear infinite; animation-delay: -3s; opacity: 0.12; }
-.bubbles .bubble:nth-child(5) { left: 68%; width: 140px; height: 140px; animation: bubbleRise 30s linear infinite; animation-delay: -10s; opacity: 0.16; }
-.bubbles .bubble:nth-child(6) { left: 80%; width: 74px; height: 74px; animation: bubbleRise 20s linear infinite; animation-delay: -6s; opacity: 0.13; }
-.bubbles .bubble:nth-child(7) { left: 88%; width: 110px; height: 110px; animation: bubbleRise 26s linear infinite; animation-delay: -12s; }
-.bubbles .bubble:nth-child(8) { left: 44%; width: 56px; height: 56px; animation: bubbleRise 14s linear infinite; animation-delay: -2s; opacity: 0.11; }
-
-@keyframes bubbleRise {
-  0% { transform: translateY(0) translateX(0) scale(1); opacity: 0.18 }
-  35% { transform: translateY(-40vh) translateX(6vw) scale(1.05); opacity: 0.22 }
-  70% { transform: translateY(-80vh) translateX(-4vw) scale(0.95); opacity: 0.12 }
-  100% { transform: translateY(-120vh) translateX(0) scale(1); opacity: 0.08 }
-}
-
-/* New SVG arc loader styles */
-.loaderArt {
-  width: 100%;
+.loaderAnimation {
   display: flex;
   align-items: center;
-  margin-top: 10px;
+  justify-content: center;
+  margin-top: 8px;
+  animation: fadeInText 1s ease-out 1.1s backwards;
 }
 
-.loaderSvg {
+.spinnerRing {
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.spinnerSvg {
+  width: 100%;
+  height: 100%;
+  animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinnerCircle {
+  stroke-dasharray: 164;
+  stroke-dashoffset: 82;
+  filter: drop-shadow(0 0 8px var(--accent-1));
+  animation: dash 1.5s ease-in-out infinite;
+}
+
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 164;
+  }
+  50% {
+    stroke-dashoffset: 41;
+  }
+  100% {
+    stroke-dashoffset: 164;
+  }
+}
+
+.centerDot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  background: var(--accent-2);
+  border-radius: 50%;
+  box-shadow: 0 0 20px var(--accent-2);
+  animation: dotScale 1.5s ease-in-out infinite;
+}
+
+@keyframes dotScale {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+}
+
+.floatingElements {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.floatShape1,
+.floatShape2,
+.floatShape3,
+.floatShape4 {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-1-background), transparent);
+  filter: blur(40px);
+  opacity: 0.3;
+}
+
+.floatShape1 {
+  width: 200px;
+  height: 200px;
+  top: 10%;
+  left: 5%;
+  animation: floatRandom1 10s ease-in-out infinite;
+}
+
+.floatShape2 {
+  width: 150px;
+  height: 150px;
+  top: 60%;
+  right: 10%;
+  background: radial-gradient(circle, var(--accent-2-background), transparent);
+  animation: floatRandom2 12s ease-in-out infinite;
+}
+
+.floatShape3 {
+  width: 180px;
+  height: 180px;
+  bottom: 15%;
+  left: 15%;
+  background: radial-gradient(circle, var(--accent-3-background), transparent);
+  animation: floatRandom3 14s ease-in-out infinite;
+}
+
+.floatShape4 {
   width: 120px;
   height: 120px;
-  flex: 0 0 120px;
-  overflow: visible;
+  top: 30%;
+  right: 30%;
+  animation: floatRandom4 8s ease-in-out infinite;
 }
 
-.arc {
-  stroke-linecap: round;
-  stroke-width: 6;
-  opacity: 0.98;
-  filter: drop-shadow(0 8px 18px rgba(0,0,0,0.45));
-  stroke-dasharray: 220;
-  stroke-dashoffset: 220;
+@keyframes floatRandom1 {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  33% {
+    transform: translate(30px, 50px);
+  }
+  66% {
+    transform: translate(-20px, 30px);
+  }
 }
 
-.arc1 { stroke-width: 6; animation: draw1 1.9s cubic-bezier(.2,.9,.2,1) infinite; }
-.arc2 { stroke-width: 5; animation: draw2 2.6s cubic-bezier(.25,.9,.25,1) infinite reverse; }
-.arc3 { stroke-width: 4; animation: draw3 2.2s cubic-bezier(.2,.9,.2,1) infinite; }
-
-@keyframes draw1 {
-  0% { stroke-dashoffset: 220; opacity: 0.18 }
-  30% { stroke-dashoffset: 60; opacity: 1 }
-  70% { stroke-dashoffset: 130; opacity: 1 }
-  100% { stroke-dashoffset: 220; opacity: 0.28 }
+@keyframes floatRandom2 {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  33% {
+    transform: translate(-40px, -30px);
+  }
+  66% {
+    transform: translate(25px, 20px);
+  }
 }
 
-@keyframes draw2 {
-  0% { stroke-dashoffset: 220; opacity: 0.12 }
-  40% { stroke-dashoffset: 40; opacity: 0.95 }
-  80% { stroke-dashoffset: 110; opacity: 0.9 }
-  100% { stroke-dashoffset: 220; opacity: 0.18 }
+@keyframes floatRandom3 {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  33% {
+    transform: translate(35px, -40px);
+  }
+  66% {
+    transform: translate(-30px, -25px);
+  }
 }
 
-@keyframes draw3 {
-  0% { stroke-dashoffset: 220; opacity: 0.12 }
-  35% { stroke-dashoffset: 20; opacity: 1 }
-  75% { stroke-dashoffset: 120; opacity: 0.9 }
-  100% { stroke-dashoffset: 220; opacity: 0.2 }
+@keyframes floatRandom4 {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  33% {
+    transform: translate(-25px, 35px);
+  }
+  66% {
+    transform: translate(30px, -30px);
+  }
 }
 
-.tipGroup { transform-origin: 60px 60px; animation: tipSpin 2.1s linear infinite; }
-.tip { fill: var(--accent-2); filter: drop-shadow(0 6px 18px var(--accent-1)); }
+/* Responsive Design */
+@media (max-width: 768px) {
+  .centerCard {
+    padding: 36px 28px;
+    gap: 24px;
+  }
 
-@keyframes tipSpin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  .logo {
+    width: 160px;
+    height: 160px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .spinnerRing {
+    width: 60px;
+    height: 60px;
+  }
+
+  .glowOrb1,
+  .glowOrb2,
+  .glowOrb3 {
+    opacity: 0.1;
+  }
+}
+
+@media (max-width: 480px) {
+  .centerCard {
+    padding: 28px 20px;
+    gap: 20px;
+  }
+
+  .logo {
+    width: 140px;
+    height: 140px;
+  }
+
+  .progressContainer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .progressText {
+    text-align: center;
+  }
 }
 
 /* Respect reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
-  .brush, .progressArm, .cornerMark { animation: none !important; }
+  .centerCard,
+  .glowOrb1,
+  .glowOrb2,
+  .glowOrb3,
+  .stroke1,
+  .stroke2,
+  .dot,
+  .spinnerSvg,
+  .spinnerCircle,
+  .centerDot,
+  .floatShape1,
+  .floatShape2,
+  .floatShape3,
+  .floatShape4,
+  .progressGlow,
+  .progressShimmer {
+    animation: none !important;
+  }
+
+  .progressFill {
+    transition: width 0.3s linear;
+  }
 }
 
-@media (max-width: 720px) {
-  .centerCard { padding: 1.5rem 1rem; flex-direction: column; align-items: stretch; gap: 1rem; }
-  .logo { width: 140px; height: 64px; }
-  .title { font-size: 1.05rem; }
+/* Disable animations when specified */
+[data-no-animations="true"] .centerCard,
+[data-no-animations="true"] .glowOrb1,
+[data-no-animations="true"] .glowOrb2,
+[data-no-animations="true"] .glowOrb3,
+[data-no-animations="true"] .stroke1,
+[data-no-animations="true"] .stroke2,
+[data-no-animations="true"] .dot,
+[data-no-animations="true"] .spinnerSvg,
+[data-no-animations="true"] .spinnerCircle,
+[data-no-animations="true"] .centerDot,
+[data-no-animations="true"] .floatShape1,
+[data-no-animations="true"] .floatShape2,
+[data-no-animations="true"] .floatShape3,
+[data-no-animations="true"] .floatShape4,
+[data-no-animations="true"] .progressGlow,
+[data-no-animations="true"] .progressShimmer {
+  animation: none !important;
 }
