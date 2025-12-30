@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "version": "1.0.0",
-  "homepage": "https://FM-Web-Studio.github.io/Sunika-Website",
+  "homepage": "https://FM-Web-Studio.github.io/Sunika-Online-Portfolio",
   "private": true,
   "dependencies": {
     "@testing-library/dom": "^10.4.1",
