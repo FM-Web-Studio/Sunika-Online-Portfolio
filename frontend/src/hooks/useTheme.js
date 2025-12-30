@@ -35,9 +35,45 @@ export const useTheme = () => {
 
     updatedInfo.prefersColorScheme = theme;
     localStorage.setItem('userSessionInfo', JSON.stringify(updatedInfo));
+
+    // Broadcast theme change to other hook instances in this window
+    try {
+      const ev = new CustomEvent('themechange', { detail: theme });
+      window.dispatchEvent(ev);
+    } catch (e) {
+      // ignore
+    }
   }, [theme]);
 
-  const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
+  // Listen for theme changes dispatched from other hook instances
+  useEffect(() => {
+    const handler = (e) => {
+      if (e && e.detail && e.detail !== theme) setTheme(e.detail);
+    };
+
+    const storageHandler = (e) => {
+      if (e.key === 'userSessionInfo') {
+        try {
+          const parsed = JSON.parse(e.newValue || '{}');
+          if (parsed.prefersColorScheme && parsed.prefersColorScheme !== theme) {
+            setTheme(parsed.prefersColorScheme);
+          }
+        } catch {
+          // ignore
+        }
+      }
+    };
+
+    window.addEventListener('themechange', handler);
+    window.addEventListener('storage', storageHandler);
+
+    return () => {
+      window.removeEventListener('themechange', handler);
+      window.removeEventListener('storage', storageHandler);
+    };
+  }, [theme]);
+
+  const toggleTheme = () => setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
 
   return { theme, toggleTheme, setTheme };
 };

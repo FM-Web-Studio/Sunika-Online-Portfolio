@@ -30,9 +30,8 @@ const LoadingFallback = () => <Loading />;
 // ============================================================================
 // APP LAYOUT COMPONENT
 // ============================================================================
-const AppLayout = () => {
+const AppLayout = ({ theme, toggleTheme }) => {
   const navigate = useNavigate();
-  const { theme, toggleTheme } = useTheme();
 
   // Navigation handlers - memoize to prevent recreation
   const handleNavigate = useCallback((to) => {
@@ -80,10 +79,10 @@ const MemoizedAppLayout = React.memo(AppLayout);
 // ============================================================================
 // APP CONTENT COMPONENT
 // ============================================================================
-const AppContent = () => {
+const AppContent = ({ theme, toggleTheme }) => {
   return (
     <Routes>
-      <Route path="/" element={<MemoizedAppLayout />}>
+      <Route path="/" element={<MemoizedAppLayout theme={theme} toggleTheme={toggleTheme} />}>
         <Route index element={<Home />} />
         {/* 404 Not Found - handle unknown routes inside app layout */}
         <Route path="*" element={<NotFound />} />
@@ -97,10 +96,10 @@ const AppContent = () => {
 // ============================================================================
 const App = () => {
   // Initialize theme at the root level so it applies to all routes
-  useTheme();
+  const { theme, toggleTheme } = useTheme();
 
   return (
-    <AppContent />
+    <AppContent theme={theme} toggleTheme={toggleTheme} />
   );
 };
 
