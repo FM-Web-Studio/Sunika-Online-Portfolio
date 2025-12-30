@@ -10,63 +10,84 @@
     /* ==================== STANDARD COLORS ==================== */
 
     /* Text Colors */
-    --primary-text-color-light: #000000;
-    --primary-text-color-dark: #ffffff;
+    --primary-text-color-light: #2a1a3d;
+    --primary-text-color-dark: #fef6f9;
 
-    --disabled-color: #a0a0a0;
+    --disabled-color: #a89bb3;
 
     /* Status Colors */
-    --error-color: #FF0000;
-    --warning-color: #FFD700;
-    --success-color: #32CD32;
-    --info-color: #1E90FF;
+    --error-color: #ff4757;
+    --warning-color: #ffa502;
+    --success-color: #26de81;
+    --info-color: #4bcffa;
 
-    --success-background-color: #32CD329d;
-    --warning-background-color: #FFD7009d;
-    --error-background-color: #FF00009d;
-    --info-background-color: #1E90FF9d;
+    --success-background-color: #26de8155;
+    --warning-background-color: #ffa50255;
+    --error-background-color: #ff475755;
+    --info-background-color: #4bcffa55;
 
 
-    /* Accent Colors — Bright Wide Pink Gradient */
-    --accent-1-light: #ff2f92; /* vibrant hot pink */
-    --accent-2-light: #ff4fa3; /* vivid rose pink */
-    --accent-3-light: #ff6fb5; /* bright bubblegum */
-    --accent-4-light: #ff8fc7; /* soft candy pink */
-    --accent-5-light: #ffadd8; /* light pastel pink */
+    /* Accent Colors – Portchie Inspired Palette */
+    /* Soft vibrant pinks, corals, and peachy tones */
+    --accent-1-light: #ff6b9d; /* vibrant soft pink */
+    --accent-2-light: #ff8eb3; /* coral pink */
+    --accent-3-light: #ffb4c8; /* peachy pink */
+    --accent-4-light: #ffd4e5; /* powder pink */
+    --accent-5-light: #ffe8f0; /* blush cream */
+    --accent-6-light: #c77dff; /* soft purple */
+    --accent-7-light: #8b5cf6; /* artistic violet */
+    --accent-8-light: #fbbf24; /* warm gold */
+    --accent-9-light: #fb923c; /* coral orange */
+    --accent-10-light: #4ade80; /* mint green */
 
-    --accent-1-dark: #ff5fb0;  /* bright neon pastel */
-    --accent-2-dark: #ff7fc1;  /* luminous rose */
-    --accent-3-dark: #ff9fd1;  /* soft glowing pink */
-    --accent-4-dark: #ffb7dd;  /* airy pastel */
-    --accent-5-dark: #ffd0ea;  /* very soft blush */
+    --accent-1-dark: #ff85b3;  /* luminous pink */
+    --accent-2-dark: #ffa3c7;  /* soft coral */
+    --accent-3-dark: #ffc4d8;  /* gentle peach */
+    --accent-4-dark: #ffe0ed;  /* pale blush */
+    --accent-5-dark: #fff0f6;  /* cream rose */
+    --accent-6-dark: #d8b4fe;  /* lavender dream */
+    --accent-7-dark: #a78bfa;  /* amethyst glow */
+    --accent-8-dark: #fcd34d;  /* golden accent */
+    --accent-9-dark: #fdba74;  /* peachy orange */
+    --accent-10-dark: #86efac; /* spring green */
 
 
     /* Accent Background Colors (same colors, transparent) */
-    --accent-1-background-light: #ff2f9233;
-    --accent-2-background-light: #ff4fa333;
-    --accent-3-background-light: #ff6fb533;
-    --accent-4-background-light: #ff8fc733;
-    --accent-5-background-light: #ffadd833;
+    --accent-1-background-light: #ff6b9d2a;
+    --accent-2-background-light: #ff8eb32a;
+    --accent-3-background-light: #ffb4c82a;
+    --accent-4-background-light: #ffd4e52a;
+    --accent-5-background-light: #ffe8f02a;
+    --accent-6-background-light: #c77dff2a;
+    --accent-7-background-light: #8b5cf62a;
+    --accent-8-background-light: #fbbf242a;
+    --accent-9-background-light: #fb923c2a;
+    --accent-10-background-light: #4ade802a;
 
-    --accent-1-background-dark: #ff5fb033;
-    --accent-2-background-dark: #ff7fc133;
-    --accent-3-background-dark: #ff9fd133;
-    --accent-4-background-dark: #ffb7dd33;
-    --accent-5-background-dark: #ffd0ea33;
+    --accent-1-background-dark: #ff85b32a;
+    --accent-2-background-dark: #ffa3c72a;
+    --accent-3-background-dark: #ffc4d82a;
+    --accent-4-background-dark: #ffe0ed2a;
+    --accent-5-background-dark: #fff0f62a;
+    --accent-6-background-dark: #d8b4fe2a;
+    --accent-7-background-dark: #a78bfa2a;
+    --accent-8-background-dark: #fcd34d2a;
+    --accent-9-background-dark: #fdba742a;
+    --accent-10-background-dark: #86efac2a;
 
 
     /* Main Background Colors */
-    --background-1-light: #ffffff;
-    --background-2-light: #f8f9fa;
-    --background-3-light: #e9ecef;
-    --background-4-light: #dee2e6;
-    --frosted-background-light: rgba(18, 18, 18, 0.6);
+    --background-1-light: #fefbfc;
+    --background-2-light: #faf5f7;
+    --background-3-light: #f5eef2;
+    --background-4-light: #ede3e9;
+    --frosted-background-light: rgba(254, 251, 252, 0.75);
 
-    --background-1-dark: #121212;
-    --background-2-dark: #36393f;
-    --background-3-dark: #2f3136;
-    --background-4-dark: #202225;
-    --frosted-background-dark: rgba(255, 255, 255, 0.6);
+    --background-1-dark: #1a0f1f;
+    --background-2-dark: #2d1b3d;
+    --background-3-dark: #3d2551;
+    --background-4-dark: #4a2f5e;
+    --frosted-background-dark: rgba(26, 15, 31, 0.75);
 
 
     /* Applied Colors (Default Light Mode) */
@@ -82,12 +103,22 @@
     --accent-3: var(--accent-3-light);
     --accent-4: var(--accent-4-light);
     --accent-5: var(--accent-5-light);
+    --accent-6: var(--accent-6-light);
+    --accent-7: var(--accent-7-light);
+    --accent-8: var(--accent-8-light);
+    --accent-9: var(--accent-9-light);
+    --accent-10: var(--accent-10-light);
 
     --accent-1-background: var(--accent-1-background-light);
     --accent-2-background: var(--accent-2-background-light);
     --accent-3-background: var(--accent-3-background-light);
     --accent-4-background: var(--accent-4-background-light);
     --accent-5-background: var(--accent-5-background-light);
+    --accent-6-background: var(--accent-6-background-light);
+    --accent-7-background: var(--accent-7-background-light);
+    --accent-8-background: var(--accent-8-background-light);
+    --accent-9-background: var(--accent-9-background-light);
+    --accent-10-background: var(--accent-10-background-light);
 }
 
 
@@ -106,12 +137,22 @@
     --accent-3: var(--accent-3-dark);
     --accent-4: var(--accent-4-dark);
     --accent-5: var(--accent-5-dark);
+    --accent-6: var(--accent-6-dark);
+    --accent-7: var(--accent-7-dark);
+    --accent-8: var(--accent-8-dark);
+    --accent-9: var(--accent-9-dark);
+    --accent-10: var(--accent-10-dark);
 
     --accent-1-background: var(--accent-1-background-dark);
     --accent-2-background: var(--accent-2-background-dark);
     --accent-3-background: var(--accent-3-background-dark);
     --accent-4-background: var(--accent-4-background-dark);
     --accent-5-background: var(--accent-5-background-dark);
+    --accent-6-background: var(--accent-6-background-dark);
+    --accent-7-background: var(--accent-7-background-dark);
+    --accent-8-background: var(--accent-8-background-dark);
+    --accent-9-background: var(--accent-9-background-dark);
+    --accent-10-background: var(--accent-10-background-dark);
 }
 
 
@@ -122,9 +163,9 @@ html, body, #root {
   background: linear-gradient(
     135deg,
     var(--background-1) 0%,
-    var(--background-1) 50%,
-    var(--background-2) 50%,
-    var(--background-2) 100%
+    var(--background-2) 30%,
+    var(--background-1) 60%,
+    var(--background-3) 100%
   );
   background-attachment: fixed;
 }

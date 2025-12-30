@@ -1,0 +1,76 @@
+{
+	"fullName": "Sunika Lombard",
+	"personal": {
+		"birthDate": "2005-11-25",
+		"age": 20,
+		"gender": "female",
+		"religion": "Christian",
+		"location": "Irene, Centurion",
+		"languages": [
+			"Afrikaans",
+			"English"
+		],
+		"drivingLicense": "Code B",
+		"achievements": [
+			"Prefect at high school"
+		]
+	},
+	"contact": {
+		"email": "lombardsunika@gmail.com",
+		"phone": "+27 66 253 2952",
+		"social": {
+			"instagram": "https://www.instagram.com/sunika83/"
+		}
+	},
+	"summary": "Third-year BA student in Communication Design & Illustration at Open Window (Centurion). Creative and adaptable with strengths in painting, drawing, mixed-media art and Adobe Creative Cloud.",
+	"education": [
+		{
+			"level": "Matric (National Senior Certificate)",
+			"school": "Hoërskool Noordheuwel",
+			"completed": true,
+			"subjects": [
+				"Afrikaans Home Language",
+				"English First Additional Language",
+                "Life Orientation",
+				"Visual Arts",
+				"Mathematics",
+				"Geography",
+				"Computer Applications Technology"
+			],
+			"notes": "Was a prefect at school"
+		},
+		{
+			"level": "Bachelor (BA)",
+			"degree": "BA in Communication Design & Illustration",
+			"institution": "Open Window",
+			"campus": "Centurion",
+			"status": "In progress (3rd year)",
+			"startYear": 2023
+		}
+	],
+	"professional_experience": [],
+	"experience_template": {
+		"title": "Role title",
+		"description": "Short description of responsibilities and achievements",
+		"startDate": "YYYY-MM-DD or YYYY-MM",
+		"endDate": "YYYY-MM-DD or YYYY-MM or null for present",
+		"location": "City, Country",
+		"company": "Company name"
+	},
+	"skills": {
+		"creative": [
+			"Painting",
+			"Drawing",
+			"Mixed-media art",
+			"Baking"
+		],
+		"technical": [
+			"Adobe Creative Cloud (Photoshop, Illustrator, InDesign, etc.)",
+			"Computer Applications Technology"
+		],
+		"soft": [
+			"Strong communication",
+			"Adaptability"
+		]
+	}
+}

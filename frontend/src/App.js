@@ -11,6 +11,8 @@ import styles from './App.module.css';
 // EAGER LOADED COMPONENTS
 // ============================================================================
 const Home = React.lazy(() => import('./pages/Home'));
+const Bio = React.lazy(() => import('./pages/Bio'));
+const Connect = React.lazy(() => import('./pages/Connect'));
 
 // ============================================================================
 // NAVIGATION STRUCTURE
@@ -19,6 +21,14 @@ const NAVIGATION_PAGES = [
   {
     label: 'Home',
     to: '/'
+  },
+  {
+    label: 'Bio',
+    to: '/bio'
+  },
+  {
+    label: 'Connect',
+    to: '/connect'
   }
 ];
 
@@ -30,8 +40,9 @@ const LoadingFallback = () => <Loading />;
 // ============================================================================
 // APP LAYOUT COMPONENT
 // ============================================================================
-const AppLayout = ({ theme, toggleTheme }) => {
+const AppLayout = () => {
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
 
   // Navigation handlers - memoize to prevent recreation
   const handleNavigate = useCallback((to) => {
@@ -79,11 +90,14 @@ const MemoizedAppLayout = React.memo(AppLayout);
 // ============================================================================
 // APP CONTENT COMPONENT
 // ============================================================================
-const AppContent = ({ theme, toggleTheme }) => {
+const AppContent = () => {
   return (
     <Routes>
-      <Route path="/" element={<MemoizedAppLayout theme={theme} toggleTheme={toggleTheme} />}>
+      <Route path="/" element={<MemoizedAppLayout />}>
         <Route index element={<Home />} />
+        <Route path="/bio" element={<Bio />} />
+        <Route path="/connect" element={<Connect />} />
+
         {/* 404 Not Found - handle unknown routes inside app layout */}
         <Route path="*" element={<NotFound />} />
       </Route>
@@ -96,10 +110,10 @@ const AppContent = ({ theme, toggleTheme }) => {
 // ============================================================================
 const App = () => {
   // Initialize theme at the root level so it applies to all routes
-  const { theme, toggleTheme } = useTheme();
+  useTheme();
 
   return (
-    <AppContent theme={theme} toggleTheme={toggleTheme} />
+    <AppContent />
   );
 };
 
