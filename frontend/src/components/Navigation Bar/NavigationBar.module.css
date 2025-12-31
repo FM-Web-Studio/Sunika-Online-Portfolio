@@ -1,3 +1,4 @@
+/* ==================== NAVBAR CONTAINER ==================== */
 .navbar {
   position: relative;
   z-index: 300;
@@ -5,13 +6,10 @@
 
 .burgerContainer {
   position: relative;
-}
-
-.burgerContainer {
   z-index: 320;
 }
 
-/* ==================== BURGER BUTTON ==================== */
+/* ==================== BURGER BUTTON (ORIGINAL X STYLE) ==================== */
 .burger {
   position: relative;
   background: transparent !important;
@@ -68,101 +66,28 @@
   transform: translateY(-8.5px) rotate(-45deg);
 }
 
-/* Splatter effect behind burger */
-.splatter {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 60px;
-  height: 60px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-}
-
-.splatter circle {
-  fill: var(--accent-1);
-  opacity: 0.15;
-}
-
-.burger:hover .splatter {
-  opacity: 1;
-  animation: pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.15; }
-  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.25; }
-}
-
 /* ==================== MENU ==================== */
 .menu {
   position: absolute;
-  top: calc(100% + 20px);
+  top: calc(100% + 16px);
   left: 0;
-  width: 360px;
-  max-width: 95vw;
-  background: linear-gradient(135deg, var(--background-1) 0%, var(--background-2) 100%);
-  border-radius: 24px;
-  border: 2px solid var(--accent-1);
-  padding: 28px 24px;
-  box-shadow: 
-    0 20px 60px rgba(0, 0, 0, 0.2),
-    0 0 1px var(--accent-1);
-  opacity: 0;
-  transform: translateY(-30px) scale(0.9);
-  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  pointer-events: none;
-  overflow: hidden;
+  min-width: 240px;
+  background: var(--background-1);
+  border-radius: 16px;
+  border: 1px solid var(--accent-4);
+  padding: 12px;
+  animation: menuSlideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   z-index: 310;
 }
 
-.menuActive {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  pointer-events: auto;
-}
-
-/* ==================== PAINT SPLASH BACKGROUND ==================== */
-.paintSplash {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-  opacity: 0.08;
-}
-
-.splash {
-  position: absolute;
-  width: var(--size);
-  height: var(--size);
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--accent-1) 0%, var(--accent-2) 50%, var(--accent-3) 100%);
-  top: var(--y);
-  left: var(--x);
-  animation: splashFloat 4s ease-in-out infinite;
-  animation-delay: var(--delay);
-}
-
-.splash:nth-child(2) {
-  background: radial-gradient(circle, var(--accent-2) 0%, var(--accent-3) 50%, var(--accent-4) 100%);
-}
-
-.splash:nth-child(3) {
-  background: radial-gradient(circle, var(--accent-3) 0%, var(--accent-4) 50%, var(--accent-5) 100%);
-}
-
-.splash:nth-child(4) {
-  background: radial-gradient(circle, var(--accent-4) 0%, var(--accent-5) 50%, var(--accent-2) 100%);
-}
-
-@keyframes splashFloat {
-  0%, 100% { 
-    transform: translate(0, 0) scale(1) rotate(0deg);
+@keyframes menuSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
   }
-  50% { 
-    transform: translate(-10px, -10px) scale(1.1) rotate(180deg);
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -173,125 +98,281 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  position: relative;
-  z-index: 1;
+  gap: 4px;
 }
 
 .linkItem {
   position: relative;
 }
 
-/* ==================== LINKS ==================== */
-.link {
+/* ==================== LINKS WITH VARIED COLORS ==================== */
+button.link {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   width: 100%;
-  padding: 16px 20px;
-  background: transparent;
+  padding: 10px 14px;
+  background: var(--background-2);
   border: none;
-  border-radius: 16px;
+  border-radius: 10px;
   color: var(--primary-text-color);
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: var(--font-size-base);
+  font-weight: 500;
   cursor: pointer;
   text-align: left;
-  overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.linkBg {
-  position: absolute;
-  inset: 0;
-  background: var(--background-3);
-  border-radius: 16px;
-  transition: all 0.3s ease;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  overflow: visible;
 }
 
 .linkIcon {
-  position: relative;
-  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  background: var(--accent-1-background);
-  border-radius: 10px;
-  color: var(--accent-1);
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   flex-shrink: 0;
 }
 
+/* Different color for each link icon */
+.link[data-index="0"] .linkIcon {
+  background: var(--accent-1-background);
+  color: var(--accent-1);
+}
+
+.link[data-index="1"] .linkIcon {
+  background: var(--accent-3-background);
+  color: var(--accent-3);
+}
+
+.link[data-index="2"] .linkIcon {
+  background: var(--accent-5-background);
+  color: var(--accent-5);
+}
+
+.link[data-index="3"] .linkIcon {
+  background: var(--accent-7-background);
+  color: var(--accent-7);
+}
+
+.link[data-index="4"] .linkIcon {
+  background: var(--accent-2-background);
+  color: var(--accent-2);
+}
+
+.link[data-index="5"] .linkIcon {
+  background: var(--accent-6-background);
+  color: var(--accent-6);
+}
+
+.link[data-index="6"] .linkIcon {
+  background: var(--accent-8-background);
+  color: var(--accent-8);
+}
+
 .linkLabel {
-  position: relative;
-  z-index: 2;
   flex: 1;
-  letter-spacing: 0.3px;
-  transition: all 0.3s ease;
+  letter-spacing: 0.2px;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.inkDrip {
+/* ==================== BRUSH STROKE WITH VARIED COLORS ==================== */
+.brushStroke {
   position: absolute;
-  bottom: -2px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--accent-1), var(--accent-2), var(--accent-3));
-  border-radius: 0 0 50% 50%;
+  bottom: 2px;
+  left: 12px;
+  right: 12px;
+  height: 8px;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left center;
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
 }
 
-/* ==================== HOVER STATE ==================== */
+.link[data-index="0"] .brushStroke {
+  color: var(--accent-1);
+}
+
+.link[data-index="1"] .brushStroke {
+  color: var(--accent-3);
+}
+
+.link[data-index="2"] .brushStroke {
+  color: var(--accent-5);
+}
+
+.link[data-index="3"] .brushStroke {
+  color: var(--accent-7);
+}
+
+.link[data-index="4"] .brushStroke {
+  color: var(--accent-2);
+}
+
+.link[data-index="5"] .brushStroke {
+  color: var(--accent-6);
+}
+
+.link[data-index="6"] .brushStroke {
+  color: var(--accent-8);
+}
+
+/* ==================== HOVER STATE WITH VARIED COLORS ==================== */
 .link:hover,
-.linkActive {
-  transform: translateX(10px);
-  background-color: var(--accent-1-background) !important;
+.linkHovered {
+  transform: translateX(4px);
 }
 
-.link:hover .linkBg,
-.linkActive .linkBg {
-  background-color: var(--accent-2-background);
-  border: 1px solid var(--accent-2);
+.link[data-index="0"]:hover,
+.link[data-index="0"].linkHovered {
+  background: var(--accent-1-background);
 }
 
-.link:hover .linkIcon,
-.linkActive .linkIcon {
-  transform: rotate(-12deg) scale(1.1);
+.link[data-index="1"]:hover,
+.link[data-index="1"].linkHovered {
+  background: var(--accent-3-background);
 }
 
-.link:hover .linkLabel,
-.linkActive .linkLabel {
-  transform: translateX(5px);
+.link[data-index="2"]:hover,
+.link[data-index="2"].linkHovered {
+  background: var(--accent-5-background);
 }
 
-.link:hover .inkDrip,
-.linkActive .inkDrip {
-  width: 80%;
-  animation: drip 0.6s ease-out;
+.link[data-index="3"]:hover,
+.link[data-index="3"].linkHovered {
+  background: var(--accent-7-background);
 }
 
-@keyframes drip {
-  0% { height: 0; }
-  50% { height: 8px; }
-  100% { height: 4px; }
+.link[data-index="4"]:hover,
+.link[data-index="4"].linkHovered {
+  background: var(--accent-2-background);
+}
+
+.link[data-index="5"]:hover,
+.link[data-index="5"].linkHovered {
+  background: var(--accent-6-background);
+}
+
+.link[data-index="6"]:hover,
+.link[data-index="6"].linkHovered {
+  background: var(--accent-8-background);
+}
+
+/* Icon transformation on hover */
+.link[data-index="0"]:hover .linkIcon,
+.link[data-index="0"].linkHovered .linkIcon {
+  background: var(--accent-1);
+  color: var(--background-1);
+  transform: scale(1.08);
+}
+
+.link[data-index="1"]:hover .linkIcon,
+.link[data-index="1"].linkHovered .linkIcon {
+  background: var(--accent-3);
+  color: var(--background-1);
+  transform: scale(1.08);
+}
+
+.link[data-index="2"]:hover .linkIcon,
+.link[data-index="2"].linkHovered .linkIcon {
+  background: var(--accent-5);
+  color: var(--background-1);
+  transform: scale(1.08);
+}
+
+.link[data-index="3"]:hover .linkIcon,
+.link[data-index="3"].linkHovered .linkIcon {
+  background: var(--accent-7);
+  color: var(--background-1);
+  transform: scale(1.08);
+}
+
+.link[data-index="4"]:hover .linkIcon,
+.link[data-index="4"].linkHovered .linkIcon {
+  background: var(--accent-2);
+  color: var(--background-1);
+  transform: scale(1.08);
+}
+
+.link[data-index="5"]:hover .linkIcon,
+.link[data-index="5"].linkHovered .linkIcon {
+  background: var(--accent-6);
+  color: var(--background-1);
+  transform: scale(1.08);
+}
+
+.link[data-index="6"]:hover .linkIcon,
+.link[data-index="6"].linkHovered .linkIcon {
+  background: var(--accent-8);
+  color: var(--background-1);
+  transform: scale(1.08);
+}
+
+/* Label color change on hover */
+.link[data-index="0"]:hover .linkLabel,
+.link[data-index="0"].linkHovered .linkLabel {
+  color: var(--accent-1);
+  transform: translateX(3px);
+}
+
+.link[data-index="1"]:hover .linkLabel,
+.link[data-index="1"].linkHovered .linkLabel {
+  color: var(--accent-3);
+  transform: translateX(3px);
+}
+
+.link[data-index="2"]:hover .linkLabel,
+.link[data-index="2"].linkHovered .linkLabel {
+  color: var(--accent-5);
+  transform: translateX(3px);
+}
+
+.link[data-index="3"]:hover .linkLabel,
+.link[data-index="3"].linkHovered .linkLabel {
+  color: var(--accent-7);
+  transform: translateX(3px);
+}
+
+.link[data-index="4"]:hover .linkLabel,
+.link[data-index="4"].linkHovered .linkLabel {
+  color: var(--accent-2);
+  transform: translateX(3px);
+}
+
+.link[data-index="5"]:hover .linkLabel,
+.link[data-index="5"].linkHovered .linkLabel {
+  color: var(--accent-6);
+  transform: translateX(3px);
+}
+
+.link[data-index="6"]:hover .linkLabel,
+.link[data-index="6"].linkHovered .linkLabel {
+  color: var(--accent-8);
+  transform: translateX(3px);
+}
+
+/* Brush stroke animation */
+.link:hover .brushStroke,
+.linkHovered .brushStroke {
+  opacity: 1;
+  transform: scaleX(1);
 }
 
 .link:active {
-  transform: translateX(5px) scale(0.98);
+  transform: scale(0.98);
 }
 
 /* ==================== BACKDROP ==================== */
 .backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.36);
-  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(3px);
   z-index: 150;
-  animation: backdropFadeIn 0.28s ease;
+  animation: backdropFadeIn 0.2s ease;
 }
 
 @keyframes backdropFadeIn {
@@ -302,34 +383,41 @@
 /* ==================== RESPONSIVE ==================== */
 @media (max-width: 768px) {
   .menu {
-    width: 340px;
-    padding: 24px 20px;
+    min-width: 220px;
+    padding: 10px;
   }
 
-  .link {
-    padding: 14px 18px;
-  }
-
-  .linkIcon {
-    width: 32px;
-    height: 32px;
-  }
-}
-
-@media (max-width: 480px) {
-  .menu {
-    width: 300px;
-    padding: 20px 16px;
-  }
-
-  .link {
-    padding: 12px 16px;
-    gap: 14px;
-    font-size: 0.95rem;
+  button.link {
+    padding: 9px 12px;
+    gap: 10px;
   }
 
   .linkIcon {
     width: 30px;
     height: 30px;
+  }
+
+  .linkLabel {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .menu {
+    min-width: 200px;
+    padding: 8px;
+  }
+
+  button.link {
+    padding: 8px 10px;
+  }
+
+  .linkIcon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .linkLabel {
+    font-size: 0.9rem;
   }
 }

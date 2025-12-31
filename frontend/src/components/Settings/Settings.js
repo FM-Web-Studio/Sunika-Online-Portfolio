@@ -60,7 +60,7 @@ const Settings = function Settings({
 
   return (
     <div className={`${styles.settingsContainer} ${className}`} ref={containerRef}>
-      {/* Cog Button - Fixed in top right */}
+      {/* Cog Button */}
       <button
         className={`${styles.cogButton} ${menuOpen ? styles.cogButtonActive : ""}`}
         aria-label="Toggle settings menu"
@@ -73,74 +73,66 @@ const Settings = function Settings({
         }}
       >
         <GiCog className={styles.cogIcon} />
-        <div className={styles.cogGlow}></div>
       </button>
 
       {/* Settings Dropdown Menu */}
-      <div className={`${styles.settingsDropdown} ${menuOpen ? styles.dropdownOpen : ""}`}>
-        {/* Animated background particles */}
-        <div className={styles.particlesBackground}>
-          <div className={styles.particle}></div>
-          <div className={styles.particle}></div>
-          <div className={styles.particle}></div>
-          <div className={styles.particle}></div>
-          <div className={styles.particle}></div>
-          <div className={styles.particle}></div>
-          <div className={styles.particle}></div>
-          <div className={styles.particle}></div>
-          <div className={styles.particle}></div>
-          <div className={styles.particle}></div>
-          <div className={styles.particle}></div>
-          <div className={styles.particle}></div>
-        </div>
-
-        {/* Menu Header */}
-        <div className={styles.menuHeader}>
-          <h3 className={styles.menuTitle}>Settings</h3>
-          <div className={styles.headerLine}></div>
-        </div>
-
-        {/* Settings Content */}
-        <div className={styles.settingsContent}>
-          {/* Theme Setting */}
-          <div className={styles.settingItem}>
-            <div className={styles.settingLeft}>
-              <div className={styles.iconWrapper}>
-                <IoColorPaletteSharp className={styles.settingIcon} />
-              </div>
-              <div className={styles.settingInfo}>
-                <h4 className={styles.settingLabel}>Theme</h4>
-                <p className={styles.settingDescription}>Customize appearance</p>
-              </div>
-            </div>
-            <div className={styles.settingControl}>
-              <ThemeSwitch
-                theme={theme}
-                toggleTheme={toggleTheme}
-                size={32}
-              />
-            </div>
+      {menuOpen && (
+        <div className={styles.settingsDropdown}>
+          {/* Gradient orbs background */}
+          <div className={styles.orbsBackground}>
+            <div className={styles.orb} data-color="1"></div>
+            <div className={styles.orb} data-color="2"></div>
+            <div className={styles.orb} data-color="3"></div>
           </div>
-          {/* Reduce Animations Setting */}
-          <div className={styles.settingItem}>
-            <div className={styles.settingLeft}>
-              <div className={styles.iconWrapper}>
-                <FaStopwatch className={styles.settingIcon} />
+
+          {/* Settings Content */}
+          <div className={styles.settingsContent}>
+            {/* Theme Setting */}
+            <div className={styles.settingItem} data-color="1">
+              <div className={styles.settingLeft}>
+                <div className={styles.iconWrapper}>
+                  <IoColorPaletteSharp className={styles.settingIcon} />
+                </div>
+                <div className={styles.settingInfo}>
+                  <h4 className={styles.settingLabel}>Theme</h4>
+                  <p className={styles.settingDescription}>Light or dark</p>
+                </div>
               </div>
-              <div className={styles.settingInfo}>
-                <h4 className={styles.settingLabel}>Reduce animations</h4>
-                <p className={styles.settingDescription}>Disable non-essential UI animations</p>
+              <div className={styles.settingControl}>
+                <ThemeSwitch
+                  theme={theme}
+                  toggleTheme={toggleTheme}
+                  size={32}
+                />
               </div>
             </div>
-            <div className={styles.settingControl}>
-              <ReduceAnimationsSwitch size={20} />
+
+            {/* Reduce Animations Setting */}
+            <div className={styles.settingItem} data-color="2">
+              <div className={styles.settingLeft}>
+                <div className={styles.iconWrapper}>
+                  <FaStopwatch className={styles.settingIcon} />
+                </div>
+                <div className={styles.settingInfo}>
+                  <h4 className={styles.settingLabel}>Reduce animations</h4>
+                  <p className={styles.settingDescription}>Disable UI motion</p>
+                </div>
+              </div>
+              <div className={styles.settingControl}>
+                <ReduceAnimationsSwitch size={20} />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Backdrop overlay */}
-      {menuOpen && <div className={styles.backdrop} onClick={() => setMenuOpen(false)}></div>}
+      {menuOpen && (
+        <div 
+          className={styles.backdrop} 
+          onClick={() => setMenuOpen(false)}
+        />
+      )}
     </div>
   );
 };

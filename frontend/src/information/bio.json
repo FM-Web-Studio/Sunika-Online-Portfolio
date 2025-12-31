@@ -1,51 +1,77 @@
 {
 	"fullName": "Sunika Lombard",
+	"professional": {
+		"currentTitle": "Communication Design & Illustration Student",
+		"headline": "Creative Designer | Visual Artist | Aspiring Illustrator",
+		"yearsOfExperience": 0
+	},
 	"personal": {
 		"birthDate": "2005-11-25",
-		"age": 20,
-		"gender": "female",
+		"gender": "Female",
 		"religion": "Christian",
-		"location": "Irene, Centurion",
+		"nationality": "South African",
+		"location": "Irene, Centurion, Gauteng, South Africa",
 		"languages": [
-			"Afrikaans",
-			"English"
+			"Afrikaans (Native)",
+			"English (Fluent)"
 		],
 		"drivingLicense": "Code B",
+		"hobbies": [
+			"Painting",
+			"Digital illustration",
+			"Baking",
+			"Mixed-media experimentation"
+		],
 		"achievements": [
-			"Prefect at high school"
+			"Prefect at Hoërskool Noordheuwel",
+			"Visual Arts achievement in Matric"
 		]
 	},
 	"contact": {
 		"email": "lombardsunika@gmail.com",
 		"phone": "+27 66 253 2952",
 		"social": {
-			"instagram": "https://www.instagram.com/sunika83/"
+			"instagram": "https://www.instagram.com/sunika83/",
+			"linkedin": "",
+			"behance": ""
 		}
 	},
-	"summary": "Third-year BA student in Communication Design & Illustration at Open Window (Centurion). Creative and adaptable with strengths in painting, drawing, mixed-media art and Adobe Creative Cloud.",
+	"summary": "Third-year BA student in Communication Design & Illustration at Open Window (Centurion). Creative and adaptable designer with a passion for visual storytelling through painting, drawing, mixed-media art, and digital design. Proficient in Adobe Creative Cloud and committed to developing innovative design solutions that blend traditional and digital techniques.",
 	"education": [
-		{
-			"level": "Matric (National Senior Certificate)",
-			"school": "Hoërskool Noordheuwel",
-			"completed": true,
-			"subjects": [
-				"Afrikaans Home Language",
-				"English First Additional Language",
-                "Life Orientation",
-				"Visual Arts",
-				"Mathematics",
-				"Geography",
-				"Computer Applications Technology"
-			],
-			"notes": "Was a prefect at school"
-		},
 		{
 			"level": "Bachelor (BA)",
 			"degree": "BA in Communication Design & Illustration",
 			"institution": "Open Window",
 			"campus": "Centurion",
 			"status": "In progress (3rd year)",
-			"startYear": 2023
+			"startYear": 2023,
+			"expectedGraduation": 2025,
+			"gpa": "",
+			"relevantCoursework": [
+				"Typography",
+				"Illustration Techniques",
+				"Digital Design",
+				"Branding & Identity",
+				"Visual Communication",
+				"Concept Development"
+			],
+			"notes": "Specializing in illustration and visual communication design"
+		},
+		{
+			"level": "Matric (National Senior Certificate)",
+			"school": "Hoërskool Noordheuwel",
+			"completed": true,
+			"yearCompleted": 2022,
+			"subjects": [
+				"Afrikaans Home Language",
+				"English First Additional Language",
+				"Life Orientation",
+				"Visual Arts",
+				"Mathematics",
+				"Geography",
+				"Computer Applications Technology"
+			],
+			"notes": "Served as a prefect, demonstrating leadership and responsibility"
 		}
 	],
 	"professional_experience": [],
@@ -55,22 +81,77 @@
 		"startDate": "YYYY-MM-DD or YYYY-MM",
 		"endDate": "YYYY-MM-DD or YYYY-MM or null for present",
 		"location": "City, Country",
-		"company": "Company name"
+		"company": "Company name",
+		"responsibilities": [
+			"Key responsibility 1",
+			"Key responsibility 2"
+		],
+		"achievements": [
+			"Achievement 1",
+			"Achievement 2"
+		]
 	},
 	"skills": {
 		"creative": [
-			"Painting",
-			"Drawing",
-			"Mixed-media art",
-			"Baking"
+			"Painting (Acrylic, Watercolor, Oil)",
+			"Drawing (Pencil, Charcoal, Ink)",
+			"Digital Illustration",
+			"Mixed-media Art",
+			"Concept Art",
+			"Composition & Layout",
+			"Baking & Food Styling"
 		],
 		"technical": [
-			"Adobe Creative Cloud (Photoshop, Illustrator, InDesign, etc.)",
+			"Adobe Photoshop",
+			"Adobe Illustrator",
+			"Adobe InDesign",
+			"Adobe After Effects",
+			"Adobe XD",
+			"Procreate",
+			"Figma",
 			"Computer Applications Technology"
 		],
 		"soft": [
-			"Strong communication",
-			"Adaptability"
+			"Strong Communication",
+			"Adaptability",
+			"Attention to Detail",
+			"Creative Thinking",
+			"Teamwork & Collaboration",
+			"Self-Motivation"
 		]
-	}
+	},
+	"languages_detailed": [
+		{
+			"language": "Afrikaans",
+			"proficiency": "Native",
+			"canRead": true,
+			"canWrite": true,
+			"canSpeak": true
+		},
+		{
+			"language": "English",
+			"proficiency": "Fluent",
+			"canRead": true,
+			"canWrite": true,
+			"canSpeak": true
+		}
+	],
+	"interests": [
+		"Contemporary Art",
+		"Visual Storytelling",
+		"Sustainable Design",
+		"Travel & Culture",
+		"Animation"
+	],
+	"references": [
+		{
+			"name": "Reference Name",
+			"title": "Job Title",
+			"company": "Company Name",
+			"relationship": "Professor/Supervisor/Colleague",
+			"email": "reference@email.com",
+			"phone": "+27 XX XXX XXXX",
+			"note": "Available upon request"
+		}
+	]
 }

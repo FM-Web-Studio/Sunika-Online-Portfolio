@@ -1,126 +1,149 @@
-/* Modern artist-focused loading screen using theme variables */
-.loadingScreen {
+/* ==================== CONTAINER ==================== */
+.container {
   position: fixed;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(
-    135deg,
-    var(--background-1) 0%,
-    var(--background-2) 50%,
-    var(--background-3) 100%
-  );
   overflow: hidden;
   z-index: 9999;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-.particleCanvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  pointer-events: none;
-  opacity: 0.9;
-}
-
-.ambientGlow {
+/* ==================== BACKGROUND ORBS ==================== */
+.backgroundOrbs {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  overflow: hidden;
 }
 
-.glowOrb1,
-.glowOrb2,
-.glowOrb3 {
+.orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(100px);
+  filter: blur(80px);
   opacity: 0.15;
 }
 
-.glowOrb1 {
-  width: 500px;
-  height: 500px;
-  top: -10%;
-  left: -10%;
-  background: radial-gradient(circle, var(--accent-1), transparent);
-  animation: float1 15s ease-in-out infinite;
-}
-
-.glowOrb2 {
-  width: 600px;
-  height: 600px;
-  bottom: -15%;
-  right: -15%;
-  background: radial-gradient(circle, var(--accent-2), transparent);
-  animation: float2 18s ease-in-out infinite;
-}
-
-.glowOrb3 {
+.orb[data-orb="1"] {
   width: 400px;
   height: 400px;
-  top: 30%;
-  right: 20%;
-  background: radial-gradient(circle, var(--accent-3), transparent);
-  animation: float3 12s ease-in-out infinite;
+  top: -10%;
+  left: -5%;
+  background: radial-gradient(circle, var(--accent-1), transparent);
+  animation: orbFloat1 12s ease-in-out infinite;
 }
 
-@keyframes float1 {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
+.orb[data-orb="2"] {
+  width: 500px;
+  height: 500px;
+  bottom: -15%;
+  right: -10%;
+  background: radial-gradient(circle, var(--accent-5), transparent);
+  animation: orbFloat2 15s ease-in-out infinite;
+}
+
+.orb[data-orb="3"] {
+  width: 350px;
+  height: 350px;
+  top: 40%;
+  right: 15%;
+  background: radial-gradient(circle, var(--accent-8), transparent);
+  animation: orbFloat3 10s ease-in-out infinite;
+}
+
+@keyframes orbFloat1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, 60px) scale(1.1); }
+}
+
+@keyframes orbFloat2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-50px, -40px) scale(1.15); }
+}
+
+@keyframes orbFloat3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, -50px) scale(1.08); }
+}
+
+/* ==================== PAINT DROPS ANIMATION ==================== */
+.paintDrops {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.paintDrop {
+  position: absolute;
+  top: -50px;
+  width: 12px;
+  height: 16px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  opacity: 0.6;
+  animation: dropFall 8s linear infinite;
+}
+
+.paintDrop[data-color="1"] {
+  background: var(--accent-1);
+}
+
+.paintDrop[data-color="2"] {
+  background: var(--accent-3);
+}
+
+.paintDrop[data-color="3"] {
+  background: var(--accent-5);
+}
+
+.paintDrop[data-color="4"] {
+  background: var(--accent-6);
+}
+
+.paintDrop[data-color="5"] {
+  background: var(--accent-8);
+}
+
+@keyframes dropFall {
+  0% {
+    transform: translateY(0) rotate(-45deg);
+    opacity: 0;
   }
-  50% {
-    transform: translate(50px, 80px) scale(1.1);
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(100vh) rotate(-45deg);
+    opacity: 0;
   }
 }
 
-@keyframes float2 {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-  }
-  50% {
-    transform: translate(-60px, -70px) scale(1.15);
-  }
-}
-
-@keyframes float3 {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-  }
-  50% {
-    transform: translate(40px, -50px) scale(1.05);
-  }
-}
-
-.centerCard {
+/* ==================== MAIN CARD ==================== */
+.card {
   position: relative;
   z-index: 10;
-  width: min(700px, calc(100vw - 48px));
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0.03) 100%
-  );
-  backdrop-filter: blur(30px) saturate(180%);
-  border-radius: 32px;
+  width: min(600px, calc(100vw - 40px));
+  background: var(--background-1);
+  border-radius: 28px;
   padding: 48px 40px;
-  border: 1px solid rgba(255, 95, 176, 0.15);
   box-shadow: 
-    0 20px 60px rgba(0, 0, 0, 0.2),
-    0 0 100px rgba(255, 95, 176, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 20px 60px rgba(0, 0, 0, 0.15),
+    0 0 0 1px var(--accent-1-background);
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 32px;
-  animation: cardFadeIn 1s ease-out, cardFloat 6s ease-in-out infinite;
+  animation: cardSlideIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  overflow: hidden;
 }
 
-@keyframes cardFadeIn {
+@keyframes cardSlideIn {
   from {
     opacity: 0;
     transform: translateY(30px) scale(0.95);
@@ -131,489 +154,549 @@
   }
 }
 
-@keyframes cardFloat {
-  0%, 100% {
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--accent-1) 0%,
+    var(--accent-3) 25%,
+    var(--accent-5) 50%,
+    var(--accent-7) 75%,
+    var(--accent-8) 100%
+  );
+  animation: rainbowSlide 3s linear infinite;
+}
+
+@keyframes rainbowSlide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ==================== PALETTE ICON ==================== */
+.paletteContainer {
+  position: relative;
+  animation: fadeInUp 0.8s ease-out 0.2s backwards;
+}
+
+.paletteWrapper {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: paletteFloat 3s ease-in-out infinite;
+}
+
+@keyframes paletteFloat {
+  0%, 100% { transform: translateY(0) rotate(-5deg); }
+  50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+.paletteIcon {
+  font-size: 5rem;
+  color: var(--accent-1);
+  filter: drop-shadow(0 4px 12px var(--accent-1-background));
+  animation: paletteRotate 8s ease-in-out infinite;
+}
+
+@keyframes paletteRotate {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(15deg); }
+}
+
+.colorDots {
+  position: absolute;
+  inset: 0;
+}
+
+.colorDot {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  animation: dotPulse 2s ease-in-out infinite;
+}
+
+.colorDot[data-color="1"] {
+  background: var(--accent-1);
+  top: 20%;
+  left: 50%;
+  animation-delay: 0s;
+}
+
+.colorDot[data-color="2"] {
+  background: var(--accent-3);
+  top: 40%;
+  right: 15%;
+  animation-delay: 0.2s;
+}
+
+.colorDot[data-color="3"] {
+  background: var(--accent-5);
+  bottom: 30%;
+  right: 20%;
+  animation-delay: 0.4s;
+}
+
+.colorDot[data-color="4"] {
+  background: var(--accent-6);
+  bottom: 25%;
+  left: 25%;
+  animation-delay: 0.6s;
+}
+
+.colorDot[data-color="5"] {
+  background: var(--accent-8);
+  top: 45%;
+  left: 15%;
+  animation-delay: 0.8s;
+}
+
+@keyframes dotPulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 1; }
+}
+
+/* ==================== TEXT SECTION ==================== */
+.textSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  animation: fadeInUp 0.8s ease-out 0.4s backwards;
+}
+
+.title {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  background: linear-gradient(
+    135deg,
+    var(--accent-1) 0%,
+    var(--accent-5) 50%,
+    var(--accent-8) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  color: var(--primary-text-color);
+  opacity: 0.7;
+  margin: 0;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
     transform: translateY(0);
   }
-  50% {
-    transform: translateY(-8px);
-  }
 }
 
-.logoSection {
+/* ==================== BRUSH LOADER ==================== */
+.brushLoader {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  gap: 16px;
+  animation: fadeInUp 0.8s ease-out 0.6s backwards;
 }
 
-.logo {
-  width: 200px;
-  height: 200px;
-  filter: drop-shadow(0 8px 24px rgba(255, 95, 176, 0.3));
+.brushIcon {
+  font-size: 2.5rem;
+  color: var(--accent-2);
+  animation: brushSwing 2s ease-in-out infinite;
 }
 
-.brushStrokes {
-  transform-origin: center;
+@keyframes brushSwing {
+  0%, 100% { transform: rotate(-15deg); }
+  50% { transform: rotate(15deg); }
 }
 
-.stroke {
+.brushStroke {
+  width: 100%;
+  height: 20px;
+}
+
+.strokePath {
   stroke-dasharray: 300;
   stroke-dashoffset: 300;
-  opacity: 0;
+  animation: strokeDraw 3s ease-in-out infinite;
 }
 
-.stroke1 {
-  animation: drawStroke 2s ease-out forwards, breathe 3s ease-in-out infinite;
-  animation-delay: 0s, 2s;
-}
-
-.stroke2 {
-  animation: drawStroke 1.8s ease-out forwards, breathe 3s ease-in-out infinite;
-  animation-delay: 0.3s, 2.3s;
-}
-
-@keyframes drawStroke {
-  to {
+@keyframes strokeDraw {
+  0%, 100% {
+    stroke-dashoffset: 300;
+    opacity: 0.5;
+  }
+  50% {
     stroke-dashoffset: 0;
     opacity: 1;
   }
 }
 
-@keyframes breathe {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.6;
-  }
-}
-
-.dot {
-  opacity: 0;
-  transform: scale(0);
-  transform-origin: center;
-  animation: popIn 0.6s ease-out 1.8s forwards, pulse 2s ease-in-out infinite;
-  animation-delay: 1.8s, 2.4s;
-}
-
-@keyframes popIn {
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.3);
-    opacity: 0.7;
-  }
-}
-
-.contentSection {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.textWrap {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  text-align: center;
-}
-
-.title {
-  margin: 0;
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 700;
-  background: linear-gradient(
-    135deg,
-    var(--accent-1) 0%,
-    var(--accent-2) 50%,
-    var(--accent-3) 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: -0.02em;
-  animation: fadeInText 1s ease-out 0.5s backwards;
-}
-
-.subtitle {
-  margin: 0;
-  font-size: var(--font-size-base);
-  color: var(--primary-text-color);
-  opacity: 0.7;
-  animation: fadeInText 1s ease-out 0.7s backwards;
-}
-
-@keyframes fadeInText {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.progressContainer {
+/* ==================== PROGRESS SECTION ==================== */
+.progressSection {
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 16px;
-  animation: fadeInText 1s ease-out 0.9s backwards;
+  animation: fadeInUp 0.8s ease-out 0.8s backwards;
 }
 
 .progressBar {
   position: relative;
   flex: 1;
-  height: 8px;
-  background: rgba(255, 255, 255, 0.05);
+  height: 10px;
+  background: var(--background-3);
   border-radius: 999px;
   overflow: hidden;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .progressFill {
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: relative;
   height: 100%;
-  background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+  background: linear-gradient(90deg, var(--accent-1), var(--accent-5));
   border-radius: 999px;
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 20px rgba(255, 95, 176, 0.5);
+  box-shadow: 0 0 20px var(--accent-1-background);
 }
 
-.progressGlow {
+.progressShine {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
+  inset: 0;
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.5),
     transparent
   );
-  animation: shimmer 2s ease-in-out infinite;
+  animation: shine 2s ease-in-out infinite;
 }
 
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
-}
-
-.progressShimmer {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 30%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.4),
-    transparent
-  );
-  animation: progressShine 1.5s ease-in-out infinite;
-}
-
-@keyframes progressShine {
-  0%, 100% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
+@keyframes shine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
 .progressText {
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--accent-1);
-  min-width: 45px;
+  min-width: 50px;
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-.loaderAnimation {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 8px;
-  animation: fadeInText 1s ease-out 1.1s backwards;
-}
-
-.spinnerRing {
+/* ==================== QUOTE SECTION ==================== */
+.quoteSection {
   position: relative;
-  width: 80px;
-  height: 80px;
-}
-
-.spinnerSvg {
   width: 100%;
-  height: 100%;
-  animation: rotate 2s linear infinite;
+  padding: 24px 28px;
+  background: var(--background-2);
+  border-left: 4px solid var(--accent-5);
+  border-radius: 12px;
+  animation: fadeInUp 0.8s ease-out 1s backwards;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.spinnerCircle {
-  stroke-dasharray: 164;
-  stroke-dashoffset: 82;
-  filter: drop-shadow(0 0 8px var(--accent-1));
-  animation: dash 1.5s ease-in-out infinite;
-}
-
-@keyframes dash {
-  0% {
-    stroke-dashoffset: 164;
-  }
-  50% {
-    stroke-dashoffset: 41;
-  }
-  100% {
-    stroke-dashoffset: 164;
-  }
-}
-
-.centerDot {
+.quoteIcon {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 12px;
-  height: 12px;
-  background: var(--accent-2);
+  top: 12px;
+  right: 12px;
+  font-size: 1.5rem;
+  color: var(--accent-5);
+  opacity: 0.3;
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+  0%, 100% { 
+    opacity: 0.3; 
+    transform: scale(1) rotate(0deg); 
+  }
+  50% { 
+    opacity: 0.7; 
+    transform: scale(1.2) rotate(180deg); 
+  }
+}
+
+.quoteContent {
+  animation: quoteFadeIn 0.6s ease-out;
+}
+
+@keyframes quoteFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.quoteText {
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  color: var(--primary-text-color);
+  font-style: italic;
+  line-height: 1.6;
+  margin: 0 0 12px 0;
+}
+
+.quoteAuthor {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--accent-5);
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* ==================== SPLASH DECORATIONS ==================== */
+.splashDecor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 28px;
+}
+
+.splash {
+  position: absolute;
   border-radius: 50%;
-  box-shadow: 0 0 20px var(--accent-2);
-  animation: dotScale 1.5s ease-in-out infinite;
+  opacity: 0.08;
+  filter: blur(30px);
 }
 
-@keyframes dotScale {
-  0%, 100% {
-    transform: translate(-50%, -50%) scale(1);
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(1.5);
-  }
+.splash[data-splash="1"] {
+  width: 150px;
+  height: 150px;
+  top: -30px;
+  right: -30px;
+  background: radial-gradient(circle, var(--accent-1), transparent);
+  animation: splashMove1 8s ease-in-out infinite;
 }
 
-.floatingElements {
+.splash[data-splash="2"] {
+  width: 120px;
+  height: 120px;
+  bottom: -20px;
+  left: -20px;
+  background: radial-gradient(circle, var(--accent-3), transparent);
+  animation: splashMove2 10s ease-in-out infinite;
+}
+
+.splash[data-splash="3"] {
+  width: 100px;
+  height: 100px;
+  top: 50%;
+  left: -10px;
+  background: radial-gradient(circle, var(--accent-6), transparent);
+  animation: splashMove3 12s ease-in-out infinite;
+}
+
+@keyframes splashMove1 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-20px, 20px); }
+}
+
+@keyframes splashMove2 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(25px, -25px); }
+}
+
+@keyframes splashMove3 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(15px, 30px); }
+}
+
+/* ==================== FLOATING SPLATTERS ==================== */
+.floatingSplatters {
   position: absolute;
   inset: 0;
   pointer-events: none;
   overflow: hidden;
 }
 
-.floatShape1,
-.floatShape2,
-.floatShape3,
-.floatShape4 {
+.splatter {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  opacity: 0.4;
+  animation: splatterFloat 6s ease-in-out infinite;
+}
+
+.splatter::before,
+.splatter::after {
+  content: '';
   position: absolute;
   border-radius: 50%;
-  background: radial-gradient(circle, var(--accent-1-background), transparent);
-  filter: blur(40px);
-  opacity: 0.3;
 }
 
-.floatShape1 {
-  width: 200px;
-  height: 200px;
-  top: 10%;
-  left: 5%;
-  animation: floatRandom1 10s ease-in-out infinite;
+.splatter::before {
+  width: 40px;
+  height: 40px;
+  top: 0;
+  left: 0;
 }
 
-.floatShape2 {
-  width: 150px;
-  height: 150px;
-  top: 60%;
-  right: 10%;
-  background: radial-gradient(circle, var(--accent-2-background), transparent);
-  animation: floatRandom2 12s ease-in-out infinite;
+.splatter::after {
+  width: 20px;
+  height: 20px;
+  top: -5px;
+  right: -5px;
 }
 
-.floatShape3 {
-  width: 180px;
-  height: 180px;
-  bottom: 15%;
+.splatter[data-splatter="1"] {
+  top: 15%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.splatter[data-splatter="1"]::before {
+  background: var(--accent-1);
+}
+
+.splatter[data-splatter="1"]::after {
+  background: var(--accent-2);
+}
+
+.splatter[data-splatter="2"] {
+  top: 25%;
+  right: 12%;
+  animation-delay: 1.5s;
+}
+
+.splatter[data-splatter="2"]::before {
+  background: var(--accent-3);
+}
+
+.splatter[data-splatter="2"]::after {
+  background: var(--accent-4);
+}
+
+.splatter[data-splatter="3"] {
+  bottom: 20%;
   left: 15%;
-  background: radial-gradient(circle, var(--accent-3-background), transparent);
-  animation: floatRandom3 14s ease-in-out infinite;
+  animation-delay: 3s;
 }
 
-.floatShape4 {
-  width: 120px;
-  height: 120px;
-  top: 30%;
-  right: 30%;
-  animation: floatRandom4 8s ease-in-out infinite;
+.splatter[data-splatter="3"]::before {
+  background: var(--accent-5);
 }
 
-@keyframes floatRandom1 {
+.splatter[data-splatter="3"]::after {
+  background: var(--accent-6);
+}
+
+.splatter[data-splatter="4"] {
+  bottom: 30%;
+  right: 18%;
+  animation-delay: 4.5s;
+}
+
+.splatter[data-splatter="4"]::before {
+  background: var(--accent-7);
+}
+
+.splatter[data-splatter="4"]::after {
+  background: var(--accent-8);
+}
+
+@keyframes splatterFloat {
   0%, 100% {
-    transform: translate(0, 0);
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0.4;
   }
-  33% {
-    transform: translate(30px, 50px);
-  }
-  66% {
-    transform: translate(-20px, 30px);
-  }
-}
-
-@keyframes floatRandom2 {
-  0%, 100% {
-    transform: translate(0, 0);
-  }
-  33% {
-    transform: translate(-40px, -30px);
-  }
-  66% {
-    transform: translate(25px, 20px);
+  50% {
+    transform: translate(-20px, -30px) rotate(180deg);
+    opacity: 0.6;
   }
 }
 
-@keyframes floatRandom3 {
-  0%, 100% {
-    transform: translate(0, 0);
-  }
-  33% {
-    transform: translate(35px, -40px);
-  }
-  66% {
-    transform: translate(-30px, -25px);
-  }
-}
-
-@keyframes floatRandom4 {
-  0%, 100% {
-    transform: translate(0, 0);
-  }
-  33% {
-    transform: translate(-25px, 35px);
-  }
-  66% {
-    transform: translate(30px, -30px);
-  }
-}
-
-/* Responsive Design */
+/* ==================== RESPONSIVE ==================== */
 @media (max-width: 768px) {
-  .centerCard {
+  .card {
     padding: 36px 28px;
-    gap: 24px;
+    gap: 28px;
   }
 
-  .logo {
-    width: 160px;
-    height: 160px;
+  .paletteWrapper {
+    width: 80px;
+    height: 80px;
   }
 
-  .title {
-    font-size: 1.5rem;
+  .paletteIcon {
+    font-size: 4rem;
   }
 
-  .subtitle {
-    font-size: 0.9rem;
+  .colorDot {
+    width: 12px;
+    height: 12px;
   }
 
-  .spinnerRing {
-    width: 60px;
-    height: 60px;
+  .brushLoader {
+    max-width: 250px;
   }
 
-  .glowOrb1,
-  .glowOrb2,
-  .glowOrb3 {
-    opacity: 0.1;
+  .brushIcon {
+    font-size: 2rem;
+  }
+
+  .quoteSection {
+    padding: 20px 24px;
+  }
+
+  .quoteIcon {
+    font-size: 1.3rem;
   }
 }
 
 @media (max-width: 480px) {
-  .centerCard {
-    padding: 28px 20px;
-    gap: 20px;
+  .card {
+    padding: 28px 24px;
+    gap: 24px;
   }
 
-  .logo {
-    width: 140px;
-    height: 140px;
+  .paletteWrapper {
+    width: 70px;
+    height: 70px;
   }
 
-  .progressContainer {
+  .paletteIcon {
+    font-size: 3.5rem;
+  }
+
+  .progressSection {
     flex-direction: column;
-    align-items: stretch;
     gap: 8px;
   }
 
   .progressText {
     text-align: center;
+    width: 100%;
+  }
+
+  .quoteSection {
+    padding: 18px 20px;
   }
 }
 
-/* Respect reduced motion preference */
-@media (prefers-reduced-motion: reduce) {
-  .centerCard,
-  .glowOrb1,
-  .glowOrb2,
-  .glowOrb3,
-  .stroke1,
-  .stroke2,
-  .dot,
-  .spinnerSvg,
-  .spinnerCircle,
-  .centerDot,
-  .floatShape1,
-  .floatShape2,
-  .floatShape3,
-  .floatShape4,
-  .progressGlow,
-  .progressShimmer {
-    animation: none !important;
-  }
-
-  .progressFill {
-    transition: width 0.3s linear;
-  }
-}
-
-/* Disable animations when specified */
-[data-no-animations="true"] .centerCard,
-[data-no-animations="true"] .glowOrb1,
-[data-no-animations="true"] .glowOrb2,
-[data-no-animations="true"] .glowOrb3,
-[data-no-animations="true"] .stroke1,
-[data-no-animations="true"] .stroke2,
-[data-no-animations="true"] .dot,
-[data-no-animations="true"] .spinnerSvg,
-[data-no-animations="true"] .spinnerCircle,
-[data-no-animations="true"] .centerDot,
-[data-no-animations="true"] .floatShape1,
-[data-no-animations="true"] .floatShape2,
-[data-no-animations="true"] .floatShape3,
-[data-no-animations="true"] .floatShape4,
-[data-no-animations="true"] .progressGlow,
-[data-no-animations="true"] .progressShimmer {
+/* ==================== ANIMATION DISABLE ==================== */
+[data-no-animations="true"] * {
   animation: none !important;
+  transition: none !important;
 }

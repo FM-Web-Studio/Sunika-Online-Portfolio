@@ -1,0 +1,476 @@
+/* Container */
+.bioContainer {
+  position: relative;
+  min-height: 100vh;
+  padding: 0;
+  overflow-x: hidden;
+  cursor: pointer;
+}
+
+/* Click Ripples */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  border: 3px solid;
+  pointer-events: none;
+  animation: rippleAnimation 1s ease-out;
+  transform: translate(-50%, -50%);
+  opacity: 0.7;
+  z-index: 1;
+}
+
+@keyframes rippleAnimation {
+  from {
+    width: 0;
+    height: 0;
+    opacity: 0.7;
+  }
+  to {
+    width: 200px;
+    height: 200px;
+    opacity: 0;
+  }
+}
+
+/* Content */
+.content {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  pointer-events: none;
+}
+
+.content * {
+  pointer-events: auto;
+}
+
+/* Hero Section */
+.hero {
+  text-align: center;
+  margin-bottom: 4rem;
+  background: var(--frosted-background);
+  backdrop-filter: blur(20px);
+  padding: 4rem 3rem;
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  border: 3px solid var(--accent-1);
+}
+
+.profileImage {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 6px solid var(--accent-1);
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.profileImage:hover {
+  transform: scale(1.05);
+}
+
+.name {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--primary-text-color);
+  margin: 0 0 0.75rem 0;
+  letter-spacing: -0.02em;
+}
+
+.title {
+  font-size: 1.5rem;
+  color: var(--primary-text-color);
+  opacity: 0.7;
+  margin: 0 0 1.5rem 0;
+  font-weight: 500;
+}
+
+.summary {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: var(--primary-text-color);
+  opacity: 0.85;
+  margin: 0 auto 2.5rem auto;
+  max-width: 800px;
+}
+
+.contactGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.contactCard {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  background: var(--accent-1-background);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 2px solid var(--accent-1);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: var(--primary-text-color);
+  cursor: pointer;
+}
+
+.contactCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: var(--accent-2-background);
+  border-color: var(--accent-2);
+}
+
+.contactIcon {
+  flex-shrink: 0;
+  color: var(--accent-1);
+}
+
+.contactText {
+  font-size: 1rem;
+  color: var(--primary-text-color);
+  opacity: 0.9;
+}
+
+/* Section */
+.section {
+  margin-bottom: 3rem;
+  background: var(--frosted-background);
+  backdrop-filter: blur(20px);
+  padding: 3rem;
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  border: 3px solid;
+}
+
+.sectionPersonal {
+  border-color: var(--accent-3);
+}
+
+.sectionEducation {
+  border-color: var(--accent-5);
+}
+
+.sectionExperience {
+  border-color: var(--accent-7);
+}
+
+.sectionSkills {
+  border-color: var(--accent-9);
+}
+
+.sectionAchievements {
+  border-color: var(--accent-4);
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-text-color);
+  margin: 0 0 2rem 0;
+  padding-bottom: 1rem;
+  border-bottom: 3px solid var(--accent-1);
+}
+
+.subsectionTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--primary-text-color);
+  margin: 0 0 1rem 0;
+  opacity: 0.9;
+}
+
+/* Info Cards */
+.infoCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.infoCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  background: var(--accent-3-background);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  border: 2px solid var(--accent-3);
+}
+
+.infoCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  background: var(--accent-4-background);
+  border-color: var(--accent-4);
+}
+
+.infoLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--primary-text-color);
+  opacity: 0.6;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.infoValue {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--primary-text-color);
+}
+
+/* Languages and Hobbies */
+.languagesSection,
+.hobbiesSection {
+  margin-top: 2.5rem;
+}
+
+/* Cards (Education/Experience) */
+.card {
+  padding: 2rem;
+  background: var(--background-3);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid var(--accent-5);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateX(8px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  border-left-color: var(--accent-1);
+  background: var(--accent-1-background);
+}
+
+.card:last-child {
+  margin-bottom: 0;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.cardTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-text-color);
+  margin: 0 0 0.5rem 0;
+}
+
+.cardSubtitle {
+  font-size: 1.125rem;
+  color: var(--primary-text-color);
+  opacity: 0.7;
+  margin: 0;
+}
+
+.cardDate {
+  font-size: 1rem;
+  color: var(--primary-text-color);
+  opacity: 0.6;
+  white-space: nowrap;
+  font-weight: 500;
+  background: var(--frosted-background);
+  backdrop-filter: blur(10px);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+}
+
+.cardDescription {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--primary-text-color);
+  opacity: 0.85;
+  margin: 0;
+}
+
+.cardNote {
+  font-size: 1rem;
+  color: var(--primary-text-color);
+  opacity: 0.7;
+  margin: 1.5rem 0 0 0;
+  padding: 1rem;
+  background: var(--accent-2-background);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  font-style: italic;
+}
+
+/* Coursework and Subjects */
+.courseworkSection,
+.subjectsSection {
+  margin-top: 1.5rem;
+}
+
+.courseworkLabel {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--primary-text-color);
+  opacity: 0.7;
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Skill Blocks */
+.skillBlock {
+  margin-bottom: 2.5rem;
+}
+
+.skillBlock:last-child {
+  margin-bottom: 0;
+}
+
+/* Pills */
+.pillContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.pill {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: var(--frosted-background);
+  backdrop-filter: blur(10px);
+  color: var(--primary-text-color);
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 500;
+  border: 2px solid var(--accent-1);
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.pill:hover {
+  background: var(--accent-1);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.pillCreative {
+  border-color: var(--accent-8);
+}
+
+.pillCreative:hover {
+  background: var(--accent-8);
+}
+
+.pillTechnical {
+  border-color: var(--accent-6);
+}
+
+.pillTechnical:hover {
+  background: var(--accent-6);
+}
+
+.pillSoft {
+  border-color: var(--accent-5);
+}
+
+.pillSoft:hover {
+  background: var(--accent-5);
+}
+
+.pillAchievement {
+  border-color: var(--accent-4);
+}
+
+.pillAchievement:hover {
+  background: var(--accent-4);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .content {
+    padding: 2rem 1rem;
+  }
+
+  .hero {
+    padding: 3rem 2rem;
+  }
+
+  .name {
+    font-size: 2.25rem;
+  }
+
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .summary {
+    font-size: 1rem;
+  }
+
+  .profileImage {
+    width: 150px;
+    height: 150px;
+  }
+
+  .section {
+    padding: 2rem 1.5rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.75rem;
+  }
+
+  .contactGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .cardHeader {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .cardDate {
+    align-self: flex-start;
+  }
+
+  .infoCards {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .content {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .hero {
+    padding: 2rem 1.5rem;
+  }
+
+  .name {
+    font-size: 2rem;
+  }
+
+  .section {
+    padding: 1.5rem 1rem;
+  }
+
+  .card {
+    padding: 1.5rem;
+  }
+
+  .pill {
+    font-size: 0.9rem;
+    padding: 0.6rem 1.25rem;
+  }
+}

@@ -1,3 +1,4 @@
+/* ==================== CONTAINER ==================== */
 .container {
   position: relative;
   min-height: 100vh;
@@ -5,63 +6,159 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: linear-gradient(
-    135deg,
-    var(--background-1) 0%,
-    var(--background-2) 50%,
-    var(--background-3) 100%
-  );
 }
 
-.backgroundCanvas {
+/* ==================== INTERACTIVE CANVAS ==================== */
+.canvas {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
+  cursor: crosshair;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.strokesSvg {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
-  cursor: crosshair;
+  pointer-events: none;
 }
 
+.brushStroke {
+  animation: strokeFadeIn 0.3s ease-out;
+}
+
+@keyframes strokeFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ==================== PAINT SPLASHES ==================== */
+.paintSplash {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  animation: splashAppear 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  opacity: 0.7;
+  filter: blur(2px);
+}
+
+@keyframes splashAppear {
+  0% {
+    transform: translate(-50%, -50%) scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1) rotate(180deg);
+    opacity: 0.7;
+  }
+}
+
+/* ==================== FLOATING PAINT DROPS ==================== */
+.floatingDrops {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.drop {
+  position: absolute;
+  width: 20px;
+  height: 24px;
+  border-radius: 50% 50% 50% 0;
+  opacity: 0.3;
+  animation: dropFloat 6s ease-in-out infinite;
+  filter: blur(1px);
+}
+
+.drop[data-color="1"] {
+  background: var(--accent-1);
+  top: 10%;
+  left: 15%;
+  animation-delay: 0s;
+  transform: rotate(-45deg);
+}
+
+.drop[data-color="2"] {
+  background: var(--accent-3);
+  top: 25%;
+  right: 20%;
+  animation-delay: 1s;
+  transform: rotate(45deg);
+}
+
+.drop[data-color="3"] {
+  background: var(--accent-5);
+  bottom: 30%;
+  left: 25%;
+  animation-delay: 2s;
+  transform: rotate(-60deg);
+}
+
+.drop[data-color="4"] {
+  background: var(--accent-6);
+  top: 50%;
+  right: 15%;
+  animation-delay: 3s;
+  transform: rotate(30deg);
+}
+
+.drop[data-color="5"] {
+  background: var(--accent-8);
+  bottom: 15%;
+  right: 30%;
+  animation-delay: 4s;
+  transform: rotate(-30deg);
+}
+
+@keyframes dropFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(var(--rotate, 0deg));
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-30px) rotate(calc(var(--rotate, 0deg) + 180deg));
+    opacity: 0.5;
+  }
+}
+
+/* ==================== CONTENT CARD ==================== */
 .content {
   position: relative;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 32px;
+  z-index: 5;
   padding: 20px;
-  max-width: 100%;
+  max-width: 600px;
+  width: 100%;
+  pointer-events: none;
 }
 
 .card {
-  position: relative;
-  width: min(720px, calc(100% - 40px));
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.08) 0%,
-    rgba(255, 255, 255, 0.03) 100%
-  );
-  backdrop-filter: blur(40px) saturate(150%);
-  border-radius: 40px;
-  padding: 72px 56px;
-  border: 1px solid var(--accent-1-background);
+  background: var(--background-1);
+  border-radius: 24px;
+  padding: 48px 40px;
   box-shadow: 
     0 20px 60px rgba(0, 0, 0, 0.15),
-    0 0 80px var(--accent-1-background),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 0 0 1px var(--accent-1-background);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 32px;
-  animation: cardEntrance 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  gap: 24px;
+  text-align: center;
+  animation: cardSlideIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: auto;
+  position: relative;
+  overflow: hidden;
 }
 
-@keyframes cardEntrance {
+@keyframes cardSlideIn {
   from {
     opacity: 0;
-    transform: translateY(50px) scale(0.9);
+    transform: translateY(40px) scale(0.9);
   }
   to {
     opacity: 1;
@@ -69,114 +166,168 @@
   }
 }
 
-.card:hover {
-  transform: translateY(-8px) scale(1.01);
-  box-shadow: 
-    0 30px 80px rgba(0, 0, 0, 0.2),
-    0 0 120px var(--accent-2-background),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
-}
-
-.brushStroke {
+.card::before {
+  content: '';
   position: absolute;
-  top: -40px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 200px;
-  height: 80px;
-  opacity: 0.7;
-  filter: drop-shadow(0 4px 16px var(--accent-1-background));
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--accent-1) 0%,
+    var(--accent-3) 25%,
+    var(--accent-5) 50%,
+    var(--accent-7) 75%,
+    var(--accent-8) 100%
+  );
+  animation: rainbowShift 3s linear infinite;
 }
 
-.brushSvg {
-  width: 100%;
-  height: 100%;
+@keyframes rainbowShift {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
-.brushPath {
-  stroke-dasharray: 400;
-  stroke-dashoffset: 400;
-  animation: drawBrush 2s ease-out forwards, brushGlow 3s ease-in-out infinite;
-  animation-delay: 0s, 2s;
+/* ==================== PALETTE ICON ==================== */
+.paletteIcon {
+  margin-bottom: 8px;
 }
 
-@keyframes drawBrush {
-  to {
-    stroke-dashoffset: 0;
-  }
+.palette {
+  position: relative;
+  width: 80px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--background-3), var(--background-4));
+  border-radius: 50% 40% 45% 35%;
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.2),
+    inset 0 2px 4px rgba(255, 255, 255, 0.2);
+  animation: paletteFloat 3s ease-in-out infinite;
 }
 
-@keyframes brushGlow {
-  0%, 100% {
-    opacity: 0.7;
-  }
-  50% {
-    opacity: 1;
-  }
+@keyframes paletteFloat {
+  0%, 100% { transform: translateY(0) rotate(-5deg); }
+  50% { transform: translateY(-10px) rotate(5deg); }
 }
 
-.errorCode {
+.paletteHole {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 16px;
+  height: 16px;
+  background: var(--background-1);
+  border-radius: 50%;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.paletteColor {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.paletteColor[data-color="1"] {
+  background: var(--accent-1);
+  top: 12px;
+  right: 18px;
+}
+
+.paletteColor[data-color="2"] {
+  background: var(--accent-3);
+  top: 28px;
+  right: 8px;
+}
+
+.paletteColor[data-color="3"] {
+  background: var(--accent-5);
+  bottom: 8px;
+  right: 12px;
+}
+
+.paletteColor[data-color="4"] {
+  background: var(--accent-6);
+  bottom: 8px;
+  left: 32px;
+}
+
+.paletteColor[data-color="5"] {
+  background: var(--accent-8);
+  top: 32px;
+  left: 28px;
+}
+
+/* ==================== ERROR DISPLAY ==================== */
+.errorDisplay {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-top: 20px;
+  gap: 20px;
+  animation: fadeInUp 0.8s ease-out 0.2s backwards;
 }
 
-.digit,
-.digitCenter {
-  font-size: clamp(5rem, 15vw, 9rem);
+.errorDigit {
+  font-size: clamp(4rem, 12vw, 6rem);
   font-weight: 900;
-  line-height: 1;
   background: linear-gradient(
     135deg,
     var(--accent-1) 0%,
-    var(--accent-2) 50%,
-    var(--accent-3) 100%
+    var(--accent-6) 100%
   );
   -webkit-background-clip: text;
-  background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: colorShift 5s ease-in-out infinite;
-  position: relative;
-  filter: drop-shadow(0 6px 20px var(--accent-1-background));
+  background-clip: text;
+  filter: drop-shadow(0 4px 12px var(--accent-1-background));
+  animation: digitBounce 2s ease-in-out infinite;
+  line-height: 1;
 }
 
-.digitCenter {
-  animation: float 3s ease-in-out infinite, colorShift 5s ease-in-out infinite;
-  filter: drop-shadow(0 0 24px var(--accent-2-background));
-  transform-origin: center;
+.errorDigit:first-child {
+  animation-delay: 0s;
 }
 
-@keyframes colorShift {
-  0%, 100% {
-    filter: hue-rotate(0deg) brightness(1) drop-shadow(0 6px 20px var(--accent-1-background));
-  }
-  50% {
-    filter: hue-rotate(10deg) brightness(1.1) drop-shadow(0 6px 24px var(--accent-2-background));
-  }
+.errorDigit:last-child {
+  animation-delay: 0.2s;
 }
 
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px) scale(1);
-  }
-  50% {
-    transform: translateY(-16px) scale(1.05);
-  }
+@keyframes digitBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 
+.brushIcon {
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  color: var(--accent-2);
+  animation: brushRotate 3s ease-in-out infinite;
+}
+
+@keyframes brushRotate {
+  0%, 100% { transform: rotate(-20deg); }
+  50% { transform: rotate(20deg); }
+}
+
+/* ==================== TITLE & DESCRIPTION ==================== */
 .title {
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
   font-weight: 700;
   color: var(--primary-text-color);
   margin: 0;
-  text-align: center;
-  letter-spacing: -0.03em;
-  animation: fadeInSlide 1s ease-out 0.3s backwards;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  letter-spacing: -0.02em;
+  animation: fadeInUp 0.8s ease-out 0.4s backwards;
 }
 
-@keyframes fadeInSlide {
+.description {
+  font-size: clamp(1rem, 2.5vw, 1.125rem);
+  color: var(--primary-text-color);
+  opacity: 0.75;
+  line-height: 1.6;
+  margin: 0;
+  animation: fadeInUp 0.8s ease-out 0.6s backwards;
+}
+
+@keyframes fadeInUp {
   from {
     opacity: 0;
     transform: translateY(20px);
@@ -187,322 +338,187 @@
   }
 }
 
-.description {
-  font-size: clamp(1.1rem, 2vw, 1.25rem);
-  color: var(--primary-text-color);
-  opacity: 0.75;
-  text-align: center;
-  max-width: 520px;
-  line-height: 1.7;
-  margin: 0;
-  animation: fadeInSlide 1s ease-out 0.5s backwards;
+/* ==================== INSTRUCTIONS ==================== */
+.instructions {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+  animation: fadeInUp 0.8s ease-out 0.8s backwards;
 }
 
-.decorativeLine {
+.instruction {
   display: flex;
   align-items: center;
-  gap: 16px;
-  width: 240px;
-  margin: 12px 0;
-  animation: fadeInSlide 1s ease-out 0.7s backwards;
+  gap: 8px;
+  padding: 10px 20px;
+  background: var(--accent-1-background);
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--primary-text-color);
+  border: 1px solid var(--accent-1);
+  transition: all 0.3s ease;
 }
 
-.lineSegment {
-  flex: 1;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--accent-1) 50%,
-    transparent 100%
-  );
-  animation: lineExpand 2.5s ease-in-out infinite;
-  box-shadow: 0 0 6px var(--accent-1-background);
+.instruction:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--accent-1-background);
 }
 
-.lineDot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--accent-1);
-  box-shadow: 
-    0 0 12px var(--accent-1-background),
-    0 0 24px var(--accent-2-background);
-  animation: dotPulseStrong 2.5s ease-in-out infinite;
+.instructionIcon {
+  font-size: 1.2rem;
 }
 
-@keyframes lineExpand {
-  0%, 100% {
-    opacity: 0.5;
-    transform: scaleX(0.7);
-  }
-  50% {
-    opacity: 1;
-    transform: scaleX(1);
-  }
+/* ==================== QUOTE SECTION ==================== */
+.quoteSection {
+  position: relative;
+  padding: 20px 28px;
+  background: var(--background-2);
+  border-left: 4px solid var(--accent-5);
+  border-radius: 12px;
+  width: 100%;
+  animation: fadeInUp 0.8s ease-out 1s backwards;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
-@keyframes dotPulseStrong {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.7;
-  }
-  50% {
-    transform: scale(1.5);
-    opacity: 1;
-  }
+.quoteIcon {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 1.2rem;
+  color: var(--accent-5);
+  opacity: 0.3;
+  animation: sparkle 2s ease-in-out infinite;
 }
 
+@keyframes sparkle {
+  0%, 100% { opacity: 0.3; transform: scale(1) rotate(0deg); }
+  50% { opacity: 0.6; transform: scale(1.2) rotate(180deg); }
+}
+
+.quoteText {
+  font-size: clamp(0.95rem, 2vw, 1.05rem);
+  color: var(--primary-text-color);
+  font-style: italic;
+  line-height: 1.6;
+  margin: 0 0 10px 0;
+}
+
+.quoteAuthor {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--accent-5);
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* ==================== ACTION BUTTONS ==================== */
 .actions {
   display: flex;
-  gap: 20px;
-  margin-top: 16px;
-  animation: fadeInSlide 1s ease-out 0.9s backwards;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  animation: fadeInUp 0.8s ease-out 1.2s backwards;
 }
 
-.primaryButton {
-  position: relative;
-  padding: 18px 48px;
-  font-size: var(--font-size-md);
-  font-weight: 700;
-  color: #ffffff;
-  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+.clearButton,
+.homeButton {
   display: flex;
   align-items: center;
-  gap: 12px;
-  box-shadow: 
-    0 8px 24px var(--accent-1-background),
-    0 0 40px var(--accent-2-background);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  gap: 8px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.primaryButton::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
-  transition: left 0.6s ease;
-}
-
-.primaryButton:hover::before {
-  left: 100%;
-}
-
-.primaryButton:hover {
-  transform: translateY(-4px) scale(1.05);
-  box-shadow: 
-    0 12px 36px var(--accent-1-background),
-    0 0 60px var(--accent-2-background);
-}
-
-.primaryButton:active {
-  transform: translateY(-2px) scale(1.02);
-}
-
-.buttonText {
-  position: relative;
-  z-index: 1;
-}
-
-.buttonIcon {
-  font-size: 1.5rem;
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  position: relative;
-  z-index: 1;
-}
-
-.primaryButton:hover .buttonIcon {
-  transform: translateX(8px);
-}
-
-.inkSplashes {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  overflow: hidden;
-  border-radius: 40px;
-}
-
-.splash1,
-.splash2,
-.splash3 {
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0.08;
-  mix-blend-mode: screen;
-}
-
-.splash1 {
-  width: 150px;
-  height: 150px;
-  background: radial-gradient(
-    circle,
-    var(--accent-1-background) 0%,
-    var(--accent-2-background) 50%,
-    transparent 70%
-  );
-  top: 5%;
-  right: 5%;
-  animation: splashMove1 10s ease-in-out infinite;
-  filter: blur(50px);
-}
-
-.splash2 {
-  width: 120px;
-  height: 120px;
-  background: radial-gradient(
-    circle,
-    var(--accent-3-background) 0%,
-    var(--accent-1-background) 50%,
-    transparent 70%
-  );
-  bottom: 10%;
-  left: 8%;
-  animation: splashMove2 12s ease-in-out infinite;
-  filter: blur(40px);
-}
-
-.splash3 {
-  width: 100px;
-  height: 100px;
-  background: radial-gradient(
-    circle,
-    var(--accent-2-background) 0%,
-    var(--accent-3-background) 50%,
-    transparent 70%
-  );
-  top: 50%;
-  left: 5%;
-  animation: splashMove3 14s ease-in-out infinite;
-  filter: blur(45px);
-}
-
-@keyframes splashMove1 {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-  }
-  33% {
-    transform: translate(30px, 40px) scale(1.2);
-  }
-  66% {
-    transform: translate(-20px, 30px) scale(0.9);
-  }
-}
-
-@keyframes splashMove2 {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-  }
-  33% {
-    transform: translate(-40px, -30px) scale(1.15);
-  }
-  66% {
-    transform: translate(25px, 20px) scale(0.85);
-  }
-}
-
-@keyframes splashMove3 {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-  }
-  33% {
-    transform: translate(35px, -35px) scale(0.95);
-  }
-  66% {
-    transform: translate(-30px, 40px) scale(1.1);
-  }
-}
-
-.footer {
-  font-size: 0.95rem;
+.clearButton {
+  background: var(--background-3);
   color: var(--primary-text-color);
-  opacity: 0.55;
-  text-align: center;
-  margin: 0;
-  animation: fadeInSlide 1s ease-out 1.1s backwards;
-  font-weight: 400;
+  border: 2px solid var(--accent-7);
 }
 
+.clearButton:hover {
+  background: var(--accent-7-background);
+  border-color: var(--accent-7);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px var(--accent-7-background);
+}
+
+.homeButton {
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+  color: var(--background-1);
+  box-shadow: 0 4px 16px var(--accent-1-background);
+}
+
+.homeButton:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 24px var(--accent-2-background);
+}
+
+.homeButton:active,
+.clearButton:active {
+  transform: translateY(-1px) scale(1);
+}
+
+/* ==================== RESPONSIVE ==================== */
 @media (max-width: 768px) {
   .card {
-    padding: 56px 40px;
-    gap: 28px;
+    padding: 36px 28px;
+    gap: 20px;
   }
 
-  .errorCode {
+  .palette {
+    width: 70px;
+    height: 50px;
+  }
+
+  .errorDisplay {
+    gap: 16px;
+  }
+
+  .instructions {
     gap: 12px;
   }
 
-  .title {
-    font-size: 2rem;
+  .instruction {
+    padding: 8px 16px;
+    font-size: 0.85rem;
   }
 
-  .description {
-    font-size: 1.05rem;
+  .quoteSection {
+    padding: 18px 24px;
   }
 
-  .primaryButton {
-    padding: 16px 40px;
-    font-size: 1rem;
+  .actions {
+    gap: 10px;
   }
 
-  .brushStroke {
-    width: 160px;
-    height: 64px;
+  .clearButton,
+  .homeButton {
+    padding: 10px 20px;
+    font-size: 0.95rem;
   }
 }
 
 @media (max-width: 480px) {
   .card {
-    padding: 40px 28px;
-    gap: 24px;
-    border-radius: 28px;
+    padding: 28px 24px;
+    gap: 18px;
   }
 
-  .decorativeLine {
-    width: 180px;
-  }
-
-  .brushStroke {
-    top: -30px;
-    width: 140px;
-    height: 56px;
+  .instructions {
+    flex-direction: column;
+    gap: 8px;
   }
 }
 
-[data-no-animations="true"] .card,
-[data-no-animations="true"] .digit,
-[data-no-animations="true"] .digitCenter,
-[data-no-animations="true"] .title,
-[data-no-animations="true"] .description,
-[data-no-animations="true"] .decorativeLine,
-[data-no-animations="true"] .actions,
-[data-no-animations="true"] .footer,
-[data-no-animations="true"] .splash1,
-[data-no-animations="true"] .splash2,
-[data-no-animations="true"] .splash3,
-[data-no-animations="true"] .lineSegment,
-[data-no-animations="true"] .lineDot,
-[data-no-animations="true"] .brushPath {
+/* ==================== ANIMATION DISABLE ==================== */
+[data-no-animations="true"] * {
   animation: none !important;
-}
-
-[data-no-animations="true"] .primaryButton::before {
-  display: none;
+  transition: none !important;
 }

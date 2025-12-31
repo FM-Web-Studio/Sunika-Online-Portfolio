@@ -77,40 +77,39 @@ const NavigationBar = ({
             <span className={styles.burgerBar}></span>
             <span className={styles.burgerBar}></span>
           </div>
-          <svg className={styles.splatter} viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="40" />
-          </svg>
         </button>
       </div>
 
       {menuOpen && (
-        <div className={`${styles.menu} ${styles.menuActive}`} ref={menuRef}>
-          <div className={styles.paintSplash}>
-            <div className={styles.splash} style={{ '--delay': '0s', '--size': '80px', '--x': '10%', '--y': '5%' }}></div>
-            <div className={styles.splash} style={{ '--delay': '0.5s', '--size': '60px', '--x': '85%', '--y': '15%' }}></div>
-            <div className={styles.splash} style={{ '--delay': '1s', '--size': '70px', '--x': '5%', '--y': '80%' }}></div>
-            <div className={styles.splash} style={{ '--delay': '1.5s', '--size': '50px', '--x': '90%', '--y': '75%' }}></div>
-          </div>
-
+        <div className={styles.menu} ref={menuRef}>
           <ul className={styles.linkList}>
             {links && links.slice(0, 7).map((link, index) => {
               const Icon = ICONS[index] || Palette;
+              const isHovered = hoveredLink === index;
               
               return (
                 <li key={`nav-${index}`} className={styles.linkItem}>
                   <button
-                    className={`${styles.link} ${hoveredLink === index ? styles.linkActive : ''}`}
+                    className={`${styles.link} ${isHovered ? styles.linkHovered : ''}`}
                     onClick={() => handleLinkClick(link)}
                     onMouseEnter={() => setHoveredLink(index)}
                     onMouseLeave={() => setHoveredLink(null)}
                     type="button"
+                    data-index={index}
                   >
-                    <div className={styles.linkBg}></div>
                     <div className={styles.linkIcon}>
-                      <Icon size={20} strokeWidth={2.5} />
+                      <Icon size={18} strokeWidth={2} />
                     </div>
                     <span className={styles.linkLabel}>{link.label}</span>
-                    <div className={styles.inkDrip}></div>
+                    <svg className={styles.brushStroke} viewBox="0 0 100 8" preserveAspectRatio="none">
+                      <path 
+                        d="M0,4 Q25,1 50,4 T100,4" 
+                        stroke="currentColor" 
+                        strokeWidth="3" 
+                        fill="none"
+                        strokeLinecap="round"
+                      />
+                    </svg>
                   </button>
                 </li>
               );
