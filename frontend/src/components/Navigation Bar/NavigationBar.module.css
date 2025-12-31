@@ -1,94 +1,51 @@
 /* ==================== NAVBAR CONTAINER ==================== */
 .navbar {
-  position: relative;
-  z-index: 300;
-}
-
-.burgerContainer {
-  position: relative;
-  z-index: 320;
-}
-
-/* ==================== BURGER BUTTON (ORIGINAL X STYLE) ==================== */
-.burger {
-  position: relative;
-  background: transparent !important;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.3s ease;
-}
-
-.burger:hover {
-  transform: scale(1.1);
-}
-
-.burger:active {
-  transform: scale(0.95);
-}
-
-.burgerInner {
-  position: relative;
-  z-index: 2;
-  width: 26px;
-  height: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.burgerBar {
-  width: 100%;
-  height: 3px;
-  background: var(--accent-1);
-  border-radius: 3px;
-  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  transform-origin: center;
-}
-
-.burger:hover .burgerBar {
-  background: var(--accent-2);
-}
-
-.burgerActive .burgerBar:nth-child(1) {
-  transform: translateY(8.5px) rotate(45deg);
-}
-
-.burgerActive .burgerBar:nth-child(2) {
-  opacity: 0;
-  transform: scaleX(0);
-}
-
-.burgerActive .burgerBar:nth-child(3) {
-  transform: translateY(-8.5px) rotate(-45deg);
-}
-
-/* ==================== MENU ==================== */
-.menu {
-  position: absolute;
-  top: calc(100% + 16px);
+  position: fixed;
+  top: 0;
   left: 0;
-  min-width: 240px;
-  background: var(--background-1);
-  border-radius: 16px;
-  border: 1px solid var(--accent-4);
-  padding: 12px;
-  animation: menuSlideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  z-index: 310;
+  right: 0;
+  z-index: 300;
+  
+  /* Liquid glass effect */
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.25) 50%,
+    rgba(255, 255, 255, 0.35) 100%
+  );
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+  
+  transition: all 0.3s ease;
 }
 
-@keyframes menuSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+[data-theme="dark"] .navbar {
+  background: linear-gradient(
+    135deg,
+    rgba(58, 59, 63, 0.6) 0%,
+    rgba(47, 48, 53, 0.45) 50%,
+    rgba(58, 59, 63, 0.55) 100%
+  );
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.navContent {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 3vw, 3rem);
 }
 
 /* ==================== LINK LIST ==================== */
@@ -97,8 +54,10 @@
   margin: 0;
   padding: 0;
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.25rem, 1vw, 0.5rem);
+  height: 70px;
 }
 
 .linkItem {
@@ -106,33 +65,32 @@
 }
 
 /* ==================== LINKS WITH VARIED COLORS ==================== */
-button.link {
+.link {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 12px;
-  width: 100%;
-  padding: 10px 14px;
-  background: var(--background-2);
-  border: none;
-  border-radius: 10px;
+  gap: 8px;
+  padding: 10px 16px;
+  background: transparent;
+  border-radius: 12px;
   color: var(--primary-text-color);
   font-size: var(--font-size-base);
   font-weight: 500;
   cursor: pointer;
   text-align: left;
-  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   overflow: visible;
+  user-select: none;
 }
 
 .linkIcon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   flex-shrink: 0;
 }
 
@@ -143,52 +101,52 @@ button.link {
 }
 
 .link[data-index="1"] .linkIcon {
-  background: var(--accent-3-background);
-  color: var(--accent-3);
-}
-
-.link[data-index="2"] .linkIcon {
-  background: var(--accent-5-background);
-  color: var(--accent-5);
-}
-
-.link[data-index="3"] .linkIcon {
-  background: var(--accent-7-background);
-  color: var(--accent-7);
-}
-
-.link[data-index="4"] .linkIcon {
   background: var(--accent-2-background);
   color: var(--accent-2);
 }
 
+.link[data-index="2"] .linkIcon {
+  background: var(--accent-3-background);
+  color: var(--accent-3);
+}
+
+.link[data-index="3"] .linkIcon {
+  background: var(--accent-4-background);
+  color: var(--accent-4);
+}
+
+.link[data-index="4"] .linkIcon {
+  background: var(--accent-1-background);
+  color: var(--accent-1);
+}
+
 .link[data-index="5"] .linkIcon {
-  background: var(--accent-6-background);
-  color: var(--accent-6);
+  background: var(--accent-2-background);
+  color: var(--accent-2);
 }
 
 .link[data-index="6"] .linkIcon {
-  background: var(--accent-8-background);
-  color: var(--accent-8);
+  background: var(--accent-3-background);
+  color: var(--accent-3);
 }
 
 .linkLabel {
-  flex: 1;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.3px;
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  white-space: nowrap;
 }
 
 /* ==================== BRUSH STROKE WITH VARIED COLORS ==================== */
 .brushStroke {
   position: absolute;
-  bottom: 2px;
-  left: 12px;
-  right: 12px;
-  height: 8px;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: calc(100% - 16px);
+  height: 6px;
   opacity: 0;
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: center;
+  transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
   pointer-events: none;
 }
 
@@ -197,199 +155,276 @@ button.link {
 }
 
 .link[data-index="1"] .brushStroke {
-  color: var(--accent-3);
-}
-
-.link[data-index="2"] .brushStroke {
-  color: var(--accent-5);
-}
-
-.link[data-index="3"] .brushStroke {
-  color: var(--accent-7);
-}
-
-.link[data-index="4"] .brushStroke {
   color: var(--accent-2);
 }
 
+.link[data-index="2"] .brushStroke {
+  color: var(--accent-3);
+}
+
+.link[data-index="3"] .brushStroke {
+  color: var(--accent-4);
+}
+
+.link[data-index="4"] .brushStroke {
+  color: var(--accent-1);
+}
+
 .link[data-index="5"] .brushStroke {
-  color: var(--accent-6);
+  color: var(--accent-2);
 }
 
 .link[data-index="6"] .brushStroke {
-  color: var(--accent-8);
+  color: var(--accent-3);
 }
 
-/* ==================== HOVER STATE WITH VARIED COLORS ==================== */
-.link:hover,
-.linkHovered {
-  transform: translateX(4px);
+/* ==================== HOVER STATE ==================== */
+.link:hover .linkIcon,
+.linkHovered .linkIcon {
+  transform: translateY(-2px) scale(1.05);
 }
 
-.link[data-index="0"]:hover,
-.link[data-index="0"].linkHovered {
-  background: var(--accent-1-background);
-}
-
-.link[data-index="1"]:hover,
-.link[data-index="1"].linkHovered {
-  background: var(--accent-3-background);
-}
-
-.link[data-index="2"]:hover,
-.link[data-index="2"].linkHovered {
-  background: var(--accent-5-background);
-}
-
-.link[data-index="3"]:hover,
-.link[data-index="3"].linkHovered {
-  background: var(--accent-7-background);
-}
-
-.link[data-index="4"]:hover,
-.link[data-index="4"].linkHovered {
-  background: var(--accent-2-background);
-}
-
-.link[data-index="5"]:hover,
-.link[data-index="5"].linkHovered {
-  background: var(--accent-6-background);
-}
-
-.link[data-index="6"]:hover,
-.link[data-index="6"].linkHovered {
-  background: var(--accent-8-background);
-}
-
-/* Icon transformation on hover */
 .link[data-index="0"]:hover .linkIcon,
 .link[data-index="0"].linkHovered .linkIcon {
   background: var(--accent-1);
   color: var(--background-1);
-  transform: scale(1.08);
+  box-shadow: 0 4px 12px var(--accent-1-background);
 }
 
 .link[data-index="1"]:hover .linkIcon,
 .link[data-index="1"].linkHovered .linkIcon {
-  background: var(--accent-3);
+  background: var(--accent-2);
   color: var(--background-1);
-  transform: scale(1.08);
+  box-shadow: 0 4px 12px var(--accent-2-background);
 }
 
 .link[data-index="2"]:hover .linkIcon,
 .link[data-index="2"].linkHovered .linkIcon {
-  background: var(--accent-5);
+  background: var(--accent-3);
   color: var(--background-1);
-  transform: scale(1.08);
+  box-shadow: 0 4px 12px var(--accent-3-background);
 }
 
 .link[data-index="3"]:hover .linkIcon,
 .link[data-index="3"].linkHovered .linkIcon {
-  background: var(--accent-7);
+  background: var(--accent-4);
   color: var(--background-1);
-  transform: scale(1.08);
+  box-shadow: 0 4px 12px var(--accent-4-background);
 }
 
 .link[data-index="4"]:hover .linkIcon,
 .link[data-index="4"].linkHovered .linkIcon {
-  background: var(--accent-2);
+  background: var(--accent-1);
   color: var(--background-1);
-  transform: scale(1.08);
+  box-shadow: 0 4px 12px var(--accent-1-background);
 }
 
 .link[data-index="5"]:hover .linkIcon,
 .link[data-index="5"].linkHovered .linkIcon {
-  background: var(--accent-6);
+  background: var(--accent-2);
   color: var(--background-1);
-  transform: scale(1.08);
+  box-shadow: 0 4px 12px var(--accent-2-background);
 }
 
 .link[data-index="6"]:hover .linkIcon,
 .link[data-index="6"].linkHovered .linkIcon {
-  background: var(--accent-8);
+  background: var(--accent-3);
   color: var(--background-1);
-  transform: scale(1.08);
+  box-shadow: 0 4px 12px var(--accent-3-background);
 }
 
 /* Label color change on hover */
 .link[data-index="0"]:hover .linkLabel,
 .link[data-index="0"].linkHovered .linkLabel {
   color: var(--accent-1);
-  transform: translateX(3px);
 }
 
 .link[data-index="1"]:hover .linkLabel,
 .link[data-index="1"].linkHovered .linkLabel {
-  color: var(--accent-3);
-  transform: translateX(3px);
+  color: var(--accent-2);
 }
 
 .link[data-index="2"]:hover .linkLabel,
 .link[data-index="2"].linkHovered .linkLabel {
-  color: var(--accent-5);
-  transform: translateX(3px);
+  color: var(--accent-3);
 }
 
 .link[data-index="3"]:hover .linkLabel,
 .link[data-index="3"].linkHovered .linkLabel {
-  color: var(--accent-7);
-  transform: translateX(3px);
+  color: var(--accent-4);
 }
 
 .link[data-index="4"]:hover .linkLabel,
 .link[data-index="4"].linkHovered .linkLabel {
-  color: var(--accent-2);
-  transform: translateX(3px);
+  color: var(--accent-1);
 }
 
 .link[data-index="5"]:hover .linkLabel,
 .link[data-index="5"].linkHovered .linkLabel {
-  color: var(--accent-6);
-  transform: translateX(3px);
+  color: var(--accent-2);
 }
 
 .link[data-index="6"]:hover .linkLabel,
 .link[data-index="6"].linkHovered .linkLabel {
-  color: var(--accent-8);
-  transform: translateX(3px);
+  color: var(--accent-3);
 }
 
-/* Brush stroke animation */
+/* Brush stroke animation on hover */
 .link:hover .brushStroke,
 .linkHovered .brushStroke {
   opacity: 1;
-  transform: scaleX(1);
+  transform: translateX(-50%) scaleX(1);
 }
 
 .link:active {
-  transform: scale(0.98);
+  transform: scale(0.96);
 }
 
-/* ==================== BACKDROP ==================== */
-.backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(3px);
-  z-index: 150;
-  animation: backdropFadeIn 0.2s ease;
+/* ==================== ACTIVE STATE ==================== */
+.linkActive {
+  background: transparent;
 }
 
-@keyframes backdropFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.link[data-index="0"].linkActive .linkIcon {
+  background: var(--accent-1);
+  color: var(--background-1);
+  box-shadow: 0 2px 8px var(--accent-1-background);
+}
+
+.link[data-index="1"].linkActive .linkIcon {
+  background: var(--accent-2);
+  color: var(--background-1);
+  box-shadow: 0 2px 8px var(--accent-2-background);
+}
+
+.link[data-index="2"].linkActive .linkIcon {
+  background: var(--accent-3);
+  color: var(--background-1);
+  box-shadow: 0 2px 8px var(--accent-3-background);
+}
+
+.link[data-index="3"].linkActive .linkIcon {
+  background: var(--accent-4);
+  color: var(--background-1);
+  box-shadow: 0 2px 8px var(--accent-4-background);
+}
+
+.link[data-index="4"].linkActive .linkIcon {
+  background: var(--accent-1);
+  color: var(--background-1);
+  box-shadow: 0 2px 8px var(--accent-1-background);
+}
+
+.link[data-index="5"].linkActive .linkIcon {
+  background: var(--accent-2);
+  color: var(--background-1);
+  box-shadow: 0 2px 8px var(--accent-2-background);
+}
+
+.link[data-index="6"].linkActive .linkIcon {
+  background: var(--accent-3);
+  color: var(--background-1);
+  box-shadow: 0 2px 8px var(--accent-3-background);
+}
+
+.link[data-index="0"].linkActive .linkLabel {
+  color: var(--accent-1);
+  font-weight: 600;
+}
+
+.link[data-index="1"].linkActive .linkLabel {
+  color: var(--accent-2);
+  font-weight: 600;
+}
+
+.link[data-index="2"].linkActive .linkLabel {
+  color: var(--accent-3);
+  font-weight: 600;
+}
+
+.link[data-index="3"].linkActive .linkLabel {
+  color: var(--accent-4);
+  font-weight: 600;
+}
+
+.link[data-index="4"].linkActive .linkLabel {
+  color: var(--accent-1);
+  font-weight: 600;
+}
+
+.link[data-index="5"].linkActive .linkLabel {
+  color: var(--accent-2);
+  font-weight: 600;
+}
+
+.link[data-index="6"].linkActive .linkLabel {
+  color: var(--accent-3);
+  font-weight: 600;
+}
+
+/* Active brush stroke - always visible */
+.linkActive .brushStroke {
+  opacity: 0.8;
+  transform: translateX(-50%) scaleX(1);
 }
 
 /* ==================== RESPONSIVE ==================== */
-@media (max-width: 768px) {
-  .menu {
-    min-width: 220px;
-    padding: 10px;
+@media (max-width: 1024px) {
+  .linkList {
+    gap: clamp(0.125rem, 0.5vw, 0.25rem);
+    height: 65px;
   }
 
-  button.link {
-    padding: 9px 12px;
-    gap: 10px;
+  .link {
+    padding: 8px 12px;
+    gap: 6px;
+  }
+
+  .linkIcon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .linkLabel {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+  }
+
+  .linkList {
+    height: 60px;
+    gap: 0.125rem;
+  }
+
+  .link {
+    padding: 6px 10px;
+    gap: 6px;
+  }
+
+  .linkIcon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .linkLabel {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .linkList {
+    justify-content: space-between;
+    height: 56px;
+  }
+
+  .link {
+    padding: 6px 8px;
+    gap: 4px;
   }
 
   .linkIcon {
@@ -398,18 +433,28 @@ button.link {
   }
 
   .linkLabel {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
+  }
+
+  .brushStroke {
+    height: 5px;
+    bottom: -1px;
   }
 }
 
 @media (max-width: 480px) {
-  .menu {
-    min-width: 200px;
-    padding: 8px;
+  .navContent {
+    padding: 0 0.75rem;
   }
 
-  button.link {
-    padding: 8px 10px;
+  .linkList {
+    height: 52px;
+    gap: 0;
+  }
+
+  .link {
+    padding: 5px 6px;
+    gap: 4px;
   }
 
   .linkIcon {
@@ -418,6 +463,6 @@ button.link {
   }
 
   .linkLabel {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 }

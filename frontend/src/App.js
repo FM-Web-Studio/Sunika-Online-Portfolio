@@ -64,17 +64,16 @@ const AppLayout = () => {
         links={navigationLinks}
         burgerSize={25}
         onNavigate={handleNavigate}
-        className={styles.navigationBar}
       />
-      
-      <div className={styles.themeSwitch}>
+
+      <div>
         <Settings
           theme={theme}
           toggleTheme={toggleTheme}
           cogSize={44}
         />
       </div>
-      
+
       <div className={styles.pageContent}>
         <Suspense fallback={<LoadingFallback />}>
           <Outlet />

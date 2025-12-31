@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Instagram } from 'lucide-react';
 import styles from './Bio.module.css';
 import bioData from '../../information/bio.json';
-import profileImage from '../../images/Profile.png';
+import profileImage from '../../images/Profile.jpg';
 
 function Bio() {
   const [ripples, setRipples] = useState([]);

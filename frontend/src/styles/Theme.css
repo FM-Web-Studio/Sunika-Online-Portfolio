@@ -27,72 +27,48 @@
     --info-background-color: #4bcffa55;
 
 
-    /* Accent Colors – Portchie Inspired (Vibrant, Pop, Playful) */
-    /* LIGHT */
-    --accent-1-light:  #ff2f92; /* hot pop pink */
-    --accent-2-light:  #ff5f3d; /* punchy coral red */
-    --accent-3-light:  #ff9f1c; /* electric mango */
-    --accent-4-light:  #ffd23f; /* neon butter yellow */
-    --accent-5-light:  #2ec4b6; /* tropical teal */
-    --accent-6-light:  #00b4ff; /* pool blue */
-    --accent-7-light:  #5f27ff; /* ultra violet */
-    --accent-8-light:  #b517ff; /* pop magenta */
-    --accent-9-light:  #ff7a00; /* loud orange */
-    --accent-10-light: #2bff88; /* neon mint */
+    /* Accent Colors */
+    /* LIGHT (more vibrant for light backgrounds) */
+    --accent-1-light: #ff5fa2; /* soft bright pink */
+    --accent-2-light: #ff4fcf; /* vivid magenta */
+    --accent-3-light: #c96bff; /* bright lavender purple */
+    --accent-4-light: #8b7dff; /* soft periwinkle */
 
-    /* DARK (slightly lifted for contrast, still vibrant) */
-    --accent-1-dark:  #ff4aa5;
-    --accent-2-dark:  #ff765c;
-    --accent-3-dark:  #ffb347;
-    --accent-4-dark:  #ffdf6e;
-    --accent-5-dark:  #4eddd0;
-    --accent-6-dark:  #33c5ff;
-    --accent-7-dark:  #7a5cff;
-    --accent-8-dark:  #c94bff;
-    --accent-9-dark:  #ff9333;
-    --accent-10-dark:#5bffab;
+    /* DARK (deeper and calmer) */
+    --accent-1-dark: #d94b8a;
+    --accent-2-dark: #c445a8;
+    --accent-3-dark: #9a57cc;
+    --accent-4-dark: #6f68c9;
 
 
     /* Accent Background Colors (same color, transparent) */
     /* LIGHT */
-    --accent-1-background-light:  #ff2f922a;
-    --accent-2-background-light:  #ff5f3d2a;
-    --accent-3-background-light:  #ff9f1c2a;
-    --accent-4-background-light:  #ffd23f2a;
-    --accent-5-background-light:  #2ec4b62a;
-    --accent-6-background-light:  #00b4ff2a;
-    --accent-7-background-light:  #5f27ff2a;
-    --accent-8-background-light:  #b517ff2a;
-    --accent-9-background-light:  #ff7a002a;
-    --accent-10-background-light: #2bff882a;
+    --accent-1-background-light: #ff5fa22a;
+    --accent-2-background-light: #ff4fcf2a;
+    --accent-3-background-light: #c96bff2a;
+    --accent-4-background-light: #8b7dff2a;
 
     /* DARK */
-    --accent-1-background-dark:  #ff4aa52a;
-    --accent-2-background-dark:  #ff765c2a;
-    --accent-3-background-dark:  #ffb3472a;
-    --accent-4-background-dark:  #ffdf6e2a;
-    --accent-5-background-dark:  #4eddd02a;
-    --accent-6-background-dark:  #33c5ff2a;
-    --accent-7-background-dark:  #7a5cff2a;
-    --accent-8-background-dark:  #c94bff2a;
-    --accent-9-background-dark:  #ff93332a;
-    --accent-10-background-dark:#5bffab2a;
+    --accent-1-background-dark: #d94b8a2a;
+    --accent-2-background-dark: #c445a82a;
+    --accent-3-background-dark: #9a57cc2a;
+    --accent-4-background-dark: #6f68c92a;
 
 
     /* ==================== BACKGROUND COLORS ==================== */
     /* Light mode */
     --background-1-light: #ffffff;
-    --background-2-light: #f2f3f5;
-    --background-3-light: #e3e5e8;
-    --background-4-light: #d1d4d8;
+    --background-2-light: #f0f2f5;
+    --background-3-light: #dfe2e7;
+    --background-4-light: #c9ced6;
     --frosted-background-light: rgba(255, 255, 255, 0.6);
 
     /* Dark mode */
-    --background-1-dark: #1e1f22;
-    --background-2-dark: #232428;
-    --background-3-dark: #2b2d31;
-    --background-4-dark: #313338;
-    --frosted-background-dark: rgba(30, 31, 34, 0.6);
+    --background-1-dark: #3a3b3f;
+    --background-2-dark: #2f3035;
+    --background-3-dark: #242529;
+    --background-4-dark: #18191c;
+    --frosted-background-dark: rgba(24, 25, 28, 0.6);
 
 
     /* Applied Colors (Default Light Mode) */

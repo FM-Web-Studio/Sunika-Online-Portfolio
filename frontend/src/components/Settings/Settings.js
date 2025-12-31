@@ -12,28 +12,28 @@ import '../../styles/Components.css';
 import '../../styles/Wrappers.css';
 
 /**
- * Settings component with cog icon
- * Features animated dropdown with theme switching capability
+ * Settings component with floating cog icon
+ * Features morphing panel with liquid glass effect
  */
 const Settings = function Settings({ 
   theme,
   toggleTheme,
-  cogSize = 44,
+  cogSize = 50,
   className = ""
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [hoveredSetting, setHoveredSetting] = useState(null);
   const containerRef = useRef();
 
-  // Handle cog button click - toggle open/close
   const handleCogClick = () => {
     setMenuOpen(prev => !prev);
   };
 
-  // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (containerRef.current && !containerRef.current.contains(event.target)) {
         setMenuOpen(false);
+        setHoveredSetting(null);
       }
     };
 
@@ -46,11 +46,11 @@ const Settings = function Settings({
     };
   }, [menuOpen]);
 
-  // Handle escape key
   useEffect(() => {
     const handleEscape = (event) => {
       if (event.key === 'Escape') {
         setMenuOpen(false);
+        setHoveredSetting(null);
       }
     };
 
@@ -60,67 +60,113 @@ const Settings = function Settings({
 
   return (
     <div className={`${styles.settingsContainer} ${className}`} ref={containerRef}>
-      {/* Cog Button */}
-      <button
+      {/* Floating Cog Button */}
+      <div
         className={`${styles.cogButton} ${menuOpen ? styles.cogButtonActive : ""}`}
+        onClick={handleCogClick}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleCogClick();
+          }
+        }}
         aria-label="Toggle settings menu"
         aria-expanded={menuOpen}
-        onClick={handleCogClick}
-        type="button"
         style={{
           width: cogSize,
           height: cogSize,
         }}
       >
         <GiCog className={styles.cogIcon} />
-      </button>
+      </div>
 
-      {/* Settings Dropdown Menu */}
+      {/* Settings Panel */}
       {menuOpen && (
-        <div className={styles.settingsDropdown}>
-          {/* Gradient orbs background */}
-          <div className={styles.orbsBackground}>
-            <div className={styles.orb} data-color="1"></div>
-            <div className={styles.orb} data-color="2"></div>
-            <div className={styles.orb} data-color="3"></div>
+        <div className={styles.settingsPanel}>
+          {/* Animated gradient background */}
+          <div className={styles.gradientBackground}>
+            <div className={styles.gradientOrb} data-orb="1"></div>
+            <div className={styles.gradientOrb} data-orb="2"></div>
+            <div className={styles.gradientOrb} data-orb="3"></div>
+            <div className={styles.gradientOrb} data-orb="4"></div>
+          </div>
+
+          {/* Settings Header */}
+          <div className={styles.panelHeader}>
+            <h3 className={styles.panelTitle}>Preferences</h3>
+            <div className={styles.headerAccent}></div>
           </div>
 
           {/* Settings Content */}
           <div className={styles.settingsContent}>
             {/* Theme Setting */}
-            <div className={styles.settingItem} data-color="1">
-              <div className={styles.settingLeft}>
-                <div className={styles.iconWrapper}>
+            <div 
+              className={`${styles.settingCard} ${hoveredSetting === 0 ? styles.settingCardHovered : ''}`}
+              onMouseEnter={() => setHoveredSetting(0)}
+              onMouseLeave={() => setHoveredSetting(null)}
+              data-accent="1"
+            >
+              <div className={styles.cardGlow}></div>
+              <div className={styles.settingMain}>
+                <div className={styles.settingIconBox}>
                   <IoColorPaletteSharp className={styles.settingIcon} />
+                  <div className={styles.iconPulse}></div>
                 </div>
-                <div className={styles.settingInfo}>
-                  <h4 className={styles.settingLabel}>Theme</h4>
-                  <p className={styles.settingDescription}>Light or dark</p>
+                <div className={styles.settingDetails}>
+                  <h4 className={styles.settingTitle}>Appearance</h4>
+                  <p className={styles.settingSubtitle}>Switch between light & dark mode</p>
                 </div>
               </div>
-              <div className={styles.settingControl}>
+              <div className={styles.settingAction}>
                 <ThemeSwitch
                   theme={theme}
                   toggleTheme={toggleTheme}
                   size={32}
                 />
               </div>
+              <svg className={styles.cardBrush} viewBox="0 0 200 4" preserveAspectRatio="none">
+                <path 
+                  d="M0,2 Q50,0 100,2 T200,2" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  fill="none"
+                  strokeLinecap="round"
+                />
+              </svg>
             </div>
 
-            {/* Reduce Animations Setting */}
-            <div className={styles.settingItem} data-color="2">
-              <div className={styles.settingLeft}>
-                <div className={styles.iconWrapper}>
+            {/* Animations Setting */}
+            <div 
+              className={`${styles.settingCard} ${hoveredSetting === 1 ? styles.settingCardHovered : ''}`}
+              onMouseEnter={() => setHoveredSetting(1)}
+              onMouseLeave={() => setHoveredSetting(null)}
+              data-accent="2"
+            >
+              <div className={styles.cardGlow}></div>
+              <div className={styles.settingMain}>
+                <div className={styles.settingIconBox}>
                   <FaStopwatch className={styles.settingIcon} />
+                  <div className={styles.iconPulse}></div>
                 </div>
-                <div className={styles.settingInfo}>
-                  <h4 className={styles.settingLabel}>Reduce animations</h4>
-                  <p className={styles.settingDescription}>Disable UI motion</p>
+                <div className={styles.settingDetails}>
+                  <h4 className={styles.settingTitle}>Motion</h4>
+                  <p className={styles.settingSubtitle}>Reduce animations for accessibility</p>
                 </div>
               </div>
-              <div className={styles.settingControl}>
+              <div className={styles.settingAction}>
                 <ReduceAnimationsSwitch size={20} />
               </div>
+              <svg className={styles.cardBrush} viewBox="0 0 200 4" preserveAspectRatio="none">
+                <path 
+                  d="M0,2 Q50,0 100,2 T200,2" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  fill="none"
+                  strokeLinecap="round"
+                />
+              </svg>
             </div>
           </div>
         </div>
@@ -130,7 +176,10 @@ const Settings = function Settings({
       {menuOpen && (
         <div 
           className={styles.backdrop} 
-          onClick={() => setMenuOpen(false)}
+          onClick={() => {
+            setMenuOpen(false);
+            setHoveredSetting(null);
+          }}
         />
       )}
     </div>
