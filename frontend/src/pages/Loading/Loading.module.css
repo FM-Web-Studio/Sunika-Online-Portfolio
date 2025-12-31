@@ -5,148 +5,101 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  background: var(--background-1);
   overflow: hidden;
   z-index: 9999;
 }
 
-/* ==================== BACKGROUND ORBS ==================== */
-.backgroundOrbs {
+/* ==================== ORBS BACKGROUND ==================== */
+.orbsBackground {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  overflow: hidden;
 }
 
 .orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.15;
+  filter: blur(100px);
+  opacity: 0.12;
 }
 
-.orb[data-orb="1"] {
-  width: 400px;
-  height: 400px;
-  top: -10%;
-  left: -5%;
-  background: radial-gradient(circle, var(--accent-1), transparent);
-  animation: orbFloat1 12s ease-in-out infinite;
-}
-
-.orb[data-orb="2"] {
+.orb[data-position="top-left"] {
   width: 500px;
   height: 500px;
-  bottom: -15%;
-  right: -10%;
-  background: radial-gradient(circle, var(--accent-5), transparent);
-  animation: orbFloat2 15s ease-in-out infinite;
+  top: -15%;
+  left: -10%;
+  background: radial-gradient(circle, var(--accent-1), transparent);
+  animation: orbDrift 15s ease-in-out infinite;
 }
 
-.orb[data-orb="3"] {
-  width: 350px;
-  height: 350px;
-  top: 40%;
-  right: 15%;
-  background: radial-gradient(circle, var(--accent-8), transparent);
-  animation: orbFloat3 10s ease-in-out infinite;
+.orb[data-position="bottom-right"] {
+  width: 600px;
+  height: 600px;
+  bottom: -20%;
+  right: -15%;
+  background: radial-gradient(circle, var(--accent-3), transparent);
+  animation: orbDrift 18s ease-in-out infinite reverse;
 }
 
-@keyframes orbFloat1 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(40px, 60px) scale(1.1); }
+.orb[data-position="center"] {
+  width: 400px;
+  height: 400px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, var(--accent-2), transparent);
+  animation: orbPulse 12s ease-in-out infinite;
 }
 
-@keyframes orbFloat2 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-50px, -40px) scale(1.15); }
-}
-
-@keyframes orbFloat3 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(30px, -50px) scale(1.08); }
-}
-
-/* ==================== PAINT DROPS ANIMATION ==================== */
-.paintDrops {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.paintDrop {
-  position: absolute;
-  top: -50px;
-  width: 12px;
-  height: 16px;
-  border-radius: 50% 50% 50% 0;
-  transform: rotate(-45deg);
-  opacity: 0.6;
-  animation: dropFall 8s linear infinite;
-}
-
-.paintDrop[data-color="1"] {
-  background: var(--accent-1);
-}
-
-.paintDrop[data-color="2"] {
-  background: var(--accent-3);
-}
-
-.paintDrop[data-color="3"] {
-  background: var(--accent-5);
-}
-
-.paintDrop[data-color="4"] {
-  background: var(--accent-6);
-}
-
-.paintDrop[data-color="5"] {
-  background: var(--accent-8);
-}
-
-@keyframes dropFall {
-  0% {
-    transform: translateY(0) rotate(-45deg);
-    opacity: 0;
+@keyframes orbDrift {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
   }
-  10% {
-    opacity: 0.6;
+  33% {
+    transform: translate(40px, -50px) scale(1.1);
   }
-  90% {
-    opacity: 0.6;
-  }
-  100% {
-    transform: translateY(100vh) rotate(-45deg);
-    opacity: 0;
+  66% {
+    transform: translate(-30px, 40px) scale(0.95);
   }
 }
 
-/* ==================== MAIN CARD ==================== */
-.card {
+@keyframes orbPulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.12;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.18;
+  }
+}
+
+/* ==================== LOADING CARD ==================== */
+.loadingCard {
   position: relative;
   z-index: 10;
-  width: min(600px, calc(100vw - 40px));
+  width: min(500px, calc(100vw - 40px));
   background: var(--background-1);
-  border-radius: 28px;
-  padding: 48px 40px;
+  border: 1px solid var(--background-3);
+  border-radius: 24px;
+  padding: 56px 40px;
   box-shadow: 
-    0 20px 60px rgba(0, 0, 0, 0.15),
-    0 0 0 1px var(--accent-1-background);
+    0 24px 64px rgba(0, 0, 0, 0.12),
+    0 0 0 1px var(--background-3);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 32px;
-  animation: cardSlideIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  gap: 36px;
+  animation: cardEntrance 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
   overflow: hidden;
 }
 
-@keyframes cardSlideIn {
+@keyframes cardEntrance {
   from {
     opacity: 0;
-    transform: translateY(30px) scale(0.95);
+    transform: translateY(40px) scale(0.9);
   }
   to {
     opacity: 1;
@@ -154,544 +107,358 @@
   }
 }
 
-.card::before {
+/* Top gradient line */
+.loadingCard::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
+  height: 2px;
   background: linear-gradient(
     90deg,
     var(--accent-1) 0%,
-    var(--accent-3) 25%,
-    var(--accent-5) 50%,
-    var(--accent-7) 75%,
-    var(--accent-8) 100%
+    var(--accent-2) 50%,
+    var(--accent-3) 100%
   );
-  animation: rainbowSlide 3s linear infinite;
 }
 
-@keyframes rainbowSlide {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-
-/* ==================== PALETTE ICON ==================== */
-.paletteContainer {
+/* ==================== GEOMETRIC LOADER ==================== */
+.loaderWrapper {
   position: relative;
-  animation: fadeInUp 0.8s ease-out 0.2s backwards;
+  width: 140px;
+  height: 140px;
+  animation: fadeIn 0.8s ease-out 0.2s backwards;
 }
 
-.paletteWrapper {
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.geometricLoader {
   position: relative;
-  width: 100px;
-  height: 100px;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: paletteFloat 3s ease-in-out infinite;
 }
 
-@keyframes paletteFloat {
-  0%, 100% { transform: translateY(0) rotate(-5deg); }
-  50% { transform: translateY(-10px) rotate(5deg); }
-}
-
-.paletteIcon {
-  font-size: 5rem;
-  color: var(--accent-1);
-  filter: drop-shadow(0 4px 12px var(--accent-1-background));
-  animation: paletteRotate 8s ease-in-out infinite;
-}
-
-@keyframes paletteRotate {
-  0%, 100% { transform: rotate(0deg); }
-  50% { transform: rotate(15deg); }
-}
-
-.colorDots {
+.ring {
   position: absolute;
-  inset: 0;
-}
-
-.colorDot {
-  position: absolute;
-  width: 14px;
-  height: 14px;
   border-radius: 50%;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border: 3px solid transparent;
+}
+
+.ring[data-ring="1"] {
+  width: 100%;
+  height: 100%;
+  border-top-color: var(--accent-1);
+  border-right-color: var(--accent-1);
+  animation: ringRotate 2.5s linear infinite;
+}
+
+.ring[data-ring="2"] {
+  width: 75%;
+  height: 75%;
+  border-bottom-color: var(--accent-2);
+  border-left-color: var(--accent-2);
+  animation: ringRotate 2s linear infinite reverse;
+}
+
+.ring[data-ring="3"] {
+  width: 50%;
+  height: 50%;
+  border-top-color: var(--accent-3);
+  border-right-color: var(--accent-3);
+  animation: ringRotate 1.5s linear infinite;
+}
+
+@keyframes ringRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.centerDot {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+  border-radius: 50%;
+  box-shadow: 
+    0 0 20px var(--accent-1-background),
+    0 0 40px var(--accent-2-background);
   animation: dotPulse 2s ease-in-out infinite;
 }
 
-.colorDot[data-color="1"] {
-  background: var(--accent-1);
-  top: 20%;
-  left: 50%;
-  animation-delay: 0s;
-}
-
-.colorDot[data-color="2"] {
-  background: var(--accent-3);
-  top: 40%;
-  right: 15%;
-  animation-delay: 0.2s;
-}
-
-.colorDot[data-color="3"] {
-  background: var(--accent-5);
-  bottom: 30%;
-  right: 20%;
-  animation-delay: 0.4s;
-}
-
-.colorDot[data-color="4"] {
-  background: var(--accent-6);
-  bottom: 25%;
-  left: 25%;
-  animation-delay: 0.6s;
-}
-
-.colorDot[data-color="5"] {
-  background: var(--accent-8);
-  top: 45%;
-  left: 15%;
-  animation-delay: 0.8s;
-}
-
 @keyframes dotPulse {
-  0%, 100% { transform: scale(1); opacity: 0.8; }
-  50% { transform: scale(1.3); opacity: 1; }
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.7;
+  }
 }
 
-/* ==================== TEXT SECTION ==================== */
-.textSection {
+/* ==================== MESSAGE SECTION ==================== */
+.messageSection {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
   text-align: center;
-  animation: fadeInUp 0.8s ease-out 0.4s backwards;
+  animation: fadeIn 0.8s ease-out 0.4s backwards;
 }
 
-.title {
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
+.message {
+  font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 700;
-  background: linear-gradient(
-    135deg,
-    var(--accent-1) 0%,
-    var(--accent-5) 50%,
-    var(--accent-8) 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--primary-text-color);
   margin: 0;
   letter-spacing: -0.02em;
+  min-height: 2.5rem;
 }
 
-.subtitle {
-  font-size: clamp(1rem, 2vw, 1.125rem);
+.subMessage {
+  font-size: clamp(0.95rem, 2vw, 1.05rem);
   color: var(--primary-text-color);
-  opacity: 0.7;
+  opacity: 0.6;
   margin: 0;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ==================== BRUSH LOADER ==================== */
-.brushLoader {
-  position: relative;
-  width: 100%;
-  max-width: 300px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  animation: fadeInUp 0.8s ease-out 0.6s backwards;
-}
-
-.brushIcon {
-  font-size: 2.5rem;
-  color: var(--accent-2);
-  animation: brushSwing 2s ease-in-out infinite;
-}
-
-@keyframes brushSwing {
-  0%, 100% { transform: rotate(-15deg); }
-  50% { transform: rotate(15deg); }
-}
-
-.brushStroke {
-  width: 100%;
-  height: 20px;
-}
-
-.strokePath {
-  stroke-dasharray: 300;
-  stroke-dashoffset: 300;
-  animation: strokeDraw 3s ease-in-out infinite;
-}
-
-@keyframes strokeDraw {
-  0%, 100% {
-    stroke-dashoffset: 300;
-    opacity: 0.5;
-  }
-  50% {
-    stroke-dashoffset: 0;
-    opacity: 1;
-  }
+  font-weight: 400;
 }
 
 /* ==================== PROGRESS SECTION ==================== */
-.progressSection {
+.progressWrapper {
   width: 100%;
   display: flex;
-  align-items: center;
-  gap: 16px;
-  animation: fadeInUp 0.8s ease-out 0.8s backwards;
+  flex-direction: column;
+  gap: 12px;
+  animation: fadeIn 0.8s ease-out 0.6s backwards;
 }
 
 .progressBar {
   position: relative;
-  flex: 1;
-  height: 10px;
+  width: 100%;
+  height: 8px;
   background: var(--background-3);
   border-radius: 999px;
   overflow: hidden;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .progressFill {
   position: relative;
   height: 100%;
-  background: linear-gradient(90deg, var(--accent-1), var(--accent-5));
+  background: linear-gradient(
+    90deg,
+    var(--accent-1) 0%,
+    var(--accent-2) 50%,
+    var(--accent-3) 100%
+  );
   border-radius: 999px;
-  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 20px var(--accent-1-background);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
 }
 
-.progressShine {
+.progressGlow {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.5),
+    rgba(255, 255, 255, 0.4),
     transparent
   );
-  animation: shine 2s ease-in-out infinite;
+  animation: progressShine 1.5s ease-in-out infinite;
 }
 
-@keyframes shine {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+@keyframes progressShine {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(200%); }
 }
 
-.progressText {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--accent-1);
-  min-width: 50px;
-  text-align: right;
-  font-variant-numeric: tabular-nums;
+.progressInfo {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
-/* ==================== QUOTE SECTION ==================== */
-.quoteSection {
-  position: relative;
-  width: 100%;
-  padding: 24px 28px;
-  background: var(--background-2);
-  border-left: 4px solid var(--accent-5);
-  border-radius: 12px;
-  animation: fadeInUp 0.8s ease-out 1s backwards;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
-
-.quoteIcon {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  font-size: 1.5rem;
-  color: var(--accent-5);
-  opacity: 0.3;
-  animation: sparkle 2s ease-in-out infinite;
-}
-
-@keyframes sparkle {
-  0%, 100% { 
-    opacity: 0.3; 
-    transform: scale(1) rotate(0deg); 
-  }
-  50% { 
-    opacity: 0.7; 
-    transform: scale(1.2) rotate(180deg); 
-  }
-}
-
-.quoteContent {
-  animation: quoteFadeIn 0.6s ease-out;
-}
-
-@keyframes quoteFadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.quoteText {
-  font-size: clamp(1rem, 2vw, 1.125rem);
-  color: var(--primary-text-color);
-  font-style: italic;
-  line-height: 1.6;
-  margin: 0 0 12px 0;
-}
-
-.quoteAuthor {
-  display: block;
+.progressPercent {
   font-size: 0.95rem;
-  color: var(--accent-5);
-  font-style: normal;
   font-weight: 600;
+  color: var(--accent-2);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
 }
 
-/* ==================== SPLASH DECORATIONS ==================== */
-.splashDecor {
+/* ==================== PARTICLES ==================== */
+.particles {
   position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-  border-radius: 28px;
-}
-
-.splash {
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0.08;
-  filter: blur(30px);
-}
-
-.splash[data-splash="1"] {
-  width: 150px;
-  height: 150px;
-  top: -30px;
-  right: -30px;
-  background: radial-gradient(circle, var(--accent-1), transparent);
-  animation: splashMove1 8s ease-in-out infinite;
-}
-
-.splash[data-splash="2"] {
-  width: 120px;
-  height: 120px;
-  bottom: -20px;
-  left: -20px;
-  background: radial-gradient(circle, var(--accent-3), transparent);
-  animation: splashMove2 10s ease-in-out infinite;
-}
-
-.splash[data-splash="3"] {
-  width: 100px;
-  height: 100px;
-  top: 50%;
-  left: -10px;
-  background: radial-gradient(circle, var(--accent-6), transparent);
-  animation: splashMove3 12s ease-in-out infinite;
-}
-
-@keyframes splashMove1 {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(-20px, 20px); }
-}
-
-@keyframes splashMove2 {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(25px, -25px); }
-}
-
-@keyframes splashMove3 {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(15px, 30px); }
-}
-
-/* ==================== FLOATING SPLATTERS ==================== */
-.floatingSplatters {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.splatter {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  opacity: 0.4;
-  animation: splatterFloat 6s ease-in-out infinite;
-}
-
-.splatter::before,
-.splatter::after {
-  content: '';
-  position: absolute;
-  border-radius: 50%;
-}
-
-.splatter::before {
-  width: 40px;
-  height: 40px;
-  top: 0;
+  bottom: 20px;
   left: 0;
+  right: 0;
+  height: 40px;
+  pointer-events: none;
 }
 
-.splatter::after {
-  width: 20px;
-  height: 20px;
-  top: -5px;
-  right: -5px;
-}
-
-.splatter[data-splatter="1"] {
-  top: 15%;
-  left: 10%;
-  animation-delay: 0s;
-}
-
-.splatter[data-splatter="1"]::before {
+.particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
   background: var(--accent-1);
+  border-radius: 50%;
+  opacity: 0;
+  animation: particleFloat 3s ease-in-out infinite;
 }
 
-.splatter[data-splatter="1"]::after {
+.particle:nth-child(2n) {
   background: var(--accent-2);
 }
 
-.splatter[data-splatter="2"] {
-  top: 25%;
-  right: 12%;
-  animation-delay: 1.5s;
-}
-
-.splatter[data-splatter="2"]::before {
+.particle:nth-child(3n) {
   background: var(--accent-3);
 }
 
-.splatter[data-splatter="2"]::after {
-  background: var(--accent-4);
+@keyframes particleFloat {
+  0% {
+    transform: translateY(0) scale(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.8;
+    transform: translateY(-10px) scale(1);
+  }
+  80% {
+    opacity: 0.8;
+    transform: translateY(-30px) scale(1);
+  }
+  100% {
+    transform: translateY(-40px) scale(0);
+    opacity: 0;
+  }
 }
 
-.splatter[data-splatter="3"] {
-  bottom: 20%;
-  left: 15%;
-  animation-delay: 3s;
+/* ==================== FLOATING ACCENTS ==================== */
+.floatingAccents {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
 }
 
-.splatter[data-splatter="3"]::before {
-  background: var(--accent-5);
+.accent {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  opacity: 0.15;
+  filter: blur(40px);
+  animation: accentFloat 8s ease-in-out infinite;
 }
 
-.splatter[data-splatter="3"]::after {
-  background: var(--accent-6);
+.accent[data-accent="1"] {
+  background: radial-gradient(circle, var(--accent-1), transparent);
+  top: 10%;
+  left: 5%;
+  animation-delay: 0s;
 }
 
-.splatter[data-splatter="4"] {
-  bottom: 30%;
-  right: 18%;
-  animation-delay: 4.5s;
+.accent[data-accent="2"] {
+  background: radial-gradient(circle, var(--accent-2), transparent);
+  top: 15%;
+  right: 8%;
+  animation-delay: 2s;
 }
 
-.splatter[data-splatter="4"]::before {
-  background: var(--accent-7);
+.accent[data-accent="3"] {
+  background: radial-gradient(circle, var(--accent-3), transparent);
+  bottom: 12%;
+  left: 10%;
+  animation-delay: 4s;
 }
 
-.splatter[data-splatter="4"]::after {
-  background: var(--accent-8);
+.accent[data-accent="4"] {
+  background: radial-gradient(circle, var(--accent-4), transparent);
+  bottom: 18%;
+  right: 12%;
+  animation-delay: 6s;
 }
 
-@keyframes splatterFloat {
+@keyframes accentFloat {
   0%, 100% {
-    transform: translate(0, 0) rotate(0deg);
-    opacity: 0.4;
+    transform: translate(0, 0) scale(1);
+    opacity: 0.15;
   }
   50% {
-    transform: translate(-20px, -30px) rotate(180deg);
-    opacity: 0.6;
+    transform: translate(30px, -40px) scale(1.2);
+    opacity: 0.25;
   }
 }
 
 /* ==================== RESPONSIVE ==================== */
 @media (max-width: 768px) {
-  .card {
-    padding: 36px 28px;
-    gap: 28px;
+  .loadingCard {
+    padding: 48px 32px;
+    gap: 32px;
   }
 
-  .paletteWrapper {
-    width: 80px;
-    height: 80px;
+  .loaderWrapper {
+    width: 120px;
+    height: 120px;
   }
 
-  .paletteIcon {
-    font-size: 4rem;
+  .centerDot {
+    width: 16px;
+    height: 16px;
   }
 
-  .colorDot {
-    width: 12px;
-    height: 12px;
+  .message {
+    font-size: 1.5rem;
   }
 
-  .brushLoader {
-    max-width: 250px;
-  }
-
-  .brushIcon {
-    font-size: 2rem;
-  }
-
-  .quoteSection {
-    padding: 20px 24px;
-  }
-
-  .quoteIcon {
-    font-size: 1.3rem;
+  .subMessage {
+    font-size: 0.95rem;
   }
 }
 
 @media (max-width: 480px) {
-  .card {
-    padding: 28px 24px;
-    gap: 24px;
+  .loadingCard {
+    padding: 40px 24px;
+    gap: 28px;
   }
 
-  .paletteWrapper {
-    width: 70px;
-    height: 70px;
+  .loaderWrapper {
+    width: 100px;
+    height: 100px;
   }
 
-  .paletteIcon {
-    font-size: 3.5rem;
+  .ring {
+    border-width: 2px;
   }
 
-  .progressSection {
-    flex-direction: column;
-    gap: 8px;
+  .centerDot {
+    width: 14px;
+    height: 14px;
   }
 
-  .progressText {
-    text-align: center;
-    width: 100%;
+  .message {
+    font-size: 1.25rem;
+    min-height: 2rem;
   }
 
-  .quoteSection {
-    padding: 18px 20px;
+  .subMessage {
+    font-size: 0.875rem;
+  }
+
+  .progressBar {
+    height: 6px;
+  }
+
+  .progressPercent {
+    font-size: 0.875rem;
   }
 }
 
@@ -699,4 +466,13 @@
 [data-no-animations="true"] * {
   animation: none !important;
   transition: none !important;
+}
+
+[data-no-animations="true"] .ring {
+  animation: none !important;
+  opacity: 0.5;
+}
+
+[data-no-animations="true"] .progressGlow {
+  display: none;
 }
