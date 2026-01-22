@@ -108,16 +108,15 @@
 			{ "name": "Adobe After Effects", "level": 70 },
 			{ "name": "Adobe XD", "level": 80 },
 			{ "name": "Procreate", "level": 92 },
-			{ "name": "Figma", "level": 78 },
-			{ "name": "Computer Applications Technology", "level": 85 }
+			{ "name": "Figma", "level": 20 },
+			{ "name": "Computer Applications Technology", "level": 60 }
 		],
 		"soft": [
 			{ "name": "Strong Communication", "level": 90 },
 			{ "name": "Adaptability", "level": 95 },
 			{ "name": "Attention to Detail", "level": 93 },
 			{ "name": "Creative Thinking", "level": 97 },
-			{ "name": "Teamwork & Collaboration", "level": 88 },
-			{ "name": "Self-Motivation", "level": 92 }
+			{ "name": "Teamwork & Collaboration", "level": 88 }
 		]
 	},
 	"languages_detailed": [

@@ -114,8 +114,8 @@ function Bio() {
         </div>
       </section>
 
-      <div className={styles.contentGrid}>
-        {/* Education Section */}
+      {/* Education Section */}
+      <div className={styles.educationGrid}>
         <section 
           className={`${styles.section} ${activeSection === 'education' ? styles.sectionActive : ''}`}
           onMouseEnter={() => setActiveSection('education')}
@@ -176,8 +176,10 @@ function Bio() {
             ))}
           </div>
         </section>
+      </div>
 
-        {/* Skills Section */}
+      {/* Skills Section */}
+      <div className={styles.skillsGridWrapper}>
         <section 
           className={`${styles.section} ${activeSection === 'skills' ? styles.sectionActive : ''}`}
           onMouseEnter={() => setActiveSection('skills')}
@@ -255,7 +257,9 @@ function Bio() {
             </div>
           </div>
         </section>
+      </div>
 
+      <div className={styles.contentGrid}>
         {/* Personal Interests Section */}
         <section 
           className={`${styles.section} ${styles.sectionWide} ${activeSection === 'personal' ? styles.sectionActive : ''}`}

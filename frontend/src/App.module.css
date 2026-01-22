@@ -2,6 +2,7 @@
   position: relative;
   overflow-x: hidden;
   padding-top: 60px; /* Height of the Navigation Bar */
+  max-height: calc(100vh - 60px);
 }
 
 .pageContent {
