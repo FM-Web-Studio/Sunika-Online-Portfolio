@@ -8,7 +8,7 @@
 .cogButton {
   position: fixed;
   top: 10px;
-  right: 10px;
+  right: 20px;
   width: 50px;
   height: 50px;
   background: linear-gradient(
@@ -104,6 +104,7 @@
   top: 75px;
   right: 10px;
   min-width: 380px;
+  max-width: calc(100vw - 20px);
   background: linear-gradient(
     135deg,
     rgba(255, 255, 255, 0.45) 0%,
@@ -122,6 +123,7 @@
   animation: panelSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   z-index: 999;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 [data-theme="dark"] .settingsPanel {
@@ -238,6 +240,8 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .headerAccent {
@@ -467,6 +471,9 @@
   display: flex;
   flex-direction: column;
   gap: 3px;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .settingTitle {
@@ -476,6 +483,8 @@
   letter-spacing: 0.3px;
   margin: 0;
   transition: all 0.3s ease;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .settingCard[data-accent="1"]:hover .settingTitle {
@@ -494,6 +503,8 @@
   margin: 0;
   transition: all 0.3s ease;
   line-height: 1.4;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .settingCardHovered .settingSubtitle {
@@ -513,16 +524,18 @@
 /* ==================== RESPONSIVE DESIGN ==================== */
 @media (max-width: 768px) {
   .cogButton {
-    top: 16px;
-    right: 16px;
+    top: 7px;
+    right: 20px;
     width: 46px !important;
     height: 46px !important;
   }
 
   .settingsPanel {
-    min-width: 340px;
-    top: 80px;
+    min-width: min(340px, calc(100vw - 32px));
+    max-width: calc(100vw - 32px);
+    top: 70px;
     right: 16px;
+    left: auto;
     padding: 20px;
   }
 
@@ -546,25 +559,29 @@
 
 @media (max-width: 480px) {
   .cogButton {
-    top: 12px;
-    right: 12px;
-    width: 44px !important;
-    height: 44px !important;
+    top: 6px;
+    right: 16px;
+    width: 40px !important;
+    height: 40px !important;
   }
 
   .cogIcon {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
   }
 
   .settingsPanel {
-    min-width: calc(100vw - 24px);
-    right: 12px;
-    top: 70px;
-    padding: 18px;
+    min-width: auto;
+    width: calc(100vw - 16px);
+    max-width: calc(100vw - 16px);
+    right: 8px;
+    left: 8px;
+    top: 58px;
+    padding: 16px;
+    border-radius: 20px;
   }
 
   .panelTitle {
-    font-size: 1.125rem;
+    font-size: 1.075rem;
   }
 
   .settingsContent {
@@ -572,7 +589,7 @@
   }
 
   .settingCard {
-    padding: 13px 14px;
+    padding: 12px;
   }
 
   .settingMain {
@@ -580,19 +597,55 @@
   }
 
   .settingIconBox {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
   }
 
   .settingIcon {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
   }
 
   .settingTitle {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 
   .settingSubtitle {
-    font-size: 0.775rem;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .settingsPanel {
+    padding: 12px;
+    top: 56px;
+  }
+
+  .panelTitle {
+    font-size: 1rem;
+  }
+
+  .settingCard {
+    padding: 10px;
+  }
+
+  .settingMain {
+    gap: 10px;
+  }
+
+  .settingIconBox {
+    width: 32px;
+    height: 32px;
+  }
+
+  .settingIcon {
+    font-size: 1.05rem;
+  }
+
+  .settingTitle {
+    font-size: 0.85rem;
+  }
+
+  .settingSubtitle {
+    font-size: 0.7rem;
   }
 }

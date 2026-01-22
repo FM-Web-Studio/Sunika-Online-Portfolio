@@ -46,6 +46,7 @@
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 clamp(1rem, 3vw, 3rem);
+  padding-right: 80px;
 }
 
 /* ==================== LINK LIST ==================== */
@@ -396,6 +397,10 @@
     -webkit-backdrop-filter: blur(16px) saturate(180%);
   }
 
+  .navContent {
+    padding-right: 76px;
+  }
+
   .linkList {
     height: 60px;
     gap: 0.125rem;
@@ -445,6 +450,7 @@
 @media (max-width: 480px) {
   .navContent {
     padding: 0 0.75rem;
+    padding-right: 66px;
   }
 
   .linkList {

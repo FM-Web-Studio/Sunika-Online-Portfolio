@@ -93,31 +93,31 @@
 	},
 	"skills": {
 		"creative": [
-			"Painting (Acrylic, Watercolor, Oil)",
-			"Drawing (Pencil, Charcoal, Ink)",
-			"Digital Illustration",
-			"Mixed-media Art",
-			"Concept Art",
-			"Composition & Layout",
-			"Baking & Food Styling"
+			{ "name": "Painting (Acrylic, Watercolor, Oil)", "level": 95 },
+			{ "name": "Drawing (Pencil, Charcoal, Ink)", "level": 90 },
+			{ "name": "Digital Illustration", "level": 85 },
+			{ "name": "Mixed-media Art", "level": 88 },
+			{ "name": "Concept Art", "level": 82 },
+			{ "name": "Composition & Layout", "level": 87 },
+			{ "name": "Baking & Food Styling", "level": 75 }
 		],
 		"technical": [
-			"Adobe Photoshop",
-			"Adobe Illustrator",
-			"Adobe InDesign",
-			"Adobe After Effects",
-			"Adobe XD",
-			"Procreate",
-			"Figma",
-			"Computer Applications Technology"
+			{ "name": "Adobe Photoshop", "level": 90 },
+			{ "name": "Adobe Illustrator", "level": 88 },
+			{ "name": "Adobe InDesign", "level": 85 },
+			{ "name": "Adobe After Effects", "level": 70 },
+			{ "name": "Adobe XD", "level": 80 },
+			{ "name": "Procreate", "level": 92 },
+			{ "name": "Figma", "level": 78 },
+			{ "name": "Computer Applications Technology", "level": 85 }
 		],
 		"soft": [
-			"Strong Communication",
-			"Adaptability",
-			"Attention to Detail",
-			"Creative Thinking",
-			"Teamwork & Collaboration",
-			"Self-Motivation"
+			{ "name": "Strong Communication", "level": 90 },
+			{ "name": "Adaptability", "level": 95 },
+			{ "name": "Attention to Detail", "level": 93 },
+			{ "name": "Creative Thinking", "level": 97 },
+			{ "name": "Teamwork & Collaboration", "level": 88 },
+			{ "name": "Self-Motivation", "level": 92 }
 		]
 	},
 	"languages_detailed": [
