@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Mail, Phone, MapPin, Instagram, Calendar, Globe, Award,
+  MapPin, Calendar, Globe, Award,
   Briefcase, GraduationCap, Palette, Code, Heart, Star,
   Languages, TrendingUp
 } from 'lucide-react';
@@ -88,29 +88,6 @@ function Bio() {
           </div>
 
           <p className={styles.summary}>{bioData.summary}</p>
-
-          <div className={styles.contactBar}>
-            <a href={`mailto:${bioData.contact.email}`} className={styles.contactBtn} data-type="email">
-              <Mail size={20} />
-              <span>Email</span>
-            </a>
-            <a href={`tel:${bioData.contact.phone}`} className={styles.contactBtn} data-type="phone">
-              <Phone size={20} />
-              <span>Phone</span>
-            </a>
-            {bioData.contact.social.instagram && (
-              <a 
-                href={bioData.contact.social.instagram} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className={styles.contactBtn} 
-                data-type="social"
-              >
-                <Instagram size={20} />
-                <span>Instagram</span>
-              </a>
-            )}
-          </div>
         </div>
       </section>
 

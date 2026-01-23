@@ -1,0 +1,59 @@
+{
+	"fullName": "Sunika Lombard",
+	"tagline": "Let's Create Something Beautiful Together",
+	"offerings": [
+		"Custom paintings in acrylic, watercolor, and oil",
+		"Artisan baked goods including handcrafted meringues",
+		"Professional design services for branding and illustration",
+		"Visual communication and concept development"
+	],
+	"location": {
+		"city": "Irene",
+		"suburb": "Centurion",
+		"province": "Gauteng",
+		"country": "South Africa",
+		"displayText": "Irene, Centurion, Gauteng, South Africa"
+	},
+	"email": "lombardsunika@gmail.com",
+	"phone": "+27 66 253 2952",
+	"availability": "Available for freelance projects and collaborations",
+	"social": [
+		{
+			"platform": "Instagram",
+			"username": "@sunika83",
+			"url": "https://www.instagram.com/sunika83/",
+			"icon": "instagram",
+			"color": "#E4405F",
+			"description": "Follow my creative journey and latest artwork"
+		},
+		{
+			"platform": "LinkedIn",
+			"username": "Sunika Lombard",
+			"url": "",
+			"icon": "linkedin",
+			"color": "#0A66C2",
+			"description": "Connect professionally and view my career profile"
+		},
+		{
+			"platform": "TikTok",
+			"username": "@sunika_art",
+			"url": "",
+			"icon": "tiktok",
+			"color": "#000000",
+			"description": "Watch my creative process and art tutorials"
+		},
+		{
+			"platform": "Pinterest",
+			"username": "Sunika Lombard",
+			"url": "",
+			"icon": "pinterest",
+			"color": "#E60023",
+			"description": "Get inspired by my art boards and references"
+		}
+	],
+	"businessHours": {
+		"timezone": "SAST (GMT+2)",
+		"availability": "Monday - Friday: 9:00 AM - 5:00 PM"
+	},
+	"responseTime": "I typically respond within 24-48 hours"
+}
