@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import styles from './Bio.module.css';
 import bioData from '../../information/bio.json';
-import profileImage from '../../images/Profile.jpg';
+import profileImage from '../../images/Me/Profile.jpg';
 
 function Bio() {
   const [activeSection, setActiveSection] = useState(null);

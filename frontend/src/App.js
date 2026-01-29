@@ -13,6 +13,7 @@ import styles from './App.module.css';
 const Home = React.lazy(() => import('./pages/Home'));
 const Bio = React.lazy(() => import('./pages/Bio'));
 const Connect = React.lazy(() => import('./pages/Connect'));
+const Gallery = React.lazy(() => import('./pages/Gallery'));
 
 // ============================================================================
 // NAVIGATION STRUCTURE
@@ -25,6 +26,10 @@ const NAVIGATION_PAGES = [
   {
     label: 'Bio',
     to: '/bio'
+  },
+  {
+    label: 'Gallery',
+    to: '/gallery'
   },
   {
     label: 'Connect',
@@ -95,6 +100,7 @@ const AppContent = () => {
       <Route path="/" element={<MemoizedAppLayout />}>
         <Route index element={<Home />} />
         <Route path="/bio" element={<Bio />} />
+        <Route path="/gallery" element={<Gallery />} />
         <Route path="/connect" element={<Connect />} />
 
         {/* 404 Not Found - handle unknown routes inside app layout */}

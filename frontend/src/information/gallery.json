@@ -1,0 +1,34 @@
+{
+  "paintings": [
+    {
+      "number": 1,
+      "title": "Painting 1",
+      "description": "Description for painting 1",
+      "price": 0,
+      "sold": false
+    },
+    {
+      "number": 2,
+      "title": "Painting 2",
+      "description": "Description for painting 2",
+      "price": 0,
+      "sold": true
+    }
+  ],
+  "drawings": [
+    {
+      "number": 1,
+      "title": "Drawing 1",
+      "description": "Description for drawing 1",
+      "price": 0,
+      "sold": true
+    },
+    {
+      "number": 2,
+      "title": "Drawing 2",
+      "description": "Description for drawing 2",
+      "price": 0,
+      "sold": false
+    }
+  ]
+}
