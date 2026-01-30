@@ -173,10 +173,10 @@ const Home = () => {
             </p>
 
             <div className={styles.ctaButtons}>
-              <a href="/portfolio" className={styles.btnPrimary}>
-                View Portfolio
+              <a href="/bio" className={styles.btnPrimary}>
+                About Me
               </a>
-              <a href="/contact" className={styles.btnSecondary}>
+              <a href="/connect" className={styles.btnSecondary}>
                 Get in Touch
               </a>
             </div>
