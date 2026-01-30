@@ -524,7 +524,7 @@
 /* ==================== RESPONSIVE DESIGN ==================== */
 @media (max-width: 768px) {
   .cogButton {
-    top: 7px;
+    top: 12px;
     right: 20px;
     width: 46px !important;
     height: 46px !important;
@@ -560,7 +560,7 @@
 @media (max-width: 480px) {
   .cogButton {
     top: 6px;
-    right: 16px;
+    right: 12px;
     width: 40px !important;
     height: 40px !important;
   }
