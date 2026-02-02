@@ -32,7 +32,7 @@ const Gallery = () => {
     const images = {};
     
     try {
-      const context = require.context('../../images', true, /\.(png|jpe?g|svg|webp)$/);
+      const context = require.context('../../images/Gallery', true, /\.(png|jpe?g|svg|webp)$/);
       context.keys().forEach((key) => {
         const folderMatch = key.match(/^\.\/([^/]+)\//);
         if (folderMatch && folderMatch[1].toLowerCase() === categoryKey.toLowerCase()) {
