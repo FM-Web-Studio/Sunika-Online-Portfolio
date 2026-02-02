@@ -70,63 +70,102 @@ function Connect() {
 
       {/* Main Content Grid */}
       <div className={styles.contentWrapper}>
-        {/* What I Offer Section */}
-        <section className={styles.offeringsSection}>
-          <div className={styles.offeringsHeader}>
-            <Briefcase size={24} />
-            <h2>What I Offer</h2>
+        {/* How Ordering Works Section */}
+        <section className={styles.orderingSection}>
+          <div className={styles.orderingHeader}>
+            <Briefcase size={28} />
+            <h2>How Ordering Works</h2>
           </div>
-          <ul className={styles.offeringsList}>
-            {contactData.offerings.map((offering, index) => (
-              <li key={index} className={styles.offeringItem} data-index={index}>
-                <CheckCircle2 size={20} />
-                <span>{offering}</span>
-              </li>
-            ))}
-          </ul>
+          <div className={styles.orderingContent}>
+            <p className={styles.orderingIntro}>
+              Ready to commission a custom artwork or order artisan baked goods? Here's how to get started:
+            </p>
+            
+            <div className={styles.orderingSteps}>
+              <div className={styles.step}>
+                <div className={styles.stepNumber}>1</div>
+                <div className={styles.stepContent}>
+                  <h3>Browse My Work</h3>
+                  <p>Explore the Gallery page to see available artworks. Note: Sold items cannot be ordered, but you can request similar pieces.</p>
+                </div>
+              </div>
+
+              <div className={styles.step}>
+                <div className={styles.stepNumber}>2</div>
+                <div className={styles.stepContent}>
+                  <h3>Request a Commission</h3>
+                  <p>Whether you want a custom painting, drawing, baking order, or design work, I'm here to bring your vision to life.</p>
+                </div>
+              </div>
+
+              <div className={styles.step}>
+                <div className={styles.stepNumber}>3</div>
+                <div className={styles.stepContent}>
+                  <h3>Get in Touch</h3>
+                  <p>Contact me via WhatsApp, phone call, or any social media platform below to discuss your project, pricing, and timeline.</p>
+                </div>
+              </div>
+
+              <div className={styles.step}>
+                <div className={styles.stepNumber}>4</div>
+                <div className={styles.stepContent}>
+                  <h3>We Create Together</h3>
+                  <p>Once we agree on details, I'll start creating your custom piece with regular updates throughout the process.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.orderingNote}>
+              <CheckCircle2 size={20} />
+              <p><strong>Important:</strong> Sold artworks from the gallery cannot be reordered, but I'm happy to create similar commissioned pieces tailored to your preferences.</p>
+            </div>
+          </div>
         </section>
 
-        {/* Contact Cards Grid */}
-        <div className={styles.contactGrid}>
-          {/* Email Card */}
-          <a href={`mailto:${contactData.email}`} className={styles.contactCard} data-type="email">
-            <div className={styles.cardIcon}>
-              <Mail size={24} />
-            </div>
-            <div className={styles.cardContent}>
-              <span className={styles.cardLabel}>Email Me</span>
-              <span className={styles.cardValue}>{contactData.email}</span>
-            </div>
-            <ArrowRight className={styles.cardArrow} size={20} />
-          </a>
+        {/* Contact Methods Section */}
+        <section className={styles.contactSection}>
+          <h2 className={styles.contactTitle}>Get in Touch</h2>
+          <div className={styles.contactGrid}>
+            {/* Email Card */}
+            <a href={`mailto:${contactData.email}`} className={styles.contactCard} data-type="email">
+              <div className={styles.cardIcon}>
+                <Mail size={24} />
+              </div>
+              <div className={styles.cardContent}>
+                <span className={styles.cardLabel}>Email Me</span>
+                <span className={styles.cardValue}>{contactData.email}</span>
+              </div>
+              <ArrowRight className={styles.cardArrow} size={20} />
+            </a>
 
-          {/* Phone Card */}
-          <a href={`tel:${contactData.phone}`} className={styles.contactCard} data-type="phone">
-            <div className={styles.cardIcon}>
-              <Phone size={24} />
-            </div>
-            <div className={styles.cardContent}>
-              <span className={styles.cardLabel}>Call Me</span>
-              <span className={styles.cardValue}>{contactData.phone}</span>
-            </div>
-            <ArrowRight className={styles.cardArrow} size={20} />
-          </a>
+            {/* Phone Card */}
+            <a href={`tel:${contactData.phone}`} className={styles.contactCard} data-type="phone">
+              <div className={styles.cardIcon}>
+                <Phone size={24} />
+              </div>
+              <div className={styles.cardContent}>
+                <span className={styles.cardLabel}>Call Me</span>
+                <span className={styles.cardValue}>{contactData.phone}</span>
+              </div>
+              <ArrowRight className={styles.cardArrow} size={20} />
+            </a>
 
-          {/* Location Card */}
-          <div className={styles.contactCard} data-type="location">
-            <div className={styles.cardIcon}>
-              <MapPin size={24} />
-            </div>
-            <div className={styles.cardContent}>
-              <span className={styles.cardLabel}>Located In</span>
-              <span className={styles.cardValue}>{contactData.location.displayText}</span>
+            {/* Location Card */}
+            <div className={styles.contactCard} data-type="location">
+              <div className={styles.cardIcon}>
+                <MapPin size={24} />
+              </div>
+              <div className={styles.cardContent}>
+                <span className={styles.cardLabel}>Located In</span>
+                <span className={styles.cardValue}>{contactData.location.displayText}</span>
+              </div>
             </div>
           </div>
-        </div>
+        </section>
 
         {/* Social Media Section */}
         <section className={styles.socialSection}>
-          <h2 className={styles.socialTitle}>Find Me Online</h2>
+          <h2 className={styles.socialTitle}>Connect on Social Media</h2>
           <div className={styles.socialGrid}>
             {activeSocial.map((platform, index) => (
               <a

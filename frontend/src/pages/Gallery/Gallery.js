@@ -3,14 +3,27 @@ import ReactDOM from 'react-dom';
 import { Sparkles, LayoutGrid, List, Search, X } from 'lucide-react';
 import styles from './Gallery.module.css';
 import galleryData from '../../information/gallery.json';
+import { LazyImage } from '../../components';
+
+// ============================================
+// GALLERY COMPONENT
+// ============================================
 
 const Gallery = () => {
+  // ----------------------------------------
+  // State Management
+  // ----------------------------------------
   const [activeCategory, setActiveCategory] = useState('all');
   const [isVisible, setIsVisible] = useState(false);
   const [viewMode, setViewMode] = useState('grid');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedArtwork, setSelectedArtwork] = useState(null);
 
+  // ----------------------------------------
+  // Effects
+  // ----------------------------------------
+  
+  // Trigger entrance animation
   useEffect(() => {
     setIsVisible(true);
   }, []);
@@ -27,6 +40,10 @@ const Gallery = () => {
     };
   }, [selectedArtwork]);
 
+  // ----------------------------------------
+  // Image Loading Functions
+  // ----------------------------------------
+  
   // Dynamically import images from all categories
   const importCategoryImages = (categoryKey) => {
     const images = {};
@@ -48,6 +65,10 @@ const Gallery = () => {
     return images;
   };
 
+  // ----------------------------------------
+  // Data Processing
+  // ----------------------------------------
+  
   // Build artwork collection dynamically
   const allArtwork = useMemo(() => {
     const artwork = [];
@@ -97,6 +118,10 @@ const Gallery = () => {
     return filtered;
   }, [allArtwork, activeCategory, searchTerm]);
 
+  // ----------------------------------------
+  // Render
+  // ----------------------------------------
+  
   return (
     <div className={`${styles.container} ${isVisible ? styles.visible : ''}`}>
       {/* Hero Section */}
@@ -171,7 +196,12 @@ const Gallery = () => {
           >
             <div className={styles.artworkImage}>
               {artwork.image ? (
-                <img src={artwork.image} alt={artwork.title} />
+                <LazyImage 
+                  src={artwork.image} 
+                  alt={artwork.title}
+                  threshold={0.1}
+                  rootMargin="100px"
+                />
               ) : (
                 <div className={styles.placeholder}>
                   <Sparkles size={48} />
@@ -192,7 +222,13 @@ const Gallery = () => {
                 )}
               </div>
               <p className={styles.artworkDescription}>{artwork.description}</p>
-              <span className={styles.artworkCategory}>{artwork.categoryDisplay}</span>
+              
+              <div className={styles.artworkMeta}>
+                {artwork.dimensions && (
+                  <span className={styles.artworkDimensions}>{artwork.dimensions}</span>
+                )}
+                <span className={styles.artworkCategory}>{artwork.categoryDisplay}</span>
+              </div>
             </div>
           </article>
         ))}
@@ -214,7 +250,12 @@ const Gallery = () => {
           <div className={styles.lightboxContent} onClick={(e) => e.stopPropagation()}>
             <div className={styles.lightboxImageWrapper}>
               {selectedArtwork.image && (
-                <img src={selectedArtwork.image} alt={selectedArtwork.title} />
+                <LazyImage 
+                  src={selectedArtwork.image} 
+                  alt={selectedArtwork.title}
+                  threshold={0}
+                  rootMargin="0px"
+                />
               )}
               {selectedArtwork.sold && (
                 <div className={styles.soldBadge}>
@@ -226,8 +267,17 @@ const Gallery = () => {
               <span className={styles.lightboxCategory}>{selectedArtwork.categoryDisplay}</span>
               <h2 className={styles.lightboxTitle}>{selectedArtwork.title}</h2>
               <p className={styles.lightboxDescription}>{selectedArtwork.description}</p>
+              
+              {selectedArtwork.dimensions && (
+                <div className={styles.lightboxDimensions}>
+                  <strong>Dimensions:</strong> {selectedArtwork.dimensions}
+                </div>
+              )}
+              
               {selectedArtwork.price > 0 && !selectedArtwork.sold && (
-                <div className={styles.lightboxPrice}>R{selectedArtwork.price.toLocaleString()}</div>
+                <div className={styles.lightboxPrice}>
+                  <strong>Price:</strong> R{selectedArtwork.price.toLocaleString()}
+                </div>
               )}
             </div>
           </div>

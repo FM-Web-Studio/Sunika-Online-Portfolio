@@ -7,6 +7,7 @@ import {
 import styles from './Bio.module.css';
 import bioData from '../../information/bio.json';
 import profileImage from '../../images/Me/Profile.jpg';
+import { LazyImage } from '../../components';
 
 function Bio() {
   const [activeSection, setActiveSection] = useState(null);
@@ -59,10 +60,12 @@ function Bio() {
         <div className={styles.heroContent}>
           <div className={styles.profileImageWrapper}>
             <div className={styles.profileImageBorder} />
-            <img 
+            <LazyImage 
               src={profileImage} 
               alt={bioData.fullName}
               className={styles.profileImage}
+              threshold={0}
+              rootMargin="0px"
             />
             <div className={styles.profileBadge}>
               <Star size={16} fill="currentColor" />

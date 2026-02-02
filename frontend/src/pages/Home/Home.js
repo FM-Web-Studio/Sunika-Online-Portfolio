@@ -19,6 +19,10 @@ const Home = () => {
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
 
+    // Performance optimization: reduce particle count on mobile
+    const isMobile = window.innerWidth < 768;
+    const isTablet = window.innerWidth < 1024;
+
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -27,7 +31,12 @@ const Home = () => {
 
     const initParticles = () => {
       particlesRef.current = [];
-      const count = Math.floor((canvas.width * canvas.height) / 12000);
+      // Adaptive particle count based on device
+      let divisor = 12000;
+      if (isMobile) divisor = 20000;
+      else if (isTablet) divisor = 15000;
+      
+      const count = Math.floor((canvas.width * canvas.height) / divisor);
       
       for (let i = 0; i < count; i++) {
         particlesRef.current.push({
@@ -230,6 +239,35 @@ const Home = () => {
                 <p className={styles.serviceDesc}>
                   Handcrafted meringues and custom baked goods made with care.
                 </p>
+              </div>
+            </div>
+          </section>
+
+          <div className={styles.divider}></div>
+
+          {/* Stats Section */}
+          <section className={styles.statsSection}>
+            <h2 className={styles.sectionTitle}>By the Numbers</h2>
+            
+            <div className={styles.statsGrid}>
+              <div className={styles.statCard}>
+                <div className={styles.statValue}>45+</div>
+                <div className={styles.statLabel}>Artworks Created</div>
+              </div>
+
+              <div className={styles.statCard}>
+                <div className={styles.statValue}>4+</div>
+                <div className={styles.statLabel}>Design Projects</div>
+              </div>
+
+              <div className={styles.statCard}>
+                <div className={styles.statValue}>100%</div>
+                <div className={styles.statLabel}>Handcrafted</div>
+              </div>
+
+              <div className={styles.statCard}>
+                <div className={styles.statValue}>∞</div>
+                <div className={styles.statLabel}>Creativity</div>
               </div>
             </div>
           </section>

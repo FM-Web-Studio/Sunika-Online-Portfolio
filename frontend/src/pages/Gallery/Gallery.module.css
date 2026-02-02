@@ -462,6 +462,25 @@
   align-self: flex-start;
 }
 
+.artworkMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.artworkDimensions {
+  font-size: 0.85rem;
+  color: var(--primary-text-color);
+  opacity: 0.6;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.list .artworkDimensions {
+  font-size: 0.95rem;
+}
+
 /* ==================== EMPTY STATE ==================== */
 .emptyState {
   display: flex;
@@ -625,13 +644,40 @@
   margin: 0;
 }
 
-.lightboxPrice {
-  font-size: 2.5rem;
-  font-weight: 800;
+.lightboxDimensions {
+  font-size: 1rem;
+  color: var(--primary-text-color);
+  opacity: 0.7;
+  padding: 1rem 1.5rem;
+  background: var(--background-2);
+  border-radius: 8px;
+  border-left: 3px solid var(--accent-1);
+}
+
+.lightboxDimensions strong {
   color: var(--accent-1);
-  margin-top: auto;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--background-3);
+  font-weight: 700;
+  margin-right: 0.5rem;
+}
+
+.lightboxPrice {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent-1);
+  padding: 1rem 1.5rem;
+  background: var(--accent-1-background);
+  border-radius: 8px;
+  border-left: 3px solid var(--accent-1);
+}
+
+.lightboxPrice strong {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  opacity: 0.8;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 /* ==================== RESPONSIVE DESIGN ==================== */

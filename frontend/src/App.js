@@ -14,6 +14,7 @@ const Home = React.lazy(() => import('./pages/Home'));
 const Bio = React.lazy(() => import('./pages/Bio'));
 const Connect = React.lazy(() => import('./pages/Connect'));
 const Gallery = React.lazy(() => import('./pages/Gallery'));
+const GraphicDesign = React.lazy(() => import('./pages/Graphic Design'));
 
 // ============================================================================
 // NAVIGATION STRUCTURE
@@ -30,6 +31,10 @@ const NAVIGATION_PAGES = [
   {
     label: 'Gallery',
     to: '/gallery'
+  },
+  {
+    label: 'Graphic Design',
+    to: '/graphic-design'
   },
   {
     label: 'Connect',
@@ -101,6 +106,7 @@ const AppContent = () => {
         <Route index element={<Home />} />
         <Route path="/bio" element={<Bio />} />
         <Route path="/gallery" element={<Gallery />} />
+        <Route path="/graphic-design" element={<GraphicDesign />} />
         <Route path="/connect" element={<Connect />} />
 
         {/* 404 Not Found - handle unknown routes inside app layout */}

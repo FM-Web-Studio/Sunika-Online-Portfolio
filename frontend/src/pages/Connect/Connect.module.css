@@ -168,6 +168,145 @@
   gap: clamp(2rem, 4vw, 3rem);
 }
 
+/* ==================== ORDERING SECTION ==================== */
+.orderingSection {
+  background: linear-gradient(135deg, var(--background-2), var(--background-3));
+  backdrop-filter: blur(20px);
+  border: 2px solid var(--accent-1);
+  border-radius: 24px;
+  padding: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 2rem;
+  animation: slideInUp 0.8s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.orderingHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--accent-1);
+}
+
+.orderingHeader h2 {
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  font-weight: 700;
+  margin: 0;
+  color: var(--primary-text-color);
+}
+
+.orderingContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.orderingIntro {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: var(--primary-text-color);
+  opacity: 0.9;
+  margin: 0;
+}
+
+.orderingSteps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.step {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--background-1);
+  border-radius: 16px;
+  border: 1px solid var(--background-3);
+  transition: all 0.3s ease;
+}
+
+.step:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  border-color: var(--accent-1);
+}
+
+.stepNumber {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(255, 47, 146, 0.3);
+}
+
+.stepContent {
+  flex: 1;
+}
+
+.stepContent h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+  color: var(--primary-text-color);
+}
+
+.stepContent p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--primary-text-color);
+  opacity: 0.7;
+  margin: 0;
+}
+
+.orderingNote {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: var(--accent-1-background);
+  border-left: 4px solid var(--accent-1);
+  border-radius: 12px;
+}
+
+.orderingNote svg {
+  flex-shrink: 0;
+  color: var(--accent-1);
+  margin-top: 2px;
+}
+
+.orderingNote p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--primary-text-color);
+  opacity: 0.9;
+}
+
+.orderingNote strong {
+  color: var(--accent-1);
+  font-weight: 600;
+}
+
 /* ==================== OFFERINGS SECTION ==================== */
 .offeringsSection {
   background: linear-gradient(135deg, var(--accent-1-background), var(--accent-2-background));
@@ -280,12 +419,25 @@
   line-height: 1.5;
 }
 
+/* ==================== CONTACT SECTION ==================== */
+.contactSection {
+  margin-bottom: 2rem;
+  animation: fadeInUp 0.8s ease-out 0.1s backwards;
+}
+
+.contactTitle {
+  font-size: clamp(1.75rem, 3.5vw, 2.25rem);
+  font-weight: 700;
+  margin: 0 0 2rem;
+  color: var(--primary-text-color);
+  text-align: center;
+}
+
 /* ==================== CONTACT CARDS GRID ==================== */
 .contactGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.25rem;
-  animation: fadeInUp 0.8s ease-out 0.2s backwards;
 }
 
 .contactCard {
@@ -584,6 +736,10 @@
 
 /* ==================== RESPONSIVE DESIGN ==================== */
 @media (max-width: 1024px) {
+  .orderingSteps {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+
   .offeringsList {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   }
@@ -718,11 +874,18 @@
   .heroIcon,
   .mainTitle,
   .heroContent,
+  .orderingSection,
   .offeringsSection,
   .contactGrid,
   .socialSection,
-  .offeringItem {
+  .offeringItem,
+  .step {
     animation: none;
+  }
+
+  .step:hover,
+  .socialCard:hover {
+    transform: none;
   }
 
   .socialCard::before {

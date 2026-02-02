@@ -380,6 +380,71 @@
   margin: 0;
 }
 
+/* ==================== STATS SECTION ==================== */
+.statsSection {
+  padding: 48px 0 24px;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 24px;
+}
+
+.statCard {
+  text-align: center;
+  padding: 32px 20px;
+  background: linear-gradient(135deg, var(--background-1), var(--background-2));
+  border: 1px solid var(--accent-1-background);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.statCard::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, var(--accent-1-background) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.statCard:hover::before {
+  opacity: 1;
+}
+
+.statCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 48px var(--accent-1-background);
+  border-color: var(--accent-1);
+}
+
+.statValue {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.statLabel {
+  font-size: clamp(0.875rem, 1.5vw, 1rem);
+  color: var(--primary-text-color);
+  opacity: 0.7;
+  font-weight: 500;
+  position: relative;
+  z-index: 1;
+}
+
 /* ==================== RESPONSIVE ==================== */
 @media (max-width: 768px) {
   .homeWrapper {
@@ -417,6 +482,15 @@
   .servicesGrid {
     grid-template-columns: 1fr;
     gap: 20px;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .statCard {
+    padding: 24px 16px;
   }
 
   .serviceCard {
@@ -504,11 +578,45 @@
 [data-no-animations="true"] .ctaButtons,
 [data-no-animations="true"] .badgeDot,
 [data-no-animations="true"] .orb1,
-[data-no-animations="true"] .orb2 {
+[data-no-animations="true"] .orb2,
+[data-no-animations="true"] .statCard,
+[data-no-animations="true"] .serviceCard {
   animation: none !important;
 }
 
 [data-no-animations="true"] .content {
   opacity: 1 !important;
   transform: none !important;
+}
+
+[data-no-animations="true"] .serviceCard:hover,
+[data-no-animations="true"] .statCard:hover {
+  transform: none !important;
+}
+
+/* ==================== ACCESSIBILITY ==================== */
+@media (prefers-reduced-motion: reduce) {
+  .badge,
+  .mainTitle,
+  .subtitle,
+  .description,
+  .ctaButtons,
+  .badgeDot,
+  .orb1,
+  .orb2,
+  .statCard,
+  .serviceCard {
+    animation: none !important;
+  }
+
+  .content {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none;
+  }
+
+  .serviceCard:hover,
+  .statCard:hover {
+    transform: translateY(-2px) !important;
+  }
 }
