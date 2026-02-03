@@ -4,21 +4,26 @@ import { NotFound, Loading } from './pages';
 import { NavigationBar, Settings } from './components';
 import { useTheme } from './hooks';
 
-/* Styling */
+// ============================================
+// IMPORTS - STYLING
+// ============================================
+
 import styles from './App.module.css';
 
-// ============================================================================
-// EAGER LOADED COMPONENTS
-// ============================================================================
+// ============================================
+// LAZY LOADED PAGE COMPONENTS
+// ============================================
+
 const Home = React.lazy(() => import('./pages/Home'));
 const Bio = React.lazy(() => import('./pages/Bio'));
 const Connect = React.lazy(() => import('./pages/Connect'));
 const Gallery = React.lazy(() => import('./pages/Gallery'));
 const GraphicDesign = React.lazy(() => import('./pages/Graphic Design'));
 
-// ============================================================================
-// NAVIGATION STRUCTURE
-// ============================================================================
+// ============================================
+// NAVIGATION CONFIGURATION
+// ============================================
+
 const NAVIGATION_PAGES = [
   {
     label: 'Home',
@@ -42,19 +47,30 @@ const NAVIGATION_PAGES = [
   },
 ];
 
-// ============================================================================
+// ============================================
 // LOADING FALLBACK COMPONENT
-// ============================================================================
+// ============================================
+
 const LoadingFallback = () => <Loading />;
 
-// ============================================================================
+// ============================================
 // APP LAYOUT COMPONENT
-// ============================================================================
+// ============================================
+// Main layout wrapper with navigation and settings
+
 const AppLayout = () => {
+  // ----------------------------------------
+  // Hooks
+  // ----------------------------------------
+  
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
 
-  // Navigation handlers - memoize to prevent recreation
+  // ----------------------------------------
+  // Navigation Handlers
+  // ----------------------------------------
+  // Memoize to prevent recreation
+  
   const handleNavigate = useCallback((to) => {
     if (to) navigate(to);
   }, [navigate]);
@@ -67,8 +83,10 @@ const AppLayout = () => {
     })),
     [navigate]
   );
-
-  return (
+  // ----------------------------------------
+  // Render
+  // ----------------------------------------
+    return (
     <div className={styles.app}>
       <NavigationBar
         links={navigationLinks}
@@ -93,12 +111,17 @@ const AppLayout = () => {
   );
 };
 
-// Memoize AppLayout to prevent unnecessary re-renders
+// ----------------------------------------
+// Memoize AppLayout
+// ----------------------------------------
+
 const MemoizedAppLayout = React.memo(AppLayout);
 
-// ============================================================================
+// ============================================
 // APP CONTENT COMPONENT
-// ============================================================================
+// ============================================
+// Route configuration
+
 const AppContent = () => {
   return (
     <Routes>
@@ -116,16 +139,20 @@ const AppContent = () => {
   );
 };
 
-// ============================================================================
+// ============================================
 // ROOT APP COMPONENT
-// ============================================================================
+// ============================================
+// Initialize theme and render app content
+
 const App = () => {
-  // Initialize theme at the root level so it applies to all routes
+  // Initialize theme at root level
   useTheme();
 
-  return (
-    <AppContent />
-  );
+  return <AppContent />;
 };
+
+// ============================================
+// EXPORTS
+// ============================================
 
 export default App;

@@ -4,13 +4,20 @@ import { HashRouter, useNavigate, useLocation } from 'react-router-dom';
 import App from './App';
 import { ErrorBoundary } from './components';
 
-/* Styling  */
+// ============================================
+// IMPORTS - STYLING
+// ============================================
+
 import './styles/Theme.css';
 import './styles/Components.css';
 import './styles/Wrappers.css';
 
+// ============================================
+// ERROR BOUNDARY WRAPPER
+// ============================================
+// Wraps app with error boundary that uses router hooks
+
 function ErrorBoundaryWrapper({ children }) {
-  // hooks must be used inside Router; this wrapper will be rendered inside <BrowserRouter>
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -26,8 +33,11 @@ function ErrorBoundaryWrapper({ children }) {
   );
 }
 
-// If the app is served on static hosting or visited via a pathname (no hash),
-// map the pathname to a hash-based route so `HashRouter` can handle it.
+// ============================================
+// HASH ROUTING SETUP
+// ============================================
+// Map pathname to hash-based route for static hosting
+
 (() => {
   try {
     // Known repo/site bases to map into hash routing
@@ -50,11 +60,15 @@ function ErrorBoundaryWrapper({ children }) {
   }
 })();
 
+// ============================================
+// RENDER APPLICATION
+// ============================================
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <HashRouter>
-      {/* ErrorBoundaryWrapper must be inside BrowserRouter so hooks work */}
+      {/* ErrorBoundaryWrapper must be inside HashRouter so hooks work */}
       <ErrorBoundaryWrapper>
         <App />
       </ErrorBoundaryWrapper>

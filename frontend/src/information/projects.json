@@ -10,14 +10,6 @@
     },
     {
       "id": 2,
-      "name": "Nomad Magazine",
-      "folder": "Nomad Magazine",
-      "description": "Editorial design project featuring layout design, typography, and visual storytelling for Nomad Magazine. A comprehensive magazine spread showcasing travel, culture, and lifestyle content.",
-      "category": "Editorial Design",
-      "year": "2023"
-    },
-    {
-      "id": 3,
       "name": "Random Designs",
       "folder": "Random Designs",
       "description": "An eclectic mix of experimental design work, illustrations, and creative explorations. This collection showcases versatility and creative freedom across various design disciplines.",
@@ -25,7 +17,7 @@
       "year": "2022-2024"
     },
     {
-      "id": 4,
+      "id": 3,
       "name": "Sugar Packaging",
       "folder": "Sugar Packaging",
       "description": "Product packaging design for a sugar brand, featuring label design, typography, and visual branding. This project demonstrates attention to consumer packaging and brand consistency.",

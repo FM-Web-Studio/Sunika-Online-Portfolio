@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { Sparkles, LayoutGrid, List, Search, X } from 'lucide-react';
+
+// ============================================
+// IMPORTS - DATA & COMPONENTS
+// ============================================
+
 import styles from './Gallery.module.css';
 import galleryData from '../../information/gallery.json';
 import { LazyImage } from '../../components';
@@ -8,6 +13,8 @@ import { LazyImage } from '../../components';
 // ============================================
 // GALLERY COMPONENT
 // ============================================
+// Main gallery page with filtering, search, and lightbox
+// Displays artwork with lazy-loaded images and multiple view modes
 
 const Gallery = () => {
   // ----------------------------------------
@@ -287,5 +294,9 @@ const Gallery = () => {
     </div>
   );
 };
+
+// ============================================
+// EXPORTS
+// ============================================
 
 export default Gallery;

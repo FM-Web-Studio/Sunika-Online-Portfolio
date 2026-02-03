@@ -1,13 +1,26 @@
 import React from 'react';
 import { useTheme } from '../../hooks/useTheme';
 
-/* Styling */
+// ============================================
+// IMPORTS - STYLING
+// ============================================
+
 import styles from './ErrorBoundary.module.css';
 import '../../styles/Theme.css';
 import '../../styles/Components.css';
 import '../../styles/Wrappers.css';
 
+// ============================================
+// ERROR BOUNDARY INNER COMPONENT
+// ============================================
+// Class-based component that catches JavaScript errors
+// in child components and displays fallback UI
+
 class ErrorBoundaryInner extends React.Component {
+  // ----------------------------------------
+  // Constructor & State
+  // ----------------------------------------
+  
   constructor(props) {
     super(props);
     this.state = { 
@@ -17,17 +30,27 @@ class ErrorBoundaryInner extends React.Component {
     };
   }
 
+  // ----------------------------------------
+  // Lifecycle Methods
+  // ----------------------------------------
+  
   static getDerivedStateFromError(error) {
+    // Update state so the next render shows the fallback UI
     return { hasError: true };
   }
 
   componentDidCatch(error, errorInfo) {
+    // Log error details to state for display
     this.setState({
       error,
       errorInfo
     });
   }
 
+  // ----------------------------------------
+  // Event Handlers
+  // ----------------------------------------
+  
   handleReload = () => {
     window.location.reload();
   };
@@ -36,6 +59,10 @@ class ErrorBoundaryInner extends React.Component {
     window.location.href = '/';
   };
 
+  // ----------------------------------------
+  // Render
+  // ----------------------------------------
+  
   render() {
     if (this.state.hasError) {
       const { theme } = this.props;
@@ -141,10 +168,18 @@ class ErrorBoundaryInner extends React.Component {
   }
 }
 
-// Wrapper to provide theme
+// ============================================
+// ERROR BOUNDARY WRAPPER
+// ============================================
+// Functional wrapper to inject theme context
+
 const ErrorBoundary = (props) => {
   const { theme } = useTheme();
   return <ErrorBoundaryInner {...props} theme={theme} />;
 };
+
+// ============================================
+// EXPORTS
+// ============================================
 
 export default ErrorBoundary;

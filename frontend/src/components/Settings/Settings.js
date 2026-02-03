@@ -5,30 +5,48 @@ import { FaStopwatch } from 'react-icons/fa';
 import ThemeSwitch from '../Theme Switch';
 import ReduceAnimationsSwitch from '../Reduce Animations Switch';
 
-/* Styling */
+// ============================================
+// IMPORTS - STYLING
+// ============================================
+
 import styles from "./Settings.module.css";
 import '../../styles/Theme.css';
 import '../../styles/Components.css';
 import '../../styles/Wrappers.css';
 
-/**
- * Settings component with floating cog icon
- * Features morphing panel with liquid glass effect
- */
+// ============================================
+// SETTINGS COMPONENT
+// ============================================
+// Floating settings panel with morphing animations
+// Features liquid glass effect and gradient backgrounds
+
 const Settings = function Settings({ 
   theme,
   toggleTheme,
   cogSize = 50,
   className = ""
 }) {
+  // ----------------------------------------
+  // State & Refs
+  // ----------------------------------------
+  
   const [menuOpen, setMenuOpen] = useState(false);
   const [hoveredSetting, setHoveredSetting] = useState(null);
   const containerRef = useRef();
 
+  // ----------------------------------------
+  // Event Handlers
+  // ----------------------------------------
+  
   const handleCogClick = () => {
     setMenuOpen(prev => !prev);
   };
 
+  // ----------------------------------------
+  // Effects
+  // ----------------------------------------
+  // Handle click outside to close menu
+  
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (containerRef.current && !containerRef.current.contains(event.target)) {
@@ -46,6 +64,7 @@ const Settings = function Settings({
     };
   }, [menuOpen]);
 
+  // Handle escape key to close menu
   useEffect(() => {
     const handleEscape = (event) => {
       if (event.key === 'Escape') {
@@ -58,6 +77,10 @@ const Settings = function Settings({
     return () => document.removeEventListener('keydown', handleEscape);
   }, []);
 
+  // ----------------------------------------
+  // Render
+  // ----------------------------------------
+  
   return (
     <div className={`${styles.settingsContainer} ${className}`} ref={containerRef}>
       {/* Floating Cog Button */}
@@ -185,5 +208,9 @@ const Settings = function Settings({
     </div>
   );
 };
+
+// ============================================
+// EXPORTS
+// ============================================
 
 export default Settings;

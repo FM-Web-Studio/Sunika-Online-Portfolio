@@ -1,13 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { useTheme } from '../../hooks/useTheme';
+
+// ============================================
+// IMPORTS - STYLING
+// ============================================
+
 import styles from './Loading.module.css';
 
+// ============================================
+// LOADING COMPONENT
+// ============================================
+// Animated loading screen with progress bar
+// and geometric loader animations
+
 const Loading = ({ message = 'Loading your creative space' }) => {
+  // ----------------------------------------
+  // Hooks & State
+  // ----------------------------------------
+  
   const { theme } = useTheme();
   const [progress, setProgress] = useState(0);
   const [dots, setDots] = useState('');
 
-  // Animated dots
+  // ----------------------------------------
+  // Effects
+  // ----------------------------------------
+  // Animated dots for loading message
+  
   useEffect(() => {
     const interval = setInterval(() => {
       setDots(prev => prev.length >= 3 ? '' : prev + '.');
@@ -15,7 +34,7 @@ const Loading = ({ message = 'Loading your creative space' }) => {
     return () => clearInterval(interval);
   }, []);
 
-  // Simulate progress
+  // Simulate loading progress
   useEffect(() => {
     const interval = setInterval(() => {
       setProgress(prev => {
@@ -26,6 +45,10 @@ const Loading = ({ message = 'Loading your creative space' }) => {
     return () => clearInterval(interval);
   }, []);
 
+  // ----------------------------------------
+  // Render
+  // ----------------------------------------
+  
   return (
     <div className={styles.container} data-theme={theme}>
       {/* Gradient orbs background */}
@@ -93,5 +116,9 @@ const Loading = ({ message = 'Loading your creative space' }) => {
     </div>
   );
 };
+
+// ============================================
+// EXPORTS
+// ============================================
 
 export default Loading;

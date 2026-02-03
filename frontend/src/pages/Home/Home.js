@@ -1,19 +1,45 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useTheme } from '../../hooks/useTheme';
+
+// ============================================
+// IMPORTS - STYLING
+// ============================================
+
 import styles from './Home.module.css';
 
+// ============================================
+// HOME COMPONENT
+// ============================================
+// Landing page with animated canvas background,
+// hero section, services, and statistics
+
 const Home = () => {
+  // ----------------------------------------
+  // Hooks & State
+  // ----------------------------------------
+  
   const { theme } = useTheme();
   const [isVisible, setIsVisible] = useState(false);
+  
+  // ----------------------------------------
+  // Refs for Canvas Animation
+  // ----------------------------------------
+  
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
   const particlesRef = useRef([]);
   const timeRef = useRef(0);
 
+  // ----------------------------------------
+  // Effects
+  // ----------------------------------------
+  // Trigger entrance animation
+  
   useEffect(() => {
     setIsVisible(true);
   }, []);
 
+  // Canvas particle animation effect
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -151,6 +177,10 @@ const Home = () => {
     };
   }, []);
 
+  // ----------------------------------------
+  // Render
+  // ----------------------------------------
+  
   return (
     <div className={styles.homeWrapper} data-theme={theme}>
       <canvas ref={canvasRef} className={styles.backgroundCanvas} aria-hidden="true" />
@@ -277,5 +307,9 @@ const Home = () => {
     </div>
   );
 };
+
+// ============================================
+// EXPORTS
+// ============================================
 
 export default Home;

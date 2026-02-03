@@ -1,6 +1,23 @@
 import React, { useState } from "react";
 import { Palette, Paintbrush, Droplets, Sparkles, ImageIcon, Mail, User } from 'lucide-react';
+
+// ============================================
+// IMPORTS - STYLING
+// ============================================
+
 import styles from "./NavigationBar.module.css";
+
+// ============================================
+// CONSTANTS
+// ============================================
+
+const ICONS = [Palette, Paintbrush, Droplets, Sparkles, ImageIcon, Mail, User];
+
+// ============================================
+// NAVIGATION BAR COMPONENT
+// ============================================
+// Main navigation component with icon-based links
+// Supports active state tracking and keyboard navigation
 
 const NavigationBar = ({ 
   links, 
@@ -8,15 +25,25 @@ const NavigationBar = ({
   activeTab = null,
   className = ""
 }) => {
+  // ----------------------------------------
+  // State Management
+  // ----------------------------------------
+  
   const [hoveredLink, setHoveredLink] = useState(null);
 
-  const ICONS = [Palette, Paintbrush, Droplets, Sparkles, ImageIcon, Mail, User];
-
+  // ----------------------------------------
+  // Event Handlers
+  // ----------------------------------------
+  
   const handleLinkClick = (link, index) => {
     if (link.onClick) link.onClick();
     if (link.to) onNavigate(link.to, index);
   };
 
+  // ----------------------------------------
+  // Helper Functions
+  // ----------------------------------------
+  
   const isActive = (link, index) => {
     if (activeTab !== null) {
       return activeTab === index || activeTab === link.to;
@@ -24,6 +51,10 @@ const NavigationBar = ({
     return false;
   };
 
+  // ----------------------------------------
+  // Render
+  // ----------------------------------------
+  
   return (
     <nav className={`${styles.navbar} ${className}`}>
       <div className={styles.navContent}>
@@ -73,5 +104,9 @@ const NavigationBar = ({
     </nav>
   );
 };
+
+// ============================================
+// EXPORTS
+// ============================================
 
 export default NavigationBar;

@@ -4,15 +4,35 @@ import {
   Briefcase, GraduationCap, Palette, Code, Heart, Star,
   Languages, TrendingUp
 } from 'lucide-react';
+
+// ============================================
+// IMPORTS - DATA & COMPONENTS
+// ============================================
+
 import styles from './Bio.module.css';
 import bioData from '../../information/bio.json';
 import profileImage from '../../images/Me/Profile.jpg';
 import { LazyImage } from '../../components';
 
+// ============================================
+// BIO COMPONENT
+// ============================================
+// Personal biography page showcasing education,
+// skills, experience, and interests
+
 function Bio() {
+  // ----------------------------------------
+  // State Management
+  // ----------------------------------------
+  
   const [activeSection, setActiveSection] = useState(null);
   const [scrollProgress, setScrollProgress] = useState(0);
 
+  // ----------------------------------------
+  // Effects
+  // ----------------------------------------
+  // Track scroll progress for progress bar
+  
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
@@ -25,6 +45,10 @@ function Bio() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // ----------------------------------------
+  // Helper Functions
+  // ----------------------------------------
+  
   const calculateAge = (birthDate) => {
     const today = new Date();
     const birth = new Date(birthDate);
@@ -42,6 +66,10 @@ function Bio() {
     return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
   };
 
+  // ----------------------------------------
+  // Render
+  // ----------------------------------------
+  
   return (
     <div className={styles.bioContainer}>
       {/* Scroll Progress Bar */}
@@ -383,5 +411,9 @@ function Bio() {
     </div>
   );
 }
+
+// ============================================
+// EXPORTS
+// ============================================
 
 export default Bio;

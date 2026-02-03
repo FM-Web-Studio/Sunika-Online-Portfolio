@@ -1,20 +1,39 @@
 import React, { useState } from 'react';
-
-/* Icons */
 import { FaSun, FaMoon } from 'react-icons/fa';
 
-/* Styling */
+// ============================================
+// IMPORTS - STYLING
+// ============================================
+
 import styles from './ThemeSwitch.module.css';
 import '../../styles/Theme.css';
 import '../../styles/Components.css';
 import '../../styles/Wrappers.css';
 
+// ============================================
+// THEME SWITCH COMPONENT
+// ============================================
+// Toggle button for switching between light and dark themes
+// Provides visual feedback with sun/moon icons
+
 const ThemeSwitch = ({ theme, toggleTheme, size = 25 }) => {
+  // ----------------------------------------
+  // State Management
+  // ----------------------------------------
+  
   const [isPressed, setIsPressed] = useState(false);
 
+  // ----------------------------------------
+  // Event Handlers
+  // ----------------------------------------
+  
   const handlePointerDown = () => setIsPressed(true);
   const handlePointerUp = () => setIsPressed(false);
 
+  // ----------------------------------------
+  // Render
+  // ----------------------------------------
+  
   return (
     <span
       className={`${styles['theme-switch']} ${isPressed ? styles['pressed'] : ''}`}
@@ -32,5 +51,9 @@ const ThemeSwitch = ({ theme, toggleTheme, size = 25 }) => {
     </span>
   );
 };
+
+// ============================================
+// EXPORTS
+// ============================================
 
 export default ThemeSwitch;

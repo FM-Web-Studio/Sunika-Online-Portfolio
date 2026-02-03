@@ -2,17 +2,41 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../hooks/useTheme';
 import { FaHome, FaCompass, FaPalette } from 'react-icons/fa';
+
+// ============================================
+// IMPORTS - STYLING
+// ============================================
+
 import styles from './NotFound.module.css';
 
+// ============================================
+// NOT FOUND COMPONENT
+// ============================================
+// 404 error page with navigation options
+// and quick links to main sections
+
 const NotFound = () => {
+  // ----------------------------------------
+  // Hooks & State
+  // ----------------------------------------
+  
   const { theme } = useTheme();
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
 
+  // ----------------------------------------
+  // Effects
+  // ----------------------------------------
+  // Trigger entrance animation
+  
   useEffect(() => {
     setIsVisible(true);
   }, []);
 
+  // ----------------------------------------
+  // Render
+  // ----------------------------------------
+  
   return (
     <div className={styles.container} data-theme={theme}>
       {/* Background Gradient Orbs */}
@@ -87,5 +111,9 @@ const NotFound = () => {
     </div>
   );
 };
+
+// ============================================
+// EXPORTS
+// ============================================
 
 export default NotFound;

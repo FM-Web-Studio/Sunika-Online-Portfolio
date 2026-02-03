@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react';
 
+// ============================================
+// THEME INITIALIZATION
+// ============================================
+// Get initial theme from localStorage or browser preference
+
 export const getInitialTheme = () => {
   const sessionInfo = localStorage.getItem('userSessionInfo');
   if (sessionInfo) {
@@ -16,9 +21,24 @@ export const getInitialTheme = () => {
   return prefersDark ? 'dark' : 'light';
 };
 
+// ============================================
+// USE THEME HOOK
+// ============================================
+// Custom hook for managing theme state across the application
+// Syncs with localStorage and broadcasts changes
+
 export const useTheme = () => {
+  // ----------------------------------------
+  // State Management
+  // ----------------------------------------
+  
   const [theme, setTheme] = useState(getInitialTheme());
 
+  // ----------------------------------------
+  // Effects
+  // ----------------------------------------
+  // Apply theme to DOM and sync with localStorage
+  
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
 
@@ -45,7 +65,7 @@ export const useTheme = () => {
     }
   }, [theme]);
 
-  // Listen for theme changes dispatched from other hook instances
+  // Listen for theme changes from other instances and storage events
   useEffect(() => {
     const handler = (e) => {
       if (e && e.detail && e.detail !== theme) setTheme(e.detail);
@@ -73,7 +93,15 @@ export const useTheme = () => {
     };
   }, [theme]);
 
+  // ----------------------------------------
+  // Theme Toggle Function
+  // ----------------------------------------
+  
   const toggleTheme = () => setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
 
+  // ----------------------------------------
+  // Return Values
+  // ----------------------------------------
+  
   return { theme, toggleTheme, setTheme };
 };
