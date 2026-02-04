@@ -11,7 +11,7 @@ import {
 
 import styles from './Bio.module.css';
 import bioData from '../../information/bio.json';
-import profileImage from '../../images/Me/Profile.jpg';
+import profileImage from './Profile.jpg';
 import { LazyImage } from '../../components';
 
 // ============================================

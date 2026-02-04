@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTheme } from '../../hooks/useTheme';
+import { LazyImage } from '../../components';
 
 // ============================================
 // IMPORTS - STYLING
@@ -8,10 +9,34 @@ import { useTheme } from '../../hooks/useTheme';
 import styles from './Home.module.css';
 
 // ============================================
+// IMPORTS - DATA
+// ============================================
+
+import homeData from '../../information/home.json';
+
+// ============================================
+// IMPORTS - IMAGES
+// ============================================
+
+import adventureImage from '../../images/Me/Adventure.jpg';
+import cruiseImage from '../../images/Me/Cruise.jpg';
+import cherishedMomentsImage from '../../images/Me/Cherished Moments.jpg';
+
+// ============================================
+// IMAGE MAP
+// ============================================
+
+const imageMap = {
+  'Adventure.jpg': adventureImage,
+  'Cruise.jpg': cruiseImage,
+  'Cherished Moments.jpg': cherishedMomentsImage,
+};
+
+// ============================================
 // HOME COMPONENT
 // ============================================
-// Landing page with animated canvas background,
-// hero section, services, and statistics
+// Timeline page showcasing personal journey, 
+// adventures, and cherished memories
 
 const Home = () => {
   // ----------------------------------------
@@ -20,15 +45,8 @@ const Home = () => {
   
   const { theme } = useTheme();
   const [isVisible, setIsVisible] = useState(false);
-  
-  // ----------------------------------------
-  // Refs for Canvas Animation
-  // ----------------------------------------
-  
-  const canvasRef = useRef(null);
-  const animationRef = useRef(null);
-  const particlesRef = useRef([]);
-  const timeRef = useRef(0);
+  const [visibleMemories, setVisibleMemories] = useState([]);
+  const [showScrollIndicator, setShowScrollIndicator] = useState(true);
 
   // ----------------------------------------
   // Effects
@@ -37,144 +55,25 @@ const Home = () => {
   
   useEffect(() => {
     setIsVisible(true);
+    
+    // Stagger memory card animations
+    homeData.memories.forEach((_, index) => {
+      setTimeout(() => {
+        setVisibleMemories(prev => [...prev, index]);
+      }, 200 * (index + 1));
+    });
   }, []);
 
-  // Canvas particle animation effect
+  // Hide scroll indicator on scroll
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-
-    // Performance optimization: reduce particle count on mobile
-    const isMobile = window.innerWidth < 768;
-    const isTablet = window.innerWidth < 1024;
-
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      initParticles();
-    };
-
-    const initParticles = () => {
-      particlesRef.current = [];
-      // Adaptive particle count based on device
-      let divisor = 12000;
-      if (isMobile) divisor = 20000;
-      else if (isTablet) divisor = 15000;
-      
-      const count = Math.floor((canvas.width * canvas.height) / divisor);
-      
-      for (let i = 0; i < count; i++) {
-        particlesRef.current.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          radius: Math.random() * 2 + 0.5,
-          vx: (Math.random() - 0.5) * 0.15,
-          vy: (Math.random() - 0.5) * 0.15,
-          opacity: Math.random() * 0.4 + 0.1,
-          angle: Math.random() * Math.PI * 2,
-          orbitRadius: Math.random() * 30 + 10,
-          speed: Math.random() * 0.02 + 0.01,
-        });
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setShowScrollIndicator(false);
       }
     };
 
-    const animate = () => {
-      timeRef.current += 0.008;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Flowing gradient background
-      const gradient1 = ctx.createRadialGradient(
-        canvas.width * 0.2 + Math.sin(timeRef.current) * 100,
-        canvas.height * 0.3 + Math.cos(timeRef.current) * 100,
-        0,
-        canvas.width * 0.3,
-        canvas.height * 0.3,
-        canvas.width * 0.5
-      );
-      gradient1.addColorStop(0, 'rgba(255, 47, 146, 0.04)');
-      gradient1.addColorStop(1, 'transparent');
-      ctx.fillStyle = gradient1;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      const gradient2 = ctx.createRadialGradient(
-        canvas.width * 0.8 + Math.cos(timeRef.current * 0.8) * 100,
-        canvas.height * 0.7 + Math.sin(timeRef.current * 0.8) * 100,
-        0,
-        canvas.width * 0.7,
-        canvas.height * 0.7,
-        canvas.width * 0.5
-      );
-      gradient2.addColorStop(0, 'rgba(255, 111, 181, 0.03)');
-      gradient2.addColorStop(1, 'transparent');
-      ctx.fillStyle = gradient2;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Draw particles with orbital motion
-      particlesRef.current.forEach((p, i) => {
-        p.angle += p.speed;
-        const baseX = p.x + p.vx;
-        const baseY = p.y + p.vy;
-        
-        const x = baseX + Math.cos(p.angle) * p.orbitRadius;
-        const y = baseY + Math.sin(p.angle) * p.orbitRadius;
-
-        p.x = baseX;
-        p.y = baseY;
-
-        if (p.x < -20) p.x = canvas.width + 20;
-        if (p.x > canvas.width + 20) p.x = -20;
-        if (p.y < -20) p.y = canvas.height + 20;
-        if (p.y > canvas.height + 20) p.y = -20;
-
-        const pulse = Math.sin(timeRef.current * 2 + i) * 0.3 + 0.7;
-
-        ctx.save();
-        ctx.globalAlpha = p.opacity * pulse;
-        ctx.fillStyle = 'rgba(255, 95, 176, 0.6)';
-        ctx.shadowBlur = p.radius * 4;
-        ctx.shadowColor = 'rgba(255, 95, 176, 0.3)';
-        ctx.beginPath();
-        ctx.arc(x, y, p.radius, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-
-        // Connect nearby particles
-        particlesRef.current.forEach((p2, j) => {
-          if (i >= j) return;
-          const p2x = p2.x + Math.cos(p2.angle) * p2.orbitRadius;
-          const p2y = p2.y + Math.sin(p2.angle) * p2.orbitRadius;
-          const dx = x - p2x;
-          const dy = y - p2y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < 100) {
-            ctx.save();
-            ctx.globalAlpha = (1 - distance / 100) * 0.1 * pulse;
-            ctx.strokeStyle = 'rgba(255, 95, 176, 0.4)';
-            ctx.lineWidth = 0.5;
-            ctx.beginPath();
-            ctx.moveTo(x, y);
-            ctx.lineTo(p2x, p2y);
-            ctx.stroke();
-            ctx.restore();
-          }
-        });
-      });
-
-      animationRef.current = requestAnimationFrame(animate);
-    };
-
-    resize();
-    animate();
-    window.addEventListener('resize', resize);
-
-    return () => {
-      window.removeEventListener('resize', resize);
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // ----------------------------------------
@@ -183,126 +82,114 @@ const Home = () => {
   
   return (
     <div className={styles.homeWrapper} data-theme={theme}>
-      <canvas ref={canvasRef} className={styles.backgroundCanvas} aria-hidden="true" />
-
-      <div className={styles.glowOrbs} aria-hidden="true">
-        <div className={styles.orb1}></div>
-        <div className={styles.orb2}></div>
+      
+      {/* Background Elements */}
+      <div className={styles.backgroundGradient} aria-hidden="true"></div>
+      
+      {/* Scroll Indicator */}
+      <div className={`${styles.scrollIndicator} ${isVisible && showScrollIndicator ? styles.visible : ''}`} aria-hidden="true">
+        <div className={styles.scrollMouse}>
+          <div className={styles.scrollWheel}></div>
+        </div>
+        <span className={styles.scrollText}>Scroll to explore</span>
       </div>
-
+      
+      {/* Main Content */}
       <div className={`${styles.content} ${isVisible ? styles.visible : ''}`}>
-        <div className={styles.glassContainer}>
-          
-          {/* Hero Section */}
-          <section className={styles.heroSection}>
-            <div className={styles.badge}>
-              <span className={styles.badgeDot}></span>
-              <span>Available for Commissions</span>
+        
+        {/* Hero Section */}
+        <section className={styles.heroSection}>
+          <div className={styles.badge}>
+            <span className={styles.badgeDot}></span>
+            <span>Living Life to the Fullest</span>
+          </div>
+
+          <h1 className={styles.mainTitle}>
+            My Journey
+          </h1>
+
+          <p className={styles.subtitle}>
+            A Collection of Adventures & Cherished Moments
+          </p>
+        </section>
+
+        {/* Backstory Section */}
+        <section className={styles.backstorySection}>
+          <div className={styles.backstoryCard}>
+            <div className={styles.backstoryIcon}>
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z" />
+              </svg>
             </div>
+            <h2 className={styles.backstoryTitle}>{homeData.backstory.title}</h2>
+            <p className={styles.backstoryDescription}>{homeData.backstory.description}</p>
+          </div>
+        </section>
 
-            <h1 className={styles.mainTitle}>Sunika Lombard</h1>
+        {/* Timeline Section */}
+        <section className={styles.timelineSection}>
+          <div className={styles.timelineTrack} aria-hidden="true"></div>
+          
+          {homeData.memories.map((memory, index) => {
+            const isLeft = index % 2 === 0;
+            const isVisible = visibleMemories.includes(index);
+            
+            return (
+              <div 
+                key={memory.id} 
+                className={`${styles.timelineItem} ${isLeft ? styles.left : styles.right} ${isVisible ? styles.visible : ''}`}
+                data-accent={memory.accent}
+              >
+                {/* Timeline Dot */}
+                <div className={styles.timelineDot}></div>
+                
+                {/* Memory Card */}
+                <div className={styles.memoryCard}>
+                  <div className={styles.memoryImageWrapper}>
+                    <LazyImage
+                      src={imageMap[memory.image]}
+                      alt={memory.title}
+                      className={styles.memoryImage}
+                    />
+                    <div className={styles.memoryImageOverlay}></div>
+                  </div>
+                  
+                  <div className={styles.memoryContent}>
+                    <span className={styles.memoryDate}>{memory.date}</span>
+                    <h3 className={styles.memoryTitle}>{memory.title}</h3>
+                    <p className={styles.memoryDescription}>{memory.description}</p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </section>
 
-            <p className={styles.subtitle}>
-              Communication Design · Illustration · Baking Artisan
+        {/* Call to Action Section */}
+        <section className={styles.ctaSection}>
+          <div className={styles.ctaCard}>
+            <h2 className={styles.ctaTitle}>Let's Create Something Together</h2>
+            <p className={styles.ctaDescription}>
+              Whether you're looking for custom artwork, design services, or artisan baked goods, 
+              I'd love to bring your vision to life.
             </p>
-
-            <p className={styles.description}>
-              Creating visual stories through art and design, while crafting 
-              delightful meringues and baked creations.
-            </p>
-
             <div className={styles.ctaButtons}>
               <a href="/bio" className={styles.btnPrimary}>
-                About Me
+                <span>Learn More About Me</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
               </a>
               <a href="/connect" className={styles.btnSecondary}>
-                Get in Touch
+                <span>Get in Touch</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
               </a>
             </div>
-          </section>
+          </div>
+        </section>
 
-          <div className={styles.divider}></div>
-
-          {/* Services Section */}
-          <section className={styles.servicesSection}>
-            <h2 className={styles.sectionTitle}>Services</h2>
-            
-            <div className={styles.servicesGrid}>
-              <div className={styles.serviceCard}>
-                <div className={styles.serviceIcon}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 2L2 7L12 12L22 7L12 2Z" />
-                    <path d="M2 17L12 22L22 17" />
-                    <path d="M2 12L12 17L22 12" />
-                  </svg>
-                </div>
-                <h3 className={styles.serviceTitle}>Design & Illustration</h3>
-                <p className={styles.serviceDesc}>
-                  Custom illustrations and communication design for brands and personal projects.
-                </p>
-              </div>
-
-              <div className={styles.serviceCard}>
-                <div className={styles.serviceIcon}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect x="3" y="3" width="18" height="18" rx="2" />
-                    <circle cx="8.5" cy="8.5" r="1.5" />
-                    <path d="M21 15L16 10L5 21" />
-                  </svg>
-                </div>
-                <h3 className={styles.serviceTitle}>Traditional Art</h3>
-                <p className={styles.serviceDesc}>
-                  Paintings and handcrafted artwork using various traditional mediums.
-                </p>
-              </div>
-
-              <div className={styles.serviceCard}>
-                <div className={styles.serviceIcon}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M20 21V7C20 5.89543 19.1046 5 18 5H6C4.89543 5 4 5.89543 4 7V21" />
-                    <path d="M4 21H20" />
-                    <path d="M12 5V3" />
-                    <path d="M8 3H16" />
-                  </svg>
-                </div>
-                <h3 className={styles.serviceTitle}>Artisan Baking</h3>
-                <p className={styles.serviceDesc}>
-                  Handcrafted meringues and custom baked goods made with care.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <div className={styles.divider}></div>
-
-          {/* Stats Section */}
-          <section className={styles.statsSection}>
-            <h2 className={styles.sectionTitle}>By the Numbers</h2>
-            
-            <div className={styles.statsGrid}>
-              <div className={styles.statCard}>
-                <div className={styles.statValue}>45+</div>
-                <div className={styles.statLabel}>Artworks Created</div>
-              </div>
-
-              <div className={styles.statCard}>
-                <div className={styles.statValue}>4+</div>
-                <div className={styles.statLabel}>Design Projects</div>
-              </div>
-
-              <div className={styles.statCard}>
-                <div className={styles.statValue}>100%</div>
-                <div className={styles.statLabel}>Handcrafted</div>
-              </div>
-
-              <div className={styles.statCard}>
-                <div className={styles.statValue}>∞</div>
-                <div className={styles.statLabel}>Creativity</div>
-              </div>
-            </div>
-          </section>
-
-        </div>
       </div>
     </div>
   );
