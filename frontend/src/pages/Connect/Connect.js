@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Mail, Phone, MapPin, Clock, Briefcase, Instagram, Linkedin, Music2, ImageIcon
 } from 'lucide-react';
@@ -30,13 +30,87 @@ const getSocialIcon = (iconName) => {
 // CONNECT COMPONENT
 // ============================================
 // Professional, compact contact page with modern design
+// Fully responsive and native-feeling across all device types
 
 function Connect() {
+  // ----------------------------------------
+  // State for device detection
+  // ----------------------------------------
+  
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [viewportWidth, setViewportWidth] = useState(
+    typeof window !== 'undefined' ? window.innerWidth : 1024
+  );
+
+  // ----------------------------------------
+  // Effects
+  // ----------------------------------------
+  
+  useEffect(() => {
+    // Detect touch device
+    const checkTouchDevice = () => {
+      setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+    };
+
+    // Handle viewport resize with debounce
+    let resizeTimer;
+    const handleResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        setViewportWidth(window.innerWidth);
+      }, 150);
+    };
+
+    checkTouchDevice();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(resizeTimer);
+    };
+  }, []);
+
   // ----------------------------------------
   // Data Processing
   // ----------------------------------------
   
-  const activeSocial = contactData.social.filter(platform => platform.url && platform.url.trim() !== '');
+  const activeSocial = contactData.social.filter(
+    platform => platform.url && platform.url.trim() !== ''
+  );
+
+  // ----------------------------------------
+  // Responsive icon sizes
+  // ----------------------------------------
+  
+  const getIconSize = () => {
+    if (viewportWidth < 375) return 18;
+    if (viewportWidth < 768) return 20;
+    return 24;
+  };
+
+  const iconSize = getIconSize();
+
+  // ----------------------------------------
+  // Helper function for mailto with better mobile support
+  // ----------------------------------------
+  
+  const handleEmailClick = (e) => {
+    // On mobile, let the default mailto: work
+    // On desktop, could add analytics or other handling
+    if (!isTouchDevice) {
+      // Desktop: default behavior is fine
+    }
+  };
+
+  const handlePhoneClick = (e) => {
+    // On mobile, let the default tel: work
+    // On desktop, prevent action or show copy notification
+    if (!isTouchDevice && viewportWidth > 768) {
+      e.preventDefault();
+      // Could show a tooltip or copy to clipboard
+      navigator.clipboard?.writeText(contactData.phone);
+    }
+  };
 
   // ----------------------------------------
   // Render
@@ -57,9 +131,14 @@ function Connect() {
         {/* Contact Information Cards */}
         <section className={styles.contactSection}>
           <div className={styles.contactGrid}>
-            <a href={`mailto:${contactData.email}`} className={styles.contactCard}>
+            <a 
+              href={`mailto:${contactData.email}`} 
+              className={styles.contactCard}
+              onClick={handleEmailClick}
+              aria-label={`Send email to ${contactData.email}`}
+            >
               <div className={styles.iconWrapper}>
-                <Mail size={20} />
+                <Mail size={iconSize} />
               </div>
               <div className={styles.contactInfo}>
                 <span className={styles.contactLabel}>Email</span>
@@ -67,9 +146,14 @@ function Connect() {
               </div>
             </a>
 
-            <a href={`tel:${contactData.phone}`} className={styles.contactCard}>
+            <a 
+              href={`tel:${contactData.phone}`} 
+              className={styles.contactCard}
+              onClick={handlePhoneClick}
+              aria-label={`Call ${contactData.phone}`}
+            >
               <div className={styles.iconWrapper}>
-                <Phone size={20} />
+                <Phone size={iconSize} />
               </div>
               <div className={styles.contactInfo}>
                 <span className={styles.contactLabel}>Phone</span>
@@ -77,9 +161,13 @@ function Connect() {
               </div>
             </a>
 
-            <div className={styles.contactCard}>
+            <div 
+              className={styles.contactCard}
+              role="article"
+              aria-label={`Location: ${contactData.location.displayText}`}
+            >
               <div className={styles.iconWrapper}>
-                <MapPin size={20} />
+                <MapPin size={iconSize} />
               </div>
               <div className={styles.contactInfo}>
                 <span className={styles.contactLabel}>Location</span>
@@ -91,15 +179,19 @@ function Connect() {
 
         {/* Offerings Section */}
         {contactData.offerings && contactData.offerings.length > 0 && (
-          <section className={styles.offeringsSection}>
-            <h2 className={styles.sectionTitle}>
-              <Briefcase size={20} className={styles.titleIcon} />
+          <section className={styles.offeringsSection} aria-labelledby="offerings-title">
+            <h2 id="offerings-title" className={styles.sectionTitle}>
+              <Briefcase size={iconSize} className={styles.titleIcon} />
               What I Offer
             </h2>
             <div className={styles.offeringsGrid}>
               {contactData.offerings.map((offering, index) => (
-                <div key={index} className={styles.offeringCard}>
-                  <div className={styles.offeringBullet}></div>
+                <div 
+                  key={index} 
+                  className={styles.offeringCard}
+                  role="listitem"
+                >
+                  <div className={styles.offeringBullet} aria-hidden="true"></div>
                   <p className={styles.offeringText}>{offering}</p>
                 </div>
               ))}
@@ -111,12 +203,12 @@ function Connect() {
         <div className={styles.bottomSection}>
           {/* Social Media */}
           {activeSocial.length > 0 && (
-            <section className={styles.socialSection}>
-              <h2 className={styles.sectionTitle}>
+            <section className={styles.socialSection} aria-labelledby="social-title">
+              <h2 id="social-title" className={styles.sectionTitle}>
                 <span className={styles.titleText}>Connect on Social</span>
               </h2>
               
-              <div className={styles.socialGrid}>
+              <div className={styles.socialGrid} role="list">
                 {activeSocial.map((platform, index) => (
                   <a
                     key={index}
@@ -125,10 +217,13 @@ function Connect() {
                     rel="noopener noreferrer"
                     className={styles.socialCard}
                     title={`${platform.platform} - ${platform.username}`}
+                    aria-label={`Visit my ${platform.platform} profile: ${platform.username}`}
+                    role="listitem"
                   >
                     <div 
                       className={styles.socialCircle}
                       style={{ '--social-color': platform.color }}
+                      aria-hidden="true"
                     >
                       {getSocialIcon(platform.icon)}
                     </div>
@@ -143,9 +238,9 @@ function Connect() {
           )}
 
           {/* Availability & Business Hours */}
-          <section className={styles.availabilitySection}>
-            <h2 className={styles.sectionTitle}>
-              <Clock size={20} className={styles.titleIcon} />
+          <section className={styles.availabilitySection} aria-labelledby="availability-title">
+            <h2 id="availability-title" className={styles.sectionTitle}>
+              <Clock size={iconSize} className={styles.titleIcon} />
               Availability
             </h2>
             <div className={styles.availabilityCard}>
@@ -154,7 +249,7 @@ function Connect() {
               {contactData.businessHours && (
                 <div className={styles.businessHours}>
                   <div className={styles.hoursRow}>
-                    <Clock size={16} />
+                    <Clock size={16} aria-hidden="true" />
                     <span>{contactData.businessHours.availability}</span>
                   </div>
                   <div className={styles.timezone}>
@@ -164,7 +259,7 @@ function Connect() {
               )}
               
               <div className={styles.responseTime}>
-                <div className={styles.statusIndicator}></div>
+                <div className={styles.statusIndicator} aria-hidden="true"></div>
                 <span>{contactData.responseTime}</span>
               </div>
             </div>
