@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { useTheme } from '../../hooks/useTheme';
 import { LazyImage } from '../../components';
 
@@ -180,18 +181,18 @@ const Home = () => {
               I'd love to bring your vision to life.
             </p>
             <div className={styles.ctaButtons}>
-              <a href="/bio" className={styles.btnPrimary}>
+              <Link to="/bio" className={styles.btnPrimary}>
                 <span>Learn More About Me</span>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M5 12h14M12 5l7 7-7 7"/>
                 </svg>
-              </a>
-              <a href="/connect" className={styles.btnSecondary}>
+              </Link>
+              <Link to="/connect" className={styles.btnSecondary}>
                 <span>Get in Touch</span>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                 </svg>
-              </a>
+              </Link>
             </div>
           </div>
         </section>

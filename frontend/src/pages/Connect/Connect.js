@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Mail, Phone, MapPin, ExternalLink
+  Mail, Phone, MapPin, Clock, Briefcase, Instagram, Linkedin, Music2, ImageIcon
 } from 'lucide-react';
 
 // ============================================
@@ -11,9 +11,25 @@ import styles from './Connect.module.css';
 import contactData from '../../information/contact.json';
 
 // ============================================
+// SOCIAL MEDIA ICON MAPPING
+// ============================================
+
+const getSocialIcon = (iconName) => {
+  const icons = {
+    instagram: Instagram,
+    linkedin: Linkedin,
+    tiktok: Music2,
+    pinterest: ImageIcon,
+  };
+  
+  const IconComponent = icons[iconName.toLowerCase()] || ImageIcon;
+  return <IconComponent size={24} />;
+};
+
+// ============================================
 // CONNECT COMPONENT
 // ============================================
-// Minimalistic contact page with professional design
+// Professional, compact contact page with modern design
 
 function Connect() {
   // ----------------------------------------
@@ -38,14 +54,12 @@ function Connect() {
 
       {/* Main Content */}
       <div className={styles.content}>
-        {/* Contact Information */}
+        {/* Contact Information Cards */}
         <section className={styles.contactSection}>
-          <h2 className={styles.sectionTitle}>Contact Information</h2>
-          
           <div className={styles.contactGrid}>
             <a href={`mailto:${contactData.email}`} className={styles.contactCard}>
               <div className={styles.iconWrapper}>
-                <Mail size={24} />
+                <Mail size={20} />
               </div>
               <div className={styles.contactInfo}>
                 <span className={styles.contactLabel}>Email</span>
@@ -55,7 +69,7 @@ function Connect() {
 
             <a href={`tel:${contactData.phone}`} className={styles.contactCard}>
               <div className={styles.iconWrapper}>
-                <Phone size={24} />
+                <Phone size={20} />
               </div>
               <div className={styles.contactInfo}>
                 <span className={styles.contactLabel}>Phone</span>
@@ -65,7 +79,7 @@ function Connect() {
 
             <div className={styles.contactCard}>
               <div className={styles.iconWrapper}>
-                <MapPin size={24} />
+                <MapPin size={20} />
               </div>
               <div className={styles.contactInfo}>
                 <span className={styles.contactLabel}>Location</span>
@@ -75,40 +89,87 @@ function Connect() {
           </div>
         </section>
 
-        {/* Social Media */}
-        {activeSocial.length > 0 && (
-          <section className={styles.socialSection}>
-            <h2 className={styles.sectionTitle}>Connect on Social Media</h2>
-            
-            <div className={styles.socialGrid}>
-              {activeSocial.map((platform, index) => (
-                <a
-                  key={index}
-                  href={platform.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.socialCard}
-                >
-                  <div className={styles.socialHeader}>
-                    <span className={styles.socialPlatform}>{platform.platform}</span>
-                    <ExternalLink size={16} className={styles.externalIcon} />
-                  </div>
-                  <p className={styles.socialUsername}>{platform.username}</p>
-                  <p className={styles.socialDescription}>{platform.description}</p>
-                </a>
+        {/* Offerings Section */}
+        {contactData.offerings && contactData.offerings.length > 0 && (
+          <section className={styles.offeringsSection}>
+            <h2 className={styles.sectionTitle}>
+              <Briefcase size={20} className={styles.titleIcon} />
+              What I Offer
+            </h2>
+            <div className={styles.offeringsGrid}>
+              {contactData.offerings.map((offering, index) => (
+                <div key={index} className={styles.offeringCard}>
+                  <div className={styles.offeringBullet}></div>
+                  <p className={styles.offeringText}>{offering}</p>
+                </div>
               ))}
             </div>
           </section>
         )}
 
-        {/* Availability */}
-        <section className={styles.availabilitySection}>
-          <div className={styles.availabilityCard}>
-            <h3 className={styles.availabilityTitle}>Availability</h3>
-            <p className={styles.availabilityText}>{contactData.availability}</p>
-            <p className={styles.availabilityNote}>{contactData.responseTime}</p>
-          </div>
-        </section>
+        {/* Two Column Layout for Social and Availability */}
+        <div className={styles.bottomSection}>
+          {/* Social Media */}
+          {activeSocial.length > 0 && (
+            <section className={styles.socialSection}>
+              <h2 className={styles.sectionTitle}>
+                <span className={styles.titleText}>Connect on Social</span>
+              </h2>
+              
+              <div className={styles.socialGrid}>
+                {activeSocial.map((platform, index) => (
+                  <a
+                    key={index}
+                    href={platform.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.socialCard}
+                    title={`${platform.platform} - ${platform.username}`}
+                  >
+                    <div 
+                      className={styles.socialCircle}
+                      style={{ '--social-color': platform.color }}
+                    >
+                      {getSocialIcon(platform.icon)}
+                    </div>
+                    <div className={styles.socialInfo}>
+                      <span className={styles.socialPlatform}>{platform.platform}</span>
+                      <span className={styles.socialUsername}>{platform.username}</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Availability & Business Hours */}
+          <section className={styles.availabilitySection}>
+            <h2 className={styles.sectionTitle}>
+              <Clock size={20} className={styles.titleIcon} />
+              Availability
+            </h2>
+            <div className={styles.availabilityCard}>
+              <p className={styles.availabilityText}>{contactData.availability}</p>
+              
+              {contactData.businessHours && (
+                <div className={styles.businessHours}>
+                  <div className={styles.hoursRow}>
+                    <Clock size={16} />
+                    <span>{contactData.businessHours.availability}</span>
+                  </div>
+                  <div className={styles.timezone}>
+                    {contactData.businessHours.timezone}
+                  </div>
+                </div>
+              )}
+              
+              <div className={styles.responseTime}>
+                <div className={styles.statusIndicator}></div>
+                <span>{contactData.responseTime}</span>
+              </div>
+            </div>
+          </section>
+        </div>
       </div>
     </div>
   );
