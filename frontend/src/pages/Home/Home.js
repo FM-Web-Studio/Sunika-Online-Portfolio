@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useTheme } from '../../hooks/useTheme';
 import { LazyImage } from '../../components';
 
@@ -15,21 +15,24 @@ import styles from './Home.module.css';
 import homeData from '../../information/home.json';
 
 // ============================================
-// IMPORTS - IMAGES
+// DYNAMIC IMAGE IMPORT
 // ============================================
+// Dynamically import all images from the Me folder
+// This allows adding/removing images without changing code
 
-import adventureImage from '../../images/Me/Adventure.jpg';
-import cruiseImage from '../../images/Me/Cruise.jpg';
-import cherishedMomentsImage from '../../images/Me/Cherished Moments.jpg';
-
-// ============================================
-// IMAGE MAP
-// ============================================
-
-const imageMap = {
-  'Adventure.jpg': adventureImage,
-  'Cruise.jpg': cruiseImage,
-  'Cherished Moments.jpg': cherishedMomentsImage,
+const importAllImages = () => {
+  const images = {};
+  try {
+    const context = require.context('../../images/Me', false, /\.(png|jpe?g|svg|webp)$/);
+    context.keys().forEach((key) => {
+      // Extract filename from path (e.g., './Adventure.jpg' -> 'Adventure.jpg')
+      const fileName = key.replace('./', '');
+      images[fileName] = context(key);
+    });
+  } catch (error) {
+    console.error('Error loading images from Me folder:', error);
+  }
+  return images;
 };
 
 // ============================================
@@ -47,6 +50,9 @@ const Home = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [visibleMemories, setVisibleMemories] = useState([]);
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+  
+  // Dynamically load images
+  const imageMap = useMemo(() => importAllImages(), []);
 
   // ----------------------------------------
   // Effects

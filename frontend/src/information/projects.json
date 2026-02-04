@@ -23,6 +23,54 @@
       "description": "Product packaging design for a sugar brand, featuring label design, typography, and visual branding. This project demonstrates attention to consumer packaging and brand consistency.",
       "category": "Package Design",
       "year": "2023"
+    },
+    {
+      "id": 4,
+      "name": "Nomad Magazine",
+      "folder": "Nomad Magazine",
+      "description": "Editorial design for a nomad travel magazine, featuring layout design, typography, photography curation, and visual storytelling. This project focuses on capturing the spirit of travel, freedom, and life on the road while keeping a consistent and readable magazine style.",
+      "category": "Editorial Design",
+      "year": "2023"
+    },
+    {
+      "id": 5,
+      "name": "Spotify Podcast Album Cover",
+      "folder": "Spotify Podcast",
+      "description": "Podcast album cover artwork designed for Spotify, focusing on bold visuals and mood-driven typography to match the music’s vibe.",
+      "category": "Cover Art",
+      "year": "2023"
+    },
+    {
+      "id": 6,
+      "name": "Mural Designs",
+      "folder": "Mural Designs",
+      "description": "A collection of experimental mural designs exploring bold shapes, colors, and large-scale visual impact across different spaces.",
+      "category": "Mural Art",
+      "year": "2023"
+    },
+    {
+      "id": 7,
+      "name": "Graffiti Art",
+      "folder": "Graffiti Art",
+      "description": "A series of graffiti artworks exploring lettering, street-style visuals, and expressive color work inspired by urban environments.",
+      "category": "Street Art",
+      "year": "2023"
+    },
+    {
+      "id": 8,
+      "name": "Lotus Spa",
+      "folder": "Lotus Spa",
+      "description": "Luxury branding and visual design for a high-end lotus-inspired spa, focusing on elegant typography, soft color palettes, and a calm, refined atmosphere.",
+      "category": "Brand Identity",
+      "year": "2023"
+    },
+    {
+      "id": 9,
+      "name": "Wonders Of The Universe Magazine",
+      "folder": "Wonders Of The Universe Magazine",
+      "description": "Magazine design focused on imaginative creature concepts, blending surreal illustrations with editorial layouts inspired by the mysteries of the universe.",
+      "category": "Editorial Design",
+      "year": "2023"
     }
   ]
 }
