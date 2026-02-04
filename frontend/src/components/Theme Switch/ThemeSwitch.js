@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaSun, FaMoon } from 'react-icons/fa';
+import { Sun, Moon } from 'lucide-react';
 
 // ============================================
 // IMPORTS - STYLING
@@ -46,7 +46,7 @@ const ThemeSwitch = ({ theme, toggleTheme, size = 25 }) => {
       tabIndex={0}
     >
       <span className={styles['icon']} style={{ fontSize: `${size}px` }} aria-hidden="true">
-        {theme === 'dark' ? <FaSun /> : <FaMoon />}
+        {theme === 'dark' ? <Sun /> : <Moon />}
       </span>
     </span>
   );

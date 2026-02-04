@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../hooks/useTheme';
-import { FaHome, FaCompass, FaPalette } from 'react-icons/fa';
+import { Home, Compass, Palette } from 'lucide-react';
 
 // ============================================
 // IMPORTS - STYLING
@@ -66,18 +66,18 @@ const NotFound = () => {
 
           {/* Action Buttons */}
           <div className={styles.actions}>
-            <button 
+              <button 
               onClick={() => navigate('/')} 
               className={styles.btnPrimary}
             >
-              <FaHome />
+              <Home />
               <span>Go Home</span>
             </button>
             <button 
               onClick={() => navigate(-1)} 
               className={styles.btnSecondary}
             >
-              <FaCompass />
+              <Compass />
               <span>Go Back</span>
             </button>
           </div>
@@ -90,7 +90,7 @@ const NotFound = () => {
                 <span>About Me</span>
               </a>
               <a href="/gallery" className={styles.link}>
-                <FaPalette />
+                <Palette />
                 <span>Gallery</span>
               </a>
               <a href="/connect" className={styles.link}>
