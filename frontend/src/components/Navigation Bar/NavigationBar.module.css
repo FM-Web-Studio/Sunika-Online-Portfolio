@@ -1,52 +1,179 @@
 /* ==================== NAVBAR CONTAINER ==================== */
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 300;
-  
-  /* Enhanced liquid glass effect */
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.45) 0%,
-    rgba(255, 255, 255, 0.3) 50%,
-    rgba(255, 255, 255, 0.4) 100%
-  );
-  backdrop-filter: blur(20px) saturate(200%);
-  -webkit-backdrop-filter: blur(20px) saturate(200%);
-  
-  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.7),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.25);
-  
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.navbarContainer {
+  position: relative;
+  z-index: 1000;
 }
 
-[data-theme="dark"] .navbar {
-  background: linear-gradient(
-    135deg,
-    rgba(58, 59, 63, 0.6) 0%,
-    rgba(47, 48, 53, 0.45) 50%,
-    rgba(58, 59, 63, 0.55) 100%
-  );
+/* ==================== NAVBAR SHELL ==================== */
+.navbar {
+  position: relative;
+  z-index: 1001;
+  background: transparent;
+  padding: 0;
+  min-height: 0;
+  box-sizing: border-box;
+}
+
+/* Explicitly disable the global button shine for this navbar and its burger */
+.navbar::before,
+.navbar::after,
+.navbarContainer::before,
+.navbarContainer::after,
+.burger::before {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  background-image: none !important;
+  transform: none !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+/* ==================== BURGER BUTTON ==================== */
+.burger {
+  position: fixed;
+  top: 10px;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+  min-height: 50px;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  box-sizing: border-box;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  /* Liquid glass effect */
+  background: rgba(255, 255, 255, 0.45);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 14px;
   box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1001;
 }
 
-.navContent {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 clamp(1rem, 3vw, 3rem);
-  padding-right: 90px;
+[data-theme="dark"] .burger {
+  background: rgba(30, 32, 38, 0.5);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.burger:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-1);
+}
+
+.burger:active {
+  transform: translateY(0);
+}
+
+.burgerOpen {
+  border-color: var(--accent-1);
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 0 0 2px var(--accent-1-background);
+}
+
+[data-theme="dark"] .burgerOpen {
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 0 2px var(--accent-1-background);
+}
+
+.burgerIcon {
+  color: var(--accent-1);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.burger:hover .burgerIcon {
+  transform: rotate(90deg);
+}
+
+.burgerOpen .burgerIcon {
+  transform: rotate(180deg);
+}
+
+/* ==================== BACKDROP OVERLAY ==================== */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 998;
+  animation: backdropFadeIn 0.3s ease;
+}
+
+@keyframes backdropFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ==================== DROPDOWN PANEL ==================== */
+.menuDropdown {
+  position: fixed;
+  top: 72px;
+  left: 10px;
+  min-width: 300px;
+  max-width: 380px;
+  width: 340px;
+
+  /* Enhanced liquid glass background */
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(32px) saturate(250%);
+  -webkit-backdrop-filter: blur(32px) saturate(250%);
+
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 18px;
+  box-shadow:
+    0 12px 48px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.4);
+
+  padding: 16px;
+  box-sizing: border-box;
+  z-index: 999;
+  overflow: hidden;
+
+  /* Initial state for animation */
+  opacity: 0;
+  transform: translateY(-12px) scale(0.95);
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+
+[data-theme="dark"] .menuDropdown {
+  background: rgba(22, 24, 30, 0.3);
+  backdrop-filter: blur(32px) saturate(250%);
+  -webkit-backdrop-filter: blur(32px) saturate(250%);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 12px 48px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.menuDropdownOpen {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
 }
 
 /* ==================== LINK LIST ==================== */
@@ -55,375 +182,305 @@
   margin: 0;
   padding: 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(0.25rem, 1vw, 0.5rem);
-  height: 70px;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .linkItem {
   position: relative;
 }
 
-/* ==================== LINKS WITH VARIED COLORS ==================== */
+/* ==================== INDIVIDUAL LINK ==================== */
 .link {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  background: transparent;
+  gap: 12px;
+  padding: 12px 14px;
   border-radius: 12px;
+  
+  /* Layered liquid glass for links */
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(16px) saturate(200%);
+  -webkit-backdrop-filter: blur(16px) saturate(200%);
+  
+  border: 1px solid rgba(255, 255, 255, 0.45);
   color: var(--primary-text-color);
   font-size: var(--font-size-base);
   font-weight: 500;
   cursor: pointer;
-  text-align: left;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  overflow: visible;
   user-select: none;
+  overflow: hidden;
+  box-shadow: 
+    0 2px 10px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] .link {
+  background: rgba(40, 42, 50, 0.35);
+  backdrop-filter: blur(16px) saturate(200%);
+  -webkit-backdrop-filter: blur(16px) saturate(200%);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 
+    0 2px 10px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .link::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.15), transparent);
   border-radius: 12px;
+  background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.2), transparent);
   opacity: 0;
-  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
-.link:hover::before {
+.link:hover,
+.linkHovered {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(20px) saturate(260%);
+  -webkit-backdrop-filter: blur(20px) saturate(260%);
+  border-color: var(--accent-1);
+  box-shadow: 
+    0 0 0 3px var(--accent-1-background),
+    0 6px 20px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  transform: translateY(-2px);
+}
+
+[data-theme="dark"] .link:hover,
+[data-theme="dark"] .linkHovered {
+  background: rgba(50, 52, 62, 0.5);
+  backdrop-filter: blur(20px) saturate(260%);
+  -webkit-backdrop-filter: blur(20px) saturate(260%);
+  box-shadow: 
+    0 0 0 3px var(--accent-1-background),
+    0 6px 20px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.link:hover::before,
+.linkHovered::before {
   opacity: 1;
 }
 
+.link:active {
+  transform: scale(0.98);
+}
+
+/* ==================== ICON PILLS ==================== */
 .linkIcon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 10px;
-  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   flex-shrink: 0;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Different color for each link icon */
-.link[data-index="0"] .linkIcon {
-  background: var(--accent-1-background);
-  color: var(--accent-1);
+/* Default (resting) colours */
+.link[data-index="0"] .linkIcon { background: var(--accent-1-background); color: var(--accent-1); }
+.link[data-index="1"] .linkIcon { background: var(--accent-2-background); color: var(--accent-2); }
+.link[data-index="2"] .linkIcon { background: var(--accent-3-background); color: var(--accent-3); }
+.link[data-index="3"] .linkIcon { background: var(--accent-4-background); color: var(--accent-4); }
+.link[data-index="4"] .linkIcon { background: var(--accent-1-background); color: var(--accent-1); }
+.link[data-index="5"] .linkIcon { background: var(--accent-2-background); color: var(--accent-2); }
+.link[data-index="6"] .linkIcon { background: var(--accent-3-background); color: var(--accent-3); }
+
+/* Hover colours */
+.link[data-index="0"]:hover .linkIcon, .link[data-index="0"].linkHovered .linkIcon { 
+  background: var(--accent-1); color: var(--background-1); 
+  box-shadow: 0 4px 14px var(--accent-1-background);
+  transform: translateY(-2px) scale(1.08);
+}
+.link[data-index="1"]:hover .linkIcon, .link[data-index="1"].linkHovered .linkIcon { 
+  background: var(--accent-2); color: var(--background-1); 
+  box-shadow: 0 4px 14px var(--accent-2-background);
+  transform: translateY(-2px) scale(1.08);
+}
+.link[data-index="2"]:hover .linkIcon, .link[data-index="2"].linkHovered .linkIcon { 
+  background: var(--accent-3); color: var(--background-1); 
+  box-shadow: 0 4px 14px var(--accent-3-background);
+  transform: translateY(-2px) scale(1.08);
+}
+.link[data-index="3"]:hover .linkIcon, .link[data-index="3"].linkHovered .linkIcon { 
+  background: var(--accent-4); color: var(--background-1); 
+  box-shadow: 0 4px 14px var(--accent-4-background);
+  transform: translateY(-2px) scale(1.08);
+}
+.link[data-index="4"]:hover .linkIcon, .link[data-index="4"].linkHovered .linkIcon { 
+  background: var(--accent-1); color: var(--background-1); 
+  box-shadow: 0 4px 14px var(--accent-1-background);
+  transform: translateY(-2px) scale(1.08);
+}
+.link[data-index="5"]:hover .linkIcon, .link[data-index="5"].linkHovered .linkIcon { 
+  background: var(--accent-2); color: var(--background-1); 
+  box-shadow: 0 4px 14px var(--accent-2-background);
+  transform: translateY(-2px) scale(1.08);
+}
+.link[data-index="6"]:hover .linkIcon, .link[data-index="6"].linkHovered .linkIcon { 
+  background: var(--accent-3); color: var(--background-1); 
+  box-shadow: 0 4px 14px var(--accent-3-background);
+  transform: translateY(-2px) scale(1.08);
 }
 
-.link[data-index="1"] .linkIcon {
-  background: var(--accent-2-background);
-  color: var(--accent-2);
-}
-
-.link[data-index="2"] .linkIcon {
-  background: var(--accent-3-background);
-  color: var(--accent-3);
-}
-
-.link[data-index="3"] .linkIcon {
-  background: var(--accent-4-background);
-  color: var(--accent-4);
-}
-
-.link[data-index="4"] .linkIcon {
-  background: var(--accent-1-background);
-  color: var(--accent-1);
-}
-
-.link[data-index="5"] .linkIcon {
-  background: var(--accent-2-background);
-  color: var(--accent-2);
-}
-
-.link[data-index="6"] .linkIcon {
-  background: var(--accent-3-background);
-  color: var(--accent-3);
-}
-
+/* ==================== LABEL ==================== */
 .linkLabel {
   letter-spacing: 0.3px;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   white-space: nowrap;
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
-/* ==================== BRUSH STROKE WITH VARIED COLORS ==================== */
-.brushStroke {
-  position: absolute;
-  bottom: -2px;
-  left: 50%;
-  transform: translateX(-50%) scaleX(0);
-  width: calc(100% - 16px);
-  height: 6px;
-  opacity: 0;
-  transform-origin: center;
-  transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
-  pointer-events: none;
+/* Hover label colours */
+.link[data-index="0"]:hover .linkLabel, .link[data-index="0"].linkHovered .linkLabel { 
+  color: var(--accent-1); 
+  transform: translateX(2px);
 }
-
-.link[data-index="0"] .brushStroke {
-  color: var(--accent-1);
+.link[data-index="1"]:hover .linkLabel, .link[data-index="1"].linkHovered .linkLabel { 
+  color: var(--accent-2); 
+  transform: translateX(2px);
 }
-
-.link[data-index="1"] .brushStroke {
-  color: var(--accent-2);
+.link[data-index="2"]:hover .linkLabel, .link[data-index="2"].linkHovered .linkLabel { 
+  color: var(--accent-3); 
+  transform: translateX(2px);
 }
-
-.link[data-index="2"] .brushStroke {
-  color: var(--accent-3);
+.link[data-index="3"]:hover .linkLabel, .link[data-index="3"].linkHovered .linkLabel { 
+  color: var(--accent-4); 
+  transform: translateX(2px);
 }
-
-.link[data-index="3"] .brushStroke {
-  color: var(--accent-4);
+.link[data-index="4"]:hover .linkLabel, .link[data-index="4"].linkHovered .linkLabel { 
+  color: var(--accent-1); 
+  transform: translateX(2px);
 }
-
-.link[data-index="4"] .brushStroke {
-  color: var(--accent-1);
+.link[data-index="5"]:hover .linkLabel, .link[data-index="5"].linkHovered .linkLabel { 
+  color: var(--accent-2); 
+  transform: translateX(2px);
 }
-
-.link[data-index="5"] .brushStroke {
-  color: var(--accent-2);
-}
-
-.link[data-index="6"] .brushStroke {
-  color: var(--accent-3);
-}
-
-/* ==================== HOVER STATE ==================== */
-.link:hover .linkIcon,
-.linkHovered .linkIcon {
-  transform: translateY(-3px) scale(1.1) rotate(5deg);
-}
-
-.link[data-index="0"]:hover .linkIcon,
-.link[data-index="0"].linkHovered .linkIcon {
-  background: var(--accent-1);
-  color: var(--background-1);
-  box-shadow: 0 4px 12px var(--accent-1-background);
-}
-
-.link[data-index="1"]:hover .linkIcon,
-.link[data-index="1"].linkHovered .linkIcon {
-  background: var(--accent-2);
-  color: var(--background-1);
-  box-shadow: 0 4px 12px var(--accent-2-background);
-}
-
-.link[data-index="2"]:hover .linkIcon,
-.link[data-index="2"].linkHovered .linkIcon {
-  background: var(--accent-3);
-  color: var(--background-1);
-  box-shadow: 0 4px 12px var(--accent-3-background);
-}
-
-.link[data-index="3"]:hover .linkIcon,
-.link[data-index="3"].linkHovered .linkIcon {
-  background: var(--accent-4);
-  color: var(--background-1);
-  box-shadow: 0 4px 12px var(--accent-4-background);
-}
-
-.link[data-index="4"]:hover .linkIcon,
-.link[data-index="4"].linkHovered .linkIcon {
-  background: var(--accent-1);
-  color: var(--background-1);
-  box-shadow: 0 4px 12px var(--accent-1-background);
-}
-
-.link[data-index="5"]:hover .linkIcon,
-.link[data-index="5"].linkHovered .linkIcon {
-  background: var(--accent-2);
-  color: var(--background-1);
-  box-shadow: 0 4px 12px var(--accent-2-background);
-}
-
-.link[data-index="6"]:hover .linkIcon,
-.link[data-index="6"].linkHovered .linkIcon {
-  background: var(--accent-3);
-  color: var(--background-1);
-  box-shadow: 0 4px 12px var(--accent-3-background);
-}
-
-/* Label color change on hover */
-.link[data-index="0"]:hover .linkLabel,
-.link[data-index="0"].linkHovered .linkLabel {
-  color: var(--accent-1);
-}
-
-.link[data-index="1"]:hover .linkLabel,
-.link[data-index="1"].linkHovered .linkLabel {
-  color: var(--accent-2);
-}
-
-.link[data-index="2"]:hover .linkLabel,
-.link[data-index="2"].linkHovered .linkLabel {
-  color: var(--accent-3);
-}
-
-.link[data-index="3"]:hover .linkLabel,
-.link[data-index="3"].linkHovered .linkLabel {
-  color: var(--accent-4);
-}
-
-.link[data-index="4"]:hover .linkLabel,
-.link[data-index="4"].linkHovered .linkLabel {
-  color: var(--accent-1);
-}
-
-.link[data-index="5"]:hover .linkLabel,
-.link[data-index="5"].linkHovered .linkLabel {
-  color: var(--accent-2);
-}
-
-.link[data-index="6"]:hover .linkLabel,
-.link[data-index="6"].linkHovered .linkLabel {
-  color: var(--accent-3);
-}
-
-/* Brush stroke animation on hover */
-.link:hover .brushStroke,
-.linkHovered .brushStroke {
-  opacity: 1;
-  transform: translateX(-50%) scaleX(1);
-}
-
-.link:active {
-  transform: scale(0.96);
+.link[data-index="6"]:hover .linkLabel, .link[data-index="6"].linkHovered .linkLabel { 
+  color: var(--accent-3); 
+  transform: translateX(2px);
 }
 
 /* ==================== ACTIVE STATE ==================== */
 .linkActive {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(18px) saturate(240%);
+  -webkit-backdrop-filter: blur(18px) saturate(240%);
+  border-color: rgba(255, 255, 255, 0.6);
 }
 
-.link[data-index="0"].linkActive .linkIcon {
-  background: var(--accent-1);
-  color: var(--background-1);
-  box-shadow: 0 2px 8px var(--accent-1-background);
+[data-theme="dark"] .linkActive {
+  background: rgba(50, 52, 62, 0.45);
+  backdrop-filter: blur(18px) saturate(240%);
+  -webkit-backdrop-filter: blur(18px) saturate(240%);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
-.link[data-index="1"].linkActive .linkIcon {
-  background: var(--accent-2);
-  color: var(--background-1);
-  box-shadow: 0 2px 8px var(--accent-2-background);
+.linkActive .linkIcon {
+  transform: scale(1.05);
 }
 
-.link[data-index="2"].linkActive .linkIcon {
-  background: var(--accent-3);
-  color: var(--background-1);
-  box-shadow: 0 2px 8px var(--accent-3-background);
-}
+/* Active icon fills */
+.link[data-index="0"].linkActive .linkIcon { background: var(--accent-1); color: var(--background-1); box-shadow: 0 3px 12px var(--accent-1-background); }
+.link[data-index="1"].linkActive .linkIcon { background: var(--accent-2); color: var(--background-1); box-shadow: 0 3px 12px var(--accent-2-background); }
+.link[data-index="2"].linkActive .linkIcon { background: var(--accent-3); color: var(--background-1); box-shadow: 0 3px 12px var(--accent-3-background); }
+.link[data-index="3"].linkActive .linkIcon { background: var(--accent-4); color: var(--background-1); box-shadow: 0 3px 12px var(--accent-4-background); }
+.link[data-index="4"].linkActive .linkIcon { background: var(--accent-1); color: var(--background-1); box-shadow: 0 3px 12px var(--accent-1-background); }
+.link[data-index="5"].linkActive .linkIcon { background: var(--accent-2); color: var(--background-1); box-shadow: 0 3px 12px var(--accent-2-background); }
+.link[data-index="6"].linkActive .linkIcon { background: var(--accent-3); color: var(--background-1); box-shadow: 0 3px 12px var(--accent-3-background); }
 
-.link[data-index="3"].linkActive .linkIcon {
-  background: var(--accent-4);
-  color: var(--background-1);
-  box-shadow: 0 2px 8px var(--accent-4-background);
-}
-
-.link[data-index="4"].linkActive .linkIcon {
-  background: var(--accent-1);
-  color: var(--background-1);
-  box-shadow: 0 2px 8px var(--accent-1-background);
-}
-
-.link[data-index="5"].linkActive .linkIcon {
-  background: var(--accent-2);
-  color: var(--background-1);
-  box-shadow: 0 2px 8px var(--accent-2-background);
-}
-
-.link[data-index="6"].linkActive .linkIcon {
-  background: var(--accent-3);
-  color: var(--background-1);
-  box-shadow: 0 2px 8px var(--accent-3-background);
-}
-
-.link[data-index="0"].linkActive .linkLabel {
-  color: var(--accent-1);
-  font-weight: 600;
-}
-
-.link[data-index="1"].linkActive .linkLabel {
-  color: var(--accent-2);
-  font-weight: 600;
-}
-
-.link[data-index="2"].linkActive .linkLabel {
-  color: var(--accent-3);
-  font-weight: 600;
-}
-
-.link[data-index="3"].linkActive .linkLabel {
-  color: var(--accent-4);
-  font-weight: 600;
-}
-
-.link[data-index="4"].linkActive .linkLabel {
-  color: var(--accent-1);
-  font-weight: 600;
-}
-
-.link[data-index="5"].linkActive .linkLabel {
-  color: var(--accent-2);
-  font-weight: 600;
-}
-
-.link[data-index="6"].linkActive .linkLabel {
-  color: var(--accent-3);
-  font-weight: 600;
-}
-
-/* Active brush stroke - always visible */
-.linkActive .brushStroke {
-  opacity: 0.8;
-  transform: translateX(-50%) scaleX(1);
-}
+/* Active label colours + weight */
+.link[data-index="0"].linkActive .linkLabel { color: var(--accent-1); font-weight: 600; }
+.link[data-index="1"].linkActive .linkLabel { color: var(--accent-2); font-weight: 600; }
+.link[data-index="2"].linkActive .linkLabel { color: var(--accent-3); font-weight: 600; }
+.link[data-index="3"].linkActive .linkLabel { color: var(--accent-4); font-weight: 600; }
+.link[data-index="4"].linkActive .linkLabel { color: var(--accent-1); font-weight: 600; }
+.link[data-index="5"].linkActive .linkLabel { color: var(--accent-2); font-weight: 600; }
+.link[data-index="6"].linkActive .linkLabel { color: var(--accent-3); font-weight: 600; }
 
 /* ==================== RESPONSIVE ==================== */
-@media (max-width: 1024px) {
-  .linkList {
-    gap: clamp(0.125rem, 0.5vw, 0.25rem);
-    height: 65px;
+@media (max-width: 768px) {
+  .burger {
+    top: 12px;
+    left: 20px;
+    width: 46px !important;
+    height: 46px !important;
+  }
+
+  .menuDropdown {
+    width: min(340px, calc(100vw - 32px));
+    max-width: calc(100vw - 32px);
+    top: 70px;
+    left: 16px;
+    padding: 14px;
   }
 
   .link {
-    padding: 8px 12px;
-    gap: 6px;
+    padding: 11px 13px;
+    gap: 11px;
+  }
+
+  .linkIcon {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .burger {
+    top: 6px;
+    left: 12px;
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .burgerIcon {
+    font-size: 1.2rem;
+  }
+
+  .menuDropdown {
+    width: calc(100vw - 16px);
+    max-width: calc(100vw - 16px);
+    left: 8px;
+    top: 58px;
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .linkList {
+    gap: 7px;
+  }
+
+  .link {
+    padding: 11px 12px;
+    gap: 10px;
+    border-radius: 11px;
   }
 
   .linkIcon {
     width: 34px;
     height: 34px;
+    border-radius: 9px;
   }
 
   .linkLabel {
-    font-size: 0.95rem;
+    font-size: 0.92rem;
   }
 }
 
-@media (max-width: 768px) {
-  .navbar {
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-  }
-
-  .navContent {
-    padding: 0 1rem;
-    padding-right: 80px;
-  }
-
-  .linkList {
-    height: 60px;
-    gap: 0.125rem;
+@media (max-width: 360px) {
+  .menuDropdown {
+    padding: 12px;
+    top: 56px;
   }
 
   .link {
-    padding: 6px 10px;
-    gap: 6px;
+    padding: 10px 11px;
   }
 
   .linkIcon {
@@ -432,58 +489,6 @@
   }
 
   .linkLabel {
-    font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 640px) {
-  .linkList {
-    justify-content: space-between;
-    height: 56px;
-  }
-
-  .link {
-    padding: 6px 8px;
-    gap: 4px;
-  }
-
-  .linkIcon {
-    width: 30px;
-    height: 30px;
-  }
-
-  .linkLabel {
-    font-size: 0.85rem;
-  }
-
-  .brushStroke {
-    height: 5px;
-    bottom: -1px;
-  }
-}
-
-@media (max-width: 480px) {
-  .navContent {
-    padding: 0 0.5rem;
-    padding-right: 70px;
-  }
-
-  .linkList {
-    height: 52px;
-    gap: 0;
-  }
-
-  .link {
-    padding: 5px 6px;
-    gap: 4px;
-  }
-
-  .linkIcon {
-    width: 28px;
-    height: 28px;
-  }
-
-  .linkLabel {
-    font-size: 0.8rem;
+    font-size: 0.87rem;
   }
 }

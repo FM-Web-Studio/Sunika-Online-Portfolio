@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Palette, Paintbrush, Droplets, Sparkles, ImageIcon, Mail, User } from 'lucide-react';
+import React, { useState, useRef, useEffect } from "react";
+import { Palette, Paintbrush, Droplets, Sparkles, ImageIcon, Mail, User, Menu, X } from "lucide-react";
 
 // ============================================
 // IMPORTS - STYLING
@@ -11,97 +11,186 @@ import styles from "./NavigationBar.module.css";
 // CONSTANTS
 // ============================================
 
+// Icon set for navigation links
 const ICONS = [Palette, Paintbrush, Droplets, Sparkles, ImageIcon, Mail, User];
 
 // ============================================
 // NAVIGATION BAR COMPONENT
 // ============================================
-// Main navigation component with icon-based links
-// Supports active state tracking and keyboard navigation
+// Liquid-glass burger menu navigation
 
-const NavigationBar = ({ 
-  links, 
+const NavigationBar = ({
+  links,
   onNavigate,
   activeTab = null,
+  burgerSize = 50,
   className = ""
 }) => {
   // ----------------------------------------
-  // State Management
+  // State & Refs
   // ----------------------------------------
-  
+
+  const [menuOpen, setMenuOpen] = useState(false);
   const [hoveredLink, setHoveredLink] = useState(null);
+
+  const containerRef = useRef(null);
+
+  // ----------------------------------------
+  // Derived Helpers
+  // ----------------------------------------
+
+  const burgerIconSize = Math.max(18, Math.round(burgerSize * 0.6));
+
+  const isActive = (link, index) => {
+    if (activeTab === null) return false;
+    return activeTab === index || activeTab === link.to;
+  };
 
   // ----------------------------------------
   // Event Handlers
   // ----------------------------------------
-  
+
+  const toggleMenu = () => setMenuOpen((prev) => !prev);
+
+  const closeMenu = () => {
+    setMenuOpen(false);
+    setHoveredLink(null);
+  };
+
   const handleLinkClick = (link, index) => {
     if (link.onClick) link.onClick();
     if (link.to) onNavigate(link.to, index);
+    closeMenu();
   };
 
   // ----------------------------------------
-  // Helper Functions
+  // Effects
   // ----------------------------------------
-  
-  const isActive = (link, index) => {
-    if (activeTab !== null) {
-      return activeTab === index || activeTab === link.to;
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (containerRef.current && !containerRef.current.contains(event.target)) {
+        closeMenu();
+      }
+    };
+
+    if (menuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
     }
-    return false;
-  };
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        closeMenu();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, []);
 
   // ----------------------------------------
   // Render
   // ----------------------------------------
-  
+
   return (
-    <nav className={`${styles.navbar} ${className}`}>
-      <div className={styles.navContent}>
-        <ul className={styles.linkList}>
-          {links && links.slice(0, 7).map((link, index) => {
-            const Icon = ICONS[index] || Palette;
-            const isHovered = hoveredLink === index;
-            const active = isActive(link, index);
-            
-            return (
-              <li key={`nav-${index}`} className={styles.linkItem}>
-                <div
-                  className={`${styles.link} ${isHovered ? styles.linkHovered : ''} ${active ? styles.linkActive : ''}`}
-                  onClick={() => handleLinkClick(link, index)}
-                  onMouseEnter={() => setHoveredLink(index)}
-                  onMouseLeave={() => setHoveredLink(null)}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      handleLinkClick(link, index);
-                    }
-                  }}
-                  data-index={index}
-                  aria-current={active ? 'page' : undefined}
-                >
-                  <div className={styles.linkIcon}>
-                    <Icon size={20} strokeWidth={2} />
-                  </div>
-                  <span className={styles.linkLabel}>{link.label}</span>
-                  <svg className={styles.brushStroke} viewBox="0 0 100 6" preserveAspectRatio="none">
-                    <path 
-                      d="M0,3 Q15,1 30,3 T60,3 Q75,2 90,3 L100,3" 
-                      stroke="currentColor" 
-                      strokeWidth="2.5" 
-                      fill="none"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    </nav>
+    <div className={`${styles.navbarContainer} ${className}`} ref={containerRef}>
+      <nav className={styles.navbar} aria-label="Main navigation">
+        
+        {/* Burger Button */}
+        <button
+          className={`${styles.burger} ${menuOpen ? styles.burgerOpen : ""}`}
+          aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={menuOpen}
+          onClick={toggleMenu}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              toggleMenu();
+            }
+          }}
+          style={{
+            width: burgerSize,
+            height: burgerSize,
+            minWidth: burgerSize,
+            minHeight: burgerSize,
+          }}
+        >
+          {menuOpen ? (
+            <X size={burgerIconSize} className={styles.burgerIcon} />
+          ) : (
+            <Menu size={burgerIconSize} className={styles.burgerIcon} />
+          )}
+        </button>
+
+        {/* Dropdown Menu */}
+        {menuOpen && (
+          <div
+            className={`${styles.menuDropdown} ${styles.menuDropdownOpen}`}
+            role="menu"
+          >
+            <ul className={styles.linkList} role="menubar">
+              {links && links.slice(0, 7).map((link, index) => {
+                const Icon = ICONS[index] || Palette;
+                const active = isActive(link, index);
+                const hovered = hoveredLink === index;
+
+                return (
+                  <li
+                    key={`nav-${index}`}
+                    className={styles.linkItem}
+                    role="none"
+                    onMouseEnter={() => setHoveredLink(index)}
+                    onMouseLeave={() => setHoveredLink(null)}
+                  >
+                    <div
+                      className={[
+                        styles.link,
+                        hovered ? styles.linkHovered : "",
+                        active ? styles.linkActive : "",
+                      ].join(" ")}
+                      onClick={() => handleLinkClick(link, index)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          handleLinkClick(link, index);
+                        }
+                      }}
+                      role="menuitem"
+                      tabIndex={0}
+                      aria-current={active ? "page" : undefined}
+                      data-index={index}
+                    >
+                      {/* Icon pill */}
+                      <div className={styles.linkIcon}>
+                        <Icon size={20} />
+                      </div>
+
+                      {/* Label */}
+                      <span className={styles.linkLabel}>{link.label}</span>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
+      </nav>
+
+      {/* Backdrop Overlay - outside nav, below burger */}
+      {menuOpen && (
+        <div
+          className={styles.backdrop}
+          onClick={closeMenu}
+          aria-hidden="true"
+        />
+      )}
+    </div>
   );
 };
 

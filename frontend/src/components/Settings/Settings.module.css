@@ -11,256 +11,153 @@
   right: 20px;
   width: 50px;
   height: 50px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.5) 0%,
-    rgba(255, 255, 255, 0.3) 100%
-  );
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  border-radius: 50%;
+  
+  /* Liquid glass effect */
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 14px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 
-    0 8px 24px rgba(0, 0, 0, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
   overflow: visible;
   z-index: 1001;
 }
 
 [data-theme="dark"] .cogButton {
-  background: linear-gradient(
-    135deg,
-    rgba(58, 59, 63, 0.7) 0%,
-    rgba(47, 48, 53, 0.5) 100%
-  );
-  border: 2px solid rgba(255, 255, 255, 0.15);
+  background: rgba(30, 32, 38, 0.5);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-color: rgba(255, 255, 255, 0.15);
   box-shadow: 
-    0 8px 24px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    0 4px 16px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .cogButton:hover {
-  transform: scale(1.1) translateY(-2px);
+  transform: translateY(-2px);
   border-color: var(--accent-1);
-  box-shadow: 
-    0 12px 32px var(--accent-1-background),
-    0 0 0 6px var(--accent-1-background),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .cogButton:active {
-  transform: scale(0.95);
+  transform: translateY(0);
 }
 
 .cogButtonActive {
-  border-color: var(--accent-2);
+  border-color: var(--accent-1);
   box-shadow: 
-    0 12px 40px var(--accent-2-background),
-    0 0 0 8px var(--accent-2-background);
+    0 4px 16px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 0 0 2px var(--accent-1-background);
+}
+
+[data-theme="dark"] .cogButtonActive {
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 0 2px var(--accent-1-background);
 }
 
 .cogIcon {
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   color: var(--accent-1);
-  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .cogButton:hover .cogIcon {
-  transform: rotate(180deg);
-  color: var(--accent-2);
+  transform: rotate(90deg);
 }
 
 .cogButtonActive .cogIcon {
-  transform: rotate(360deg);
-  color: var(--accent-3);
+  transform: rotate(180deg);
 }
 
 /* ==================== BACKDROP ==================== */
 .backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: 998;
   animation: backdropFadeIn 0.3s ease;
 }
 
 @keyframes backdropFadeIn {
   from { opacity: 0; }
-  to { opacity: 1; }
+  to   { opacity: 1; }
 }
 
-/* ==================== SETTINGS PANEL - LIQUID GLASS ==================== */
+/* ==================== SETTINGS PANEL ==================== */
 .settingsPanel {
   position: fixed;
-  top: 75px;
+  top: 72px;
   right: 10px;
-  min-width: 380px;
-  max-width: calc(100vw - 20px);
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.45) 0%,
-    rgba(255, 255, 255, 0.3) 50%,
-    rgba(255, 255, 255, 0.4) 100%
-  );
-  backdrop-filter: blur(24px) saturate(200%);
-  -webkit-backdrop-filter: blur(24px) saturate(200%);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 24px;
-  padding: 24px;
+  width: 340px;
+  max-width: calc(100vw - 24px);
+  
+  /* Enhanced liquid glass background */
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(32px) saturate(250%);
+  -webkit-backdrop-filter: blur(32px) saturate(250%);
+  
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 18px;
+  padding: 16px;
   box-shadow: 
-    0 16px 48px rgba(0, 0, 0, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.3);
-  animation: panelSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    0 12px 48px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.4);
   z-index: 999;
   overflow: hidden;
   box-sizing: border-box;
+  
+  /* Initial state for animation */
+  opacity: 0;
+  transform: translateY(-12px) scale(0.95);
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
 }
 
 [data-theme="dark"] .settingsPanel {
-  background: linear-gradient(
-    135deg,
-    rgba(58, 59, 63, 0.75) 0%,
-    rgba(47, 48, 53, 0.6) 50%,
-    rgba(58, 59, 63, 0.7) 100%
-  );
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(22, 24, 30, 0.3);
+  backdrop-filter: blur(32px) saturate(250%);
+  -webkit-backdrop-filter: blur(32px) saturate(250%);
+  border-color: rgba(255, 255, 255, 0.2);
   box-shadow: 
-    0 16px 48px rgba(0, 0, 0, 0.4),
+    0 12px 48px rgba(0, 0, 0, 0.45),
     inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08);
 }
 
-@keyframes panelSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-20px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-/* ==================== GRADIENT BACKGROUND ==================== */
-.gradientBackground {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.2;
-}
-
-.gradientOrb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(60px);
-  animation: orbDrift 12s ease-in-out infinite;
-}
-
-.gradientOrb[data-orb="1"] {
-  top: -30%;
-  right: -20%;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, var(--accent-1), transparent);
-  animation-delay: 0s;
-}
-
-.gradientOrb[data-orb="2"] {
-  bottom: -40%;
-  left: -25%;
-  width: 250px;
-  height: 250px;
-  background: radial-gradient(circle, var(--accent-2), transparent);
-  animation-delay: 3s;
-}
-
-.gradientOrb[data-orb="3"] {
-  top: 50%;
-  left: 50%;
-  width: 180px;
-  height: 180px;
-  background: radial-gradient(circle, var(--accent-3), transparent);
-  animation-delay: 6s;
-}
-
-.gradientOrb[data-orb="4"] {
-  bottom: 20%;
-  right: 10%;
-  width: 160px;
-  height: 160px;
-  background: radial-gradient(circle, var(--accent-4), transparent);
-  animation-delay: 9s;
-}
-
-@keyframes orbDrift {
-  0%, 100% { 
-    transform: translate(0, 0) scale(1);
-    opacity: 0.6;
-  }
-  25% { 
-    transform: translate(30px, -40px) scale(1.2);
-    opacity: 0.8;
-  }
-  50% { 
-    transform: translate(-20px, 30px) scale(0.9);
-    opacity: 0.4;
-  }
-  75% { 
-    transform: translate(40px, 20px) scale(1.1);
-    opacity: 0.7;
-  }
+.settingsPanelOpen {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
 }
 
 /* ==================== PANEL HEADER ==================== */
 .panelHeader {
   position: relative;
   z-index: 1;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 .panelTitle {
-  font-size: var(--font-size-lg);
-  font-weight: 700;
+  font-size: 0.7rem;
+  font-weight: 600;
   color: var(--primary-text-color);
-  margin: 0 0 8px 0;
-  letter-spacing: 0.5px;
-  background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-
-.headerAccent {
-  height: 3px;
-  width: 60px;
-  background: linear-gradient(90deg, var(--accent-1), var(--accent-2), var(--accent-3));
-  border-radius: 2px;
-  animation: accentPulse 2s ease-in-out infinite;
-}
-
-@keyframes accentPulse {
-  0%, 100% { 
-    opacity: 0.6;
-    transform: scaleX(1);
-  }
-  50% { 
-    opacity: 1;
-    transform: scaleX(1.1);
-  }
+  margin: 0;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  opacity: 0.5;
 }
 
 /* ==================== SETTINGS CONTENT ==================== */
@@ -269,7 +166,7 @@
   z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 /* ==================== SETTING CARD ==================== */
@@ -278,250 +175,199 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 18px;
-  background: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 16px;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  padding: 12px 14px;
+  
+  /* Layered liquid glass for cards */
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(16px) saturate(200%);
+  -webkit-backdrop-filter: blur(16px) saturate(200%);
+  
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   overflow: hidden;
   box-shadow: 
-    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 10px rgba(0, 0, 0, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 [data-theme="dark"] .settingCard {
-  background: rgba(58, 59, 63, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(40, 42, 50, 0.35);
+  backdrop-filter: blur(16px) saturate(200%);
+  -webkit-backdrop-filter: blur(16px) saturate(200%);
+  border-color: rgba(255, 255, 255, 0.15);
   box-shadow: 
-    0 4px 16px rgba(0, 0, 0, 0.2),
+    0 2px 10px rgba(0, 0, 0, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-/* Card glow effect */
-.cardGlow {
+.settingCard::before {
+  content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 50%, transparent 30%, transparent 100%);
+  border-radius: 12px;
+  background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.2), transparent);
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.3s ease;
   pointer-events: none;
 }
 
-.settingCard[data-accent="1"] .cardGlow {
-  background: radial-gradient(circle at 50% 50%, var(--accent-1-background) 0%, transparent 70%);
-}
-
-.settingCard[data-accent="2"] .cardGlow {
-  background: radial-gradient(circle at 50% 50%, var(--accent-3-background) 0%, transparent 70%);
-}
-
-.settingCardHovered .cardGlow {
-  opacity: 1;
-}
-
+.settingCard:hover,
 .settingCardHovered {
-  transform: translateX(4px) scale(1.02);
-  border-color: transparent;
-  box-shadow: 
-    0 8px 24px rgba(0, 0, 0, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
-}
-
-.settingCard[data-accent="1"]:hover {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(20px) saturate(260%);
+  -webkit-backdrop-filter: blur(20px) saturate(260%);
   border-color: var(--accent-1);
   box-shadow: 
-    0 8px 32px var(--accent-1-background),
-    0 0 0 3px var(--accent-1-background);
+    0 0 0 3px var(--accent-1-background),
+    0 6px 20px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  transform: translateY(-2px);
 }
 
-.settingCard[data-accent="2"]:hover {
-  border-color: var(--accent-3);
+[data-theme="dark"] .settingCard:hover,
+[data-theme="dark"] .settingCardHovered {
+  background: rgba(50, 52, 62, 0.5);
+  backdrop-filter: blur(20px) saturate(260%);
+  -webkit-backdrop-filter: blur(20px) saturate(260%);
   box-shadow: 
-    0 8px 32px var(--accent-3-background),
-    0 0 0 3px var(--accent-3-background);
+    0 0 0 3px var(--accent-1-background),
+    0 6px 20px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
-/* Card brush stroke */
-.cardBrush {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  opacity: 0;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  pointer-events: none;
-}
-
-.settingCard[data-accent="1"] .cardBrush {
-  color: var(--accent-1);
-}
-
-.settingCard[data-accent="2"] .cardBrush {
-  color: var(--accent-3);
-}
-
-.settingCardHovered .cardBrush {
+.settingCard:hover::before,
+.settingCardHovered::before {
   opacity: 1;
-  transform: scaleX(1);
 }
 
 /* ==================== SETTING MAIN ==================== */
 .settingMain {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
+  flex: 1;
 }
 
+/* ==================== ICON BOX ==================== */
 .settingIconBox {
   position: relative;
-  width: 44px;
-  height: 44px;
+  width: 38px;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   flex-shrink: 0;
-  overflow: visible;
 }
 
-.settingCard[data-accent="1"] .settingIconBox {
+[data-theme="dark"] .settingIconBox {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Icon colors based on index */
+.settingCard[data-index="0"] .settingIconBox {
   background: var(--accent-1-background);
 }
 
-.settingCard[data-accent="2"] .settingIconBox {
-  background: var(--accent-3-background);
+.settingCard[data-index="1"] .settingIconBox {
+  background: var(--accent-2-background);
 }
 
-.settingCardHovered .settingIconBox {
-  transform: translateY(-3px) rotate(5deg) scale(1.1);
-}
-
-.settingCard[data-accent="1"]:hover .settingIconBox {
+.settingCard[data-index="0"]:hover .settingIconBox,
+.settingCard[data-index="0"].settingCardHovered .settingIconBox {
   background: var(--accent-1);
-  box-shadow: 0 6px 20px var(--accent-1-background);
+  border-color: var(--accent-1);
+  transform: translateY(-2px) scale(1.08);
+  box-shadow: 0 4px 14px var(--accent-1-background);
 }
 
-.settingCard[data-accent="2"]:hover .settingIconBox {
-  background: var(--accent-3);
-  box-shadow: 0 6px 20px var(--accent-3-background);
+.settingCard[data-index="1"]:hover .settingIconBox,
+.settingCard[data-index="1"].settingCardHovered .settingIconBox {
+  background: var(--accent-2);
+  border-color: var(--accent-2);
+  transform: translateY(-2px) scale(1.08);
+  box-shadow: 0 4px 14px var(--accent-2-background);
 }
 
-/* Icon pulse effect */
-.iconPulse {
-  position: absolute;
-  inset: -4px;
-  border-radius: 12px;
-  border: 2px solid currentColor;
-  opacity: 0;
-  animation: iconPulseAnim 2s ease-out infinite;
-}
-
-.settingCard[data-accent="1"] .iconPulse {
-  color: var(--accent-1);
-}
-
-.settingCard[data-accent="2"] .iconPulse {
-  color: var(--accent-3);
-}
-
-@keyframes iconPulseAnim {
-  0% {
-    transform: scale(1);
-    opacity: 0.6;
-  }
-  100% {
-    transform: scale(1.3);
-    opacity: 0;
-  }
-}
-
+/* ==================== ICON ==================== */
 .settingIcon {
-  font-size: 1.4rem;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  position: relative;
-  z-index: 1;
+  font-size: 1.15rem;
+  transition: color 0.3s ease;
 }
 
-.settingCard[data-accent="1"] .settingIcon {
+.settingCard[data-index="0"] .settingIcon {
   color: var(--accent-1);
 }
 
-.settingCard[data-accent="2"] .settingIcon {
-  color: var(--accent-3);
+.settingCard[data-index="1"] .settingIcon {
+  color: var(--accent-2);
 }
 
-.settingCard[data-accent="1"]:hover .settingIcon {
-  color: var(--background-1);
-  transform: scale(1.1);
+.settingCard[data-index="0"]:hover .settingIcon,
+.settingCard[data-index="0"].settingCardHovered .settingIcon,
+.settingCard[data-index="1"]:hover .settingIcon,
+.settingCard[data-index="1"].settingCardHovered .settingIcon {
+  color: #fff;
 }
 
-.settingCard[data-accent="2"]:hover .settingIcon {
-  color: var(--background-1);
-  transform: scale(1.1);
-}
-
+/* ==================== LABEL COLUMN ==================== */
 .settingDetails {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
   flex: 1;
   min-width: 0;
   overflow: hidden;
 }
 
 .settingTitle {
-  font-size: var(--font-size-base);
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--primary-text-color);
-  letter-spacing: 0.3px;
+  letter-spacing: 0.2px;
   margin: 0;
-  transition: all 0.3s ease;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
-.settingCard[data-accent="1"]:hover .settingTitle {
+.settingCard[data-index="0"]:hover .settingTitle,
+.settingCard[data-index="0"].settingCardHovered .settingTitle {
   color: var(--accent-1);
+  transform: translateX(2px);
 }
 
-.settingCard[data-accent="2"]:hover .settingTitle {
-  color: var(--accent-3);
+.settingCard[data-index="1"]:hover .settingTitle,
+.settingCard[data-index="1"].settingCardHovered .settingTitle {
+  color: var(--accent-2);
+  transform: translateX(2px);
 }
 
 .settingSubtitle {
-  font-size: 0.825rem;
+  font-size: 0.74rem;
   color: var(--primary-text-color);
-  opacity: 0.65;
-  letter-spacing: 0.2px;
+  opacity: 0.5;
   margin: 0;
-  transition: all 0.3s ease;
+  transition: opacity 0.3s ease;
   line-height: 1.4;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
 }
 
+.settingCard:hover .settingSubtitle,
 .settingCardHovered .settingSubtitle {
-  opacity: 0.85;
+  opacity: 0.7;
 }
 
-/* ==================== SETTING ACTION ==================== */
+/* ==================== TOGGLE ACTION ==================== */
 .settingAction {
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   flex-shrink: 0;
+  margin-left: 8px;
 }
 
-.settingCardHovered .settingAction {
-  transform: scale(1.08);
-}
-
-/* ==================== RESPONSIVE DESIGN ==================== */
+/* ==================== RESPONSIVE ==================== */
 @media (max-width: 768px) {
   .cogButton {
     top: 12px;
@@ -531,29 +377,24 @@
   }
 
   .settingsPanel {
-    min-width: min(340px, calc(100vw - 32px));
+    width: min(340px, calc(100vw - 32px));
     max-width: calc(100vw - 32px);
     top: 70px;
     right: 16px;
-    left: auto;
-    padding: 20px;
-  }
-
-  .panelTitle {
-    font-size: var(--font-size-md);
+    padding: 14px;
   }
 
   .settingCard {
-    padding: 14px 16px;
+    padding: 11px 13px;
   }
 
   .settingIconBox {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
   }
 
   .settingIcon {
-    font-size: 1.3rem;
+    font-size: 1.08rem;
   }
 }
 
@@ -566,43 +407,39 @@
   }
 
   .cogIcon {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
   }
 
   .settingsPanel {
-    min-width: auto;
     width: calc(100vw - 16px);
     max-width: calc(100vw - 16px);
     right: 8px;
     left: 8px;
     top: 58px;
-    padding: 16px;
-    border-radius: 20px;
-  }
-
-  .panelTitle {
-    font-size: 1.075rem;
+    padding: 14px;
+    border-radius: 14px;
   }
 
   .settingsContent {
-    gap: 10px;
+    gap: 7px;
   }
 
   .settingCard {
-    padding: 12px;
+    padding: 11px 12px;
+    border-radius: 11px;
   }
 
   .settingMain {
-    gap: 12px;
+    gap: 10px;
   }
 
   .settingIconBox {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
   }
 
   .settingIcon {
-    font-size: 1.15rem;
+    font-size: 1.02rem;
   }
 
   .settingTitle {
@@ -610,7 +447,7 @@
   }
 
   .settingSubtitle {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
   }
 }
 
@@ -620,16 +457,12 @@
     top: 56px;
   }
 
-  .panelTitle {
-    font-size: 1rem;
-  }
-
   .settingCard {
-    padding: 10px;
+    padding: 10px 11px;
   }
 
   .settingMain {
-    gap: 10px;
+    gap: 9px;
   }
 
   .settingIconBox {
@@ -638,11 +471,11 @@
   }
 
   .settingIcon {
-    font-size: 1.05rem;
+    font-size: 0.98rem;
   }
 
   .settingTitle {
-    font-size: 0.85rem;
+    font-size: 0.87rem;
   }
 
   .settingSubtitle {

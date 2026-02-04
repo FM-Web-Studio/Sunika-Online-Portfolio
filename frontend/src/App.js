@@ -1,29 +1,51 @@
+/* ============================================================================
+ * APP - MAIN APPLICATION COMPONENT
+ * ============================================================================
+ * Root component managing routing, layout, and theme
+ * ============================================================================
+ */
+
 import React, { Suspense, useCallback, useMemo } from 'react';
 import { Routes, Route, useNavigate, Outlet } from 'react-router-dom';
+
+/* ========================================
+ * IMPORTS - Pages
+ * ======================================== */
 import { NotFound, Loading } from './pages';
+
+/* ========================================
+ * IMPORTS - Components
+ * ======================================== */
 import { NavigationBar, Settings } from './components';
+
+/* ========================================
+ * IMPORTS - Hooks
+ * ======================================== */
 import { useTheme } from './hooks';
 
-// ============================================
-// IMPORTS - STYLING
-// ============================================
-
+/* ========================================
+ * IMPORTS - Styling
+ * ======================================== */
 import styles from './App.module.css';
 
-// ============================================
-// LAZY LOADED PAGE COMPONENTS
-// ============================================
-
+/* ============================================================================
+ * LAZY LOADED COMPONENTS
+ * ============================================================================
+ * Pages are lazy loaded to improve initial bundle size and performance
+ * ============================================================================
+ */
 const Home = React.lazy(() => import('./pages/Home'));
 const Bio = React.lazy(() => import('./pages/Bio'));
-const Connect = React.lazy(() => import('./pages/Connect'));
 const Gallery = React.lazy(() => import('./pages/Gallery'));
-const GraphicDesign = React.lazy(() => import('./pages/Graphic Design'));
+const Projects = React.lazy(() => import('./pages/Graphic Design'));
+const Contact = React.lazy(() => import('./pages/Connect'));
 
-// ============================================
-// NAVIGATION CONFIGURATION
-// ============================================
-
+/* ============================================================================
+ * NAVIGATION STRUCTURE
+ * ============================================================================
+ * Define all navigation routes and labels in one place
+ * ============================================================================
+ */
 const NAVIGATION_PAGES = [
   {
     label: 'Home',
@@ -38,8 +60,8 @@ const NAVIGATION_PAGES = [
     to: '/gallery'
   },
   {
-    label: 'Graphic Design',
-    to: '/graphic-design'
+    label: 'Projects',
+    to: '/projects'
   },
   {
     label: 'Connect',
@@ -47,35 +69,38 @@ const NAVIGATION_PAGES = [
   },
 ];
 
-// ============================================
-// LOADING FALLBACK COMPONENT
-// ============================================
-
+/* ============================================================================
+ * LOADING FALLBACK COMPONENT
+ * ============================================================================
+ * Displayed while lazy-loaded components are being fetched
+ * ============================================================================
+ */
 const LoadingFallback = () => <Loading />;
 
-// ============================================
-// APP LAYOUT COMPONENT
-// ============================================
-// Main layout wrapper with navigation and settings
-
+/* ============================================================================
+ * APP LAYOUT COMPONENT
+ * ============================================================================
+ * Main layout wrapper containing navigation, settings, and page content
+ * Uses memoization for optimal performance
+ * ============================================================================
+ */
 const AppLayout = () => {
-  // ----------------------------------------
-  // Hooks
-  // ----------------------------------------
-  
+  // ========================================
+  // HOOKS
+  // ========================================
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
 
-  // ----------------------------------------
-  // Navigation Handlers
-  // ----------------------------------------
-  // Memoize to prevent recreation
-  
+  // ========================================
+  // HANDLERS - Memoized for performance
+  // ========================================
   const handleNavigate = useCallback((to) => {
     if (to) navigate(to);
   }, [navigate]);
 
-  // Memoize navigation links to prevent recreation
+  // ========================================
+  // MEMOIZED VALUES
+  // ========================================
   const navigationLinks = useMemo(() => 
     NAVIGATION_PAGES.map(page => ({
       ...page,
@@ -83,25 +108,28 @@ const AppLayout = () => {
     })),
     [navigate]
   );
-  // ----------------------------------------
-  // Render
-  // ----------------------------------------
-    return (
+
+  // ========================================
+  // RENDER
+  // ========================================
+  return (
     <div className={styles.app}>
+      {/* Fixed Navigation Bar - Hovers over content */}
       <NavigationBar
         links={navigationLinks}
-        burgerSize={25}
         onNavigate={handleNavigate}
+        className={styles.navigationBar}
       />
-
-      <div>
+      
+      {/* Fixed Settings Button - Top right corner */}
+      <div className={styles.settings}>
         <Settings
           theme={theme}
           toggleTheme={toggleTheme}
-          cogSize={44}
         />
       </div>
-
+      
+      {/* Main Page Content - Full viewport */}
       <div className={styles.pageContent}>
         <Suspense fallback={<LoadingFallback />}>
           <Outlet />
@@ -111,48 +139,56 @@ const AppLayout = () => {
   );
 };
 
-// ----------------------------------------
-// Memoize AppLayout
-// ----------------------------------------
-
+/* ========================================
+ * MEMOIZED APP LAYOUT
+ * ======================================== */
 const MemoizedAppLayout = React.memo(AppLayout);
 
-// ============================================
-// APP CONTENT COMPONENT
-// ============================================
-// Route configuration
-
+/* ============================================================================
+ * APP CONTENT COMPONENT
+ * ============================================================================
+ * Defines all application routes with lazy-loaded pages
+ * ============================================================================
+ */
 const AppContent = () => {
   return (
     <Routes>
+      {/* Main Layout Route */}
       <Route path="/" element={<MemoizedAppLayout />}>
+        {/* Page Routes */}
         <Route index element={<Home />} />
-        <Route path="/bio" element={<Bio />} />
-        <Route path="/gallery" element={<Gallery />} />
-        <Route path="/graphic-design" element={<GraphicDesign />} />
-        <Route path="/connect" element={<Connect />} />
-
-        {/* 404 Not Found - handle unknown routes inside app layout */}
+        <Route path="bio" element={<Bio />} />
+        <Route path="gallery" element={<Gallery />} />
+        <Route path="projects" element={<Projects />} />
+        <Route path="connect" element={<Contact />} />
+        
+        {/* 404 Not Found - Catch all unknown routes */}
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   );
 };
 
-// ============================================
-// ROOT APP COMPONENT
-// ============================================
-// Initialize theme and render app content
-
+/* ============================================================================
+ * ROOT APP COMPONENT
+ * ============================================================================
+ * Root component that wraps the entire application
+ * Initializes theme and provides toast notifications context
+ * ============================================================================
+ */
 const App = () => {
-  // Initialize theme at root level
+  // ========================================
+  // INITIALIZATION
+  // ========================================
+  // Initialize theme at root level for global application
   useTheme();
 
-  return <AppContent />;
+  // ========================================
+  // RENDER
+  // ========================================
+  return (
+    <AppContent />
+  );
 };
-
-// ============================================
-// EXPORTS
-// ============================================
 
 export default App;
