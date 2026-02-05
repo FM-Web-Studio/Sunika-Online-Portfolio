@@ -27,6 +27,14 @@
       "description": "Surrounded by the people who matter most. Family and friends are my greatest inspiration, reminding me why I do what I do. These precious moments together are the true masterpieces of life, more valuable than any artwork.",
       "date": "Together Always",
       "accent": "accent-3"
+    },
+    {
+      "id": 4,
+      "title": "In Front of the Lens",
+      "image": "Modeling.jpg",
+      "description": "Confidence, creativity, and storytelling through expression. Modeling feels like being the cover of a book without words—every pose, look, and movement tells a story. It’s where discipline meets art, and where I learn to own my presence and perspective.",
+      "date": "The Art of Expression",
+      "accent": "accent-4"
     }
   ]
 }
