@@ -1,316 +1,229 @@
-/* ==================== UNIVERSAL BOX SIZING ==================== */
+/* ============================================
+   CONNECT PAGE - PROFESSIONAL & MINIMALISTIC
+   ============================================ */
+
+/* ========== CONTAINER ========== */
+
+.connectContainer {
+  width: 100%;
+  min-height: 100vh;
+  padding: var(--spacing-xl) var(--spacing-md);
+  max-width: 1400px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
 * {
   box-sizing: border-box;
 }
 
-/* ==================== CONTAINER ==================== */
-.connectContainer {
-  position: relative;
-  min-height: 100vh;
-  width: 100%;
-  max-width: 100vw;
-  padding: 0;
-  background: var(--background-1);
-  display: flex;
-  flex-direction: column;
-  overflow-x: hidden;
-  overflow-y: auto;
-  /* Improve scrolling on iOS */
-  -webkit-overflow-scrolling: touch;
-  box-sizing: border-box;
-}
+/* ========== HERO SECTION ========== */
 
-/* ==================== HERO SECTION ==================== */
-.hero {
-  position: relative;
-  padding: clamp(var(--spacing-xl), 8vw, var(--spacing-3xl)) var(--spacing-xl) var(--spacing-xl);
+.heroSection {
   text-align: center;
-  background: linear-gradient(135deg, 
-    var(--accent-1-background) 0%, 
-    var(--accent-2-background) 50%,
-    var(--accent-3-background) 100%
-  );
-  border-bottom: 1px solid var(--border-color);
-  flex-shrink: 0;
-  width: 100%;
-  box-sizing: border-box;
+  margin-bottom: var(--spacing-3xl);
+  padding: var(--spacing-2xl) 0;
 }
 
-.heroContent {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.mainTitle {
-  font-size: clamp(var(--font-size-xl), 5vw, var(--font-size-3xl));
+.pageTitle {
+  font-size: var(--font-size-4xl);
   font-weight: 700;
-  margin: 0 0 var(--spacing-sm);
   color: var(--primary-text-color);
+  margin: 0 0 var(--spacing-md) 0;
   letter-spacing: -0.02em;
-  line-height: 1.2;
 }
 
-.tagline {
-  font-size: clamp(var(--font-size-sm), 2.5vw, var(--font-size-base));
+.pageSubtitle {
+  font-size: var(--font-size-lg);
   color: var(--secondary-text-color);
   margin: 0;
-  font-weight: 400;
-  line-height: 1.5;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
 }
 
-/* ==================== MAIN CONTENT ==================== */
-.content {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: clamp(var(--spacing-lg), 4vw, var(--spacing-2xl)) clamp(var(--spacing-md), 4vw, var(--spacing-xl));
-  width: 100%;
-  flex: 1;
+/* ========== MAIN CONTENT ========== */
+
+.mainContent {
   display: flex;
   flex-direction: column;
-  gap: clamp(var(--spacing-lg), 4vw, var(--spacing-xl));
-  box-sizing: border-box;
+  gap: var(--spacing-2xl);
 }
 
-/* ==================== SECTION TITLES ==================== */
+.section {
+  width: 100%;
+}
+
+/* ========== SECTION TITLES ========== */
+
 .sectionTitle {
-  font-size: clamp(var(--font-size-md), 3vw, var(--font-size-lg));
+  font-size: var(--font-size-xl);
   font-weight: 600;
-  margin: 0 0 var(--spacing-md);
   color: var(--primary-text-color);
+  margin: 0 0 var(--spacing-lg) 0;
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  line-height: 1.3;
 }
 
 .titleIcon {
+  width: 24px;
+  height: 24px;
   color: var(--accent-1);
-  flex-shrink: 0;
 }
 
-.titleText {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-}
-
-/* ==================== CONTACT SECTION ==================== */
-.contactSection {
-  width: 100%;
-  box-sizing: border-box;
-  overflow: hidden;
-}
+/* ========== CONTACT GRID ========== */
 
 .contactGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
-  gap: var(--spacing-sm);
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
   width: 100%;
-}
-
-/* Force 2 columns on mobile for compact grid look */
-@media (max-width: 767px) {
-  .contactGrid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-xs);
-  }
-}
-
-/* Single column only on very small screens */
-@media (max-width: 400px) {
-  .contactGrid {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-sm);
-  }
 }
 
 .contactCard {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-md);
-  background: var(--background-2);
-  border-radius: var(--radius-lg);
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  background: var(--background-1);
   border: 1px solid var(--border-color);
-  text-decoration: none;
+  border-radius: var(--radius-lg);
   transition: all var(--transition-base);
-  position: relative;
-  overflow: hidden;
-  /* Better tap targets on mobile */
-  min-height: 44px;
-  /* Prevent text selection on tap */
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-  box-sizing: border-box;
+  text-decoration: none;
+  cursor: pointer;
   width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
-.contactCard::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(180deg, var(--accent-1), var(--accent-2));
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: transform var(--transition-base);
+.contactCard:hover {
+  border-color: var(--accent-1);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
-/* Desktop hover */
-@media (hover: hover) and (pointer: fine) {
-  .contactCard:hover::before {
-    transform: scaleY(1);
-  }
-
-  .contactCard:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--accent-1);
-  }
-
-  .contactCard:hover .iconWrapper {
-    transform: rotate(5deg) scale(1.05);
-  }
-}
-
-/* Mobile/touch active state */
 .contactCard:active {
-  transform: scale(0.98);
-  opacity: 0.9;
+  transform: translateY(0);
 }
 
-.iconWrapper {
+.contactCard.nonInteractive {
+  cursor: default;
+}
+
+.contactCard.nonInteractive:hover {
+  border-color: var(--border-color);
+  transform: none;
+  box-shadow: none;
+}
+
+.cardIcon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: clamp(40px, 10vw, 48px);
-  height: clamp(40px, 10vw, 48px);
-  border-radius: var(--radius-lg);
-  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-  color: white;
-  flex-shrink: 0;
-  transition: transform var(--transition-base);
+  background: var(--accent-1-background);
+  border-radius: var(--radius-md);
+  color: var(--accent-1);
 }
 
-.contactInfo {
+.cardIcon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.cardContent {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xs);
-  flex: 1;
   min-width: 0;
 }
 
-.contactLabel {
-  font-size: var(--font-size-xs);
-  font-weight: 600;
+.cardLabel {
+  font-size: var(--font-size-sm);
+  color: var(--tertiary-text-color);
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--tertiary-text-color);
 }
 
-.contactValue {
-  font-size: clamp(var(--font-size-sm), 2.5vw, var(--font-size-base));
-  font-weight: 500;
+.cardValue {
+  font-size: var(--font-size-md);
   color: var(--primary-text-color);
+  font-weight: 500;
   word-break: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
 }
 
-/* ==================== OFFERINGS SECTION ==================== */
-.offeringsSection {
-  width: 100%;
-  box-sizing: border-box;
-  overflow: hidden;
-}
+/* ========== TWO COLUMN LAYOUT ========== */
 
-.offeringsGrid {
+.twoColumnLayout {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
-  gap: var(--spacing-sm);
-  width: 100%;
-}
-
-/* Force 2 columns on mobile */
-@media (max-width: 767px) {
-  .offeringsGrid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-xs);
-  }
-}
-
-/* Single column only on very small screens */
-@media (max-width: 400px) {
-  .offeringsGrid {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-sm);
-  }
-}
-
-.offeringCard {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-sm) var(--spacing-md);
-  background: var(--background-2);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-color);
-  transition: all var(--transition-base);
-  box-sizing: border-box;
-  width: 100%;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .offeringCard:hover {
-    transform: translateX(4px);
-    border-color: var(--accent-2);
-    box-shadow: var(--shadow-sm);
-  }
-}
-
-.offeringBullet {
-  width: 8px;
-  height: 8px;
-  border-radius: var(--radius-full);
-  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-  flex-shrink: 0;
-  margin-top: 6px;
-}
-
-.offeringText {
-  font-size: clamp(var(--font-size-xs), 2vw, var(--font-size-sm));
-  color: var(--secondary-text-color);
-  margin: 0;
-  line-height: 1.6;
-}
-
-/* ==================== BOTTOM SECTION (Two Columns) ==================== */
-.bottomSection {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--spacing-md);
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-2xl);
   align-items: start;
   width: 100%;
   box-sizing: border-box;
-  overflow: hidden;
 }
 
-/* Switch to two columns on larger screens */
-@media (min-width: 768px) {
-  .bottomSection {
-    grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-xl);
-  }
+.leftColumn,
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xl);
+  min-width: 0;
+  box-sizing: border-box;
 }
 
-/* ==================== SOCIAL SECTION ==================== */
-.socialSection {
+/* ========== OFFERINGS SECTION ========== */
+
+.offeringsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.offeringItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: var(--background-1);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-base);
   width: 100%;
   box-sizing: border-box;
   overflow: hidden;
 }
+
+.offeringItem:hover {
+  border-color: var(--border-color-hover);
+}
+
+.offeringBullet {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  background: var(--accent-2);
+  border-radius: var(--radius-full);
+  margin-top: 8px;
+}
+
+.offeringText {
+  margin: 0;
+  font-size: var(--font-size-base);
+  color: var(--secondary-text-color);
+  line-height: 1.6;
+}
+
+/* ========== SOCIAL MEDIA SECTION ========== */
 
 .socialGrid {
   display: flex;
@@ -321,175 +234,92 @@
 .socialCard {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-sm) var(--spacing-md);
-  background: var(--background-2);
-  border-radius: var(--radius-xl);
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: var(--background-1);
   border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
   text-decoration: none;
   transition: all var(--transition-base);
-  position: relative;
-  overflow: hidden;
-  /* Better tap targets */
-  min-height: 44px;
-  -webkit-tap-highlight-color: transparent;
-  box-sizing: border-box;
   width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
-.socialCard::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--social-color, linear-gradient(90deg, var(--accent-1), var(--accent-3)));
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform var(--transition-base);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .socialCard:hover::after {
-    transform: scaleX(1);
-  }
-
-  .socialCard:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-    border-color: var(--social-color, var(--accent-1));
-  }
-
-  .socialCard:hover .socialCircle {
-    transform: scale(1.1) rotate(10deg);
-  }
+.socialCard:hover {
+  border-color: var(--accent-1);
+  transform: translateX(4px);
+  box-shadow: var(--shadow-sm);
 }
 
 .socialCard:active {
-  transform: scale(0.98);
-  opacity: 0.9;
+  transform: translateX(2px);
 }
 
-.socialCircle {
-  width: clamp(48px, 12vw, 56px);
-  height: clamp(48px, 12vw, 56px);
-  border-radius: var(--radius-full);
-  background: var(--social-color, linear-gradient(135deg, var(--accent-2), var(--accent-3)));
+.socialIconCircle {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  transition: transform var(--transition-base);
-  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-full);
   color: white;
+}
+
+.socialIcon {
+  width: 20px;
+  height: 20px;
 }
 
 .socialInfo {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xs);
-  flex: 1;
   min-width: 0;
 }
 
 .socialPlatform {
-  font-size: clamp(var(--font-size-sm), 2.5vw, var(--font-size-base));
+  font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--primary-text-color);
 }
 
 .socialUsername {
-  font-size: clamp(var(--font-size-xs), 2vw, var(--font-size-sm));
-  font-weight: 500;
-  color: var(--secondary-text-color);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-size: var(--font-size-sm);
+  color: var(--tertiary-text-color);
 }
 
-/* ==================== AVAILABILITY SECTION ==================== */
-.availabilitySection {
-  width: 100%;
-  box-sizing: border-box;
-  overflow: hidden;
-}
+/* ========== AVAILABILITY SECTION ========== */
 
 .availabilityCard {
-  padding: var(--spacing-md);
-  background: var(--background-2);
-  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  background: var(--background-1);
   border: 1px solid var(--border-color);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-  height: 100%;
-  box-sizing: border-box;
+  border-radius: var(--radius-lg);
   width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
-.availabilityText {
-  font-size: clamp(var(--font-size-sm), 2.5vw, var(--font-size-base));
-  color: var(--secondary-text-color);
-  margin: 0;
-  line-height: 1.6;
-}
-
-.businessHours {
+.availabilityStatus {
   display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-md);
-  background: var(--background-3);
-  border-radius: var(--radius-md);
-  border-left: 3px solid var(--accent-2);
-}
-
-.hoursRow {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  font-size: clamp(var(--font-size-xs), 2vw, var(--font-size-sm));
-  font-weight: 500;
-  color: var(--primary-text-color);
-  flex-wrap: wrap;
-}
-
-.hoursRow svg {
-  color: var(--accent-2);
-  flex-shrink: 0;
-}
-
-.timezone {
-  font-size: var(--font-size-xs);
-  color: var(--tertiary-text-color);
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding-left: calc(16px + var(--spacing-sm));
-}
-
-.responseTime {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-sm) var(--spacing-md);
-  background: var(--accent-1-background);
-  border-radius: var(--radius-md);
-  font-size: clamp(var(--font-size-xs), 2vw, var(--font-size-sm));
-  font-weight: 500;
-  color: var(--primary-text-color);
-  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--spacing-md);
 }
 
 .statusIndicator {
-  width: 8px;
-  height: 8px;
-  border-radius: var(--radius-full);
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
   background: var(--success-color);
+  border-radius: var(--radius-full);
+  margin-top: 6px;
   box-shadow: 0 0 0 3px var(--success-background-color);
   animation: pulse 2s ease-in-out infinite;
-  flex-shrink: 0;
 }
 
 @keyframes pulse {
@@ -501,191 +331,244 @@
   }
 }
 
-/* ==================== TABLET OPTIMIZATION ==================== */
-@media (min-width: 768px) and (max-width: 1024px) {
-  .contactGrid {
-    grid-template-columns: repeat(2, 1fr);
+.availabilityText {
+  margin: 0;
+  font-size: var(--font-size-base);
+  color: var(--secondary-text-color);
+  line-height: 1.6;
+}
+
+.businessHours {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  background: var(--background-2);
+  border-radius: var(--radius-md);
+}
+
+.hoursRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-base);
+  color: var(--primary-text-color);
+  font-weight: 500;
+}
+
+.hoursRow svg {
+  flex-shrink: 0;
+  color: var(--accent-3);
+}
+
+.timezone {
+  font-size: var(--font-size-sm);
+  color: var(--tertiary-text-color);
+  padding-left: 26px;
+}
+
+.responseTime {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--border-color);
+}
+
+.responseLabel {
+  font-size: var(--font-size-sm);
+  color: var(--tertiary-text-color);
+  font-weight: 500;
+}
+
+.responseValue {
+  font-size: var(--font-size-sm);
+  color: var(--primary-text-color);
+  font-weight: 600;
+}
+
+/* ========== RESPONSIVE DESIGN ========== */
+
+/* Large Tablets and Small Desktops (992px and below) */
+@media (max-width: 992px) {
+  .pageTitle {
+    font-size: var(--font-size-3xl);
+  }
+
+  .pageSubtitle {
+    font-size: var(--font-size-md);
+  }
+
+  .connectContainer {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+
+  .heroSection {
+    margin-bottom: var(--spacing-2xl);
+    padding: var(--spacing-xl) 0;
   }
 }
 
-/* ==================== MOBILE OPTIMIZATION ==================== */
-@media (max-width: 767px) {
-  .hero {
-    padding: var(--spacing-xl) var(--spacing-sm) var(--spacing-md);
+/* Tablets (768px and below) */
+@media (max-width: 768px) {
+  /* Stack two-column layout */
+  .twoColumnLayout {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
   }
 
-  .content {
-    padding: var(--spacing-lg) var(--spacing-sm);
+  .contactGrid {
+    grid-template-columns: 1fr;
     gap: var(--spacing-md);
   }
 
-  .contactCard {
-    padding: var(--spacing-sm);
-    gap: var(--spacing-xs);
+  .pageTitle {
+    font-size: var(--font-size-2xl);
   }
 
-  .socialCard {
-    padding: var(--spacing-sm) var(--spacing-md);
+  .sectionTitle {
+    font-size: var(--font-size-lg);
   }
 
-  .availabilityCard {
+  .connectContainer {
     padding: var(--spacing-md);
   }
-  
-  .sectionTitle {
-    margin-bottom: var(--spacing-sm);
-    font-size: var(--font-size-md);
+
+  .heroSection {
+    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-lg) 0;
+  }
+
+  .mainContent {
+    gap: var(--spacing-xl);
   }
 }
 
-/* ==================== SMALL MOBILE (Portrait Phones) ==================== */
-@media (max-width: 400px) {
-  .hero {
-    padding: var(--spacing-md) var(--spacing-xs) var(--spacing-sm);
+/* Mobile (576px and below) */
+@media (max-width: 576px) {
+  .pageTitle {
+    font-size: var(--font-size-xl);
   }
 
-  .content {
-    padding: var(--spacing-md) var(--spacing-xs);
-    gap: var(--spacing-sm);
+  .pageSubtitle {
+    font-size: var(--font-size-base);
+  }
+
+  .connectContainer {
+    padding: var(--spacing-md) var(--spacing-sm);
+  }
+
+  .heroSection {
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-md) 0;
+  }
+
+  .mainContent {
+    gap: var(--spacing-lg);
+  }
+
+  .twoColumnLayout {
+    gap: var(--spacing-md);
+  }
+
+  .leftColumn,
+  .rightColumn {
+    gap: var(--spacing-lg);
   }
 
   .contactCard,
-  .socialCard {
-    padding: var(--spacing-xs) var(--spacing-sm);
-    gap: var(--spacing-xs);
+  .availabilityCard {
+    padding: var(--spacing-md);
   }
 
-  .iconWrapper,
-  .socialCircle {
-    width: 36px;
-    height: 36px;
+  .cardIcon {
+    width: 40px;
+    height: 40px;
   }
 
-  .iconWrapper svg,
-  .socialCircle svg {
+  .cardIcon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .socialIconCircle {
+    width: 40px;
+    height: 40px;
+  }
+
+  .socialIcon {
     width: 18px;
     height: 18px;
   }
 
-  .offeringCard {
-    padding: var(--spacing-xs) var(--spacing-sm);
-    gap: var(--spacing-xs);
-  }
-
-  .businessHours {
-    padding: var(--spacing-xs);
-  }
-
-  .timezone {
-    padding-left: var(--spacing-sm);
-  }
-  
-  .contactValue,
-  .socialPlatform {
-    font-size: var(--font-size-xs);
-  }
-  
-  .offeringText {
-    font-size: var(--font-size-xs);
+  .offeringItem,
+  .socialCard {
+    padding: var(--spacing-sm) var(--spacing-md);
   }
 }
 
-/* ==================== LARGE SCREENS ==================== */
-@media (min-width: 1200px) {
-  .content {
-    max-width: 1200px;
+/* Extra Small Mobile (400px and below) */
+@media (max-width: 400px) {
+  .pageTitle {
+    font-size: var(--font-size-lg);
+  }
+
+  .sectionTitle {
+    font-size: var(--font-size-md);
+  }
+
+  .cardValue {
+    font-size: var(--font-size-sm);
   }
 
   .contactGrid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .bottomSection {
-    grid-template-columns: 1.2fr 1fr;
+    grid-template-columns: 1fr;
   }
 }
 
-/* ==================== LANDSCAPE MOBILE ==================== */
-@media (max-height: 500px) and (orientation: landscape) {
-  .hero {
-    padding: var(--spacing-md) var(--spacing-lg);
-  }
+/* ========== ACCESSIBILITY ========== */
 
-  .mainTitle {
-    font-size: var(--font-size-xl);
-  }
-
-  .content {
-    padding: var(--spacing-lg) var(--spacing-md);
-  }
-}
-
-/* ==================== ACCESSIBILITY ==================== */
+/* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
+  * {
+    animation: none !important;
     transition-duration: 0.01ms !important;
   }
 }
 
-/* High contrast mode support */
+/* Focus States */
+.contactCard:focus-visible,
+.socialCard:focus-visible {
+  outline: 2px solid var(--accent-1);
+  outline-offset: 2px;
+}
+
+/* High Contrast Mode */
 @media (prefers-contrast: high) {
   .contactCard,
   .socialCard,
-  .offeringCard,
+  .offeringItem,
   .availabilityCard {
     border-width: 2px;
   }
 }
 
-/* Focus states for keyboard navigation */
-.contactCard:focus-visible,
-.socialCard:focus-visible {
-  outline: 3px solid var(--accent-1);
-  outline-offset: 3px;
-  border-color: var(--accent-1);
-}
+/* ========== PRINT STYLES ========== */
 
-/* Touch-friendly spacing for interactive elements */
-@media (pointer: coarse) {
+@media print {
+  .connectContainer {
+    padding: 0;
+  }
+
   .contactCard,
   .socialCard {
-    min-height: 56px; /* Increased from 44px for better touch targets */
+    break-inside: avoid;
+    border: 1px solid #000;
   }
 
-  .contactGrid,
-  .socialGrid {
-    gap: var(--spacing-md);
-  }
-}
-
-/* Support for notched devices (iPhone X+, etc) */
-@supports (padding: max(0px)) {
-  .connectContainer {
-    padding-left: max(0px, env(safe-area-inset-left));
-    padding-right: max(0px, env(safe-area-inset-right));
-  }
-
-  .hero {
-    padding-left: max(var(--spacing-xl), env(safe-area-inset-left));
-    padding-right: max(var(--spacing-xl), env(safe-area-inset-right));
-  }
-
-  .content {
-    padding-left: max(clamp(var(--spacing-md), 4vw, var(--spacing-xl)), env(safe-area-inset-left));
-    padding-right: max(clamp(var(--spacing-md), 4vw, var(--spacing-xl)), env(safe-area-inset-right));
-  }
-}
-
-/* Dark mode optimizations */
-@media (prefers-color-scheme: dark) {
-  .contactCard,
-  .socialCard,
-  .offeringCard,
-  .availabilityCard {
-    border-color: rgba(255, 255, 255, 0.1);
+  .contactCard:hover,
+  .socialCard:hover {
+    transform: none;
+    box-shadow: none;
   }
 }
