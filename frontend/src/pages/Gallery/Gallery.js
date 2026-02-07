@@ -25,6 +25,7 @@ const Gallery = () => {
   const [viewMode, setViewMode] = useState('grid');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedArtwork, setSelectedArtwork] = useState(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   // ----------------------------------------
   // Effects
@@ -35,15 +36,37 @@ const Gallery = () => {
     setIsVisible(true);
   }, []);
 
-  // Lock body scroll when lightbox is open
+  // Lock body scroll when lightbox is open and save scroll position
   useEffect(() => {
     if (selectedArtwork) {
+      // Save current scroll position
+      setScrollPosition(window.pageYOffset || document.documentElement.scrollTop);
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
+      // Restore scroll position after a small delay to ensure DOM is ready
+      if (scrollPosition > 0) {
+        setTimeout(() => {
+          window.scrollTo(0, scrollPosition);
+        }, 0);
+      }
     }
     return () => {
       document.body.style.overflow = 'unset';
+    };
+  }, [selectedArtwork]);
+
+  // Handle Escape key to close lightbox
+  useEffect(() => {
+    const handleEscapeKey = (event) => {
+      if (event.key === 'Escape' && selectedArtwork) {
+        setSelectedArtwork(null);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscapeKey);
+    return () => {
+      document.removeEventListener('keydown', handleEscapeKey);
     };
   }, [selectedArtwork]);
 
@@ -254,6 +277,9 @@ const Gallery = () => {
       {selectedArtwork && ReactDOM.createPortal(
         <div className={styles.lightbox} onClick={() => setSelectedArtwork(null)}>
           <div className={styles.lightboxOverlay} />
+          <button className={styles.closeBtn} onClick={() => setSelectedArtwork(null)} aria-label="Close">
+            <X size={32} />
+          </button>
           <div className={styles.lightboxContent} onClick={(e) => e.stopPropagation()}>
             <div className={styles.lightboxImageWrapper}>
               {selectedArtwork.image && (
@@ -264,28 +290,32 @@ const Gallery = () => {
                   rootMargin="0px"
                 />
               )}
-              {selectedArtwork.sold && (
-                <div className={styles.soldBadge}>
-                  <span>SOLD</span>
-                </div>
-              )}
             </div>
             <div className={styles.lightboxDetails}>
-              <span className={styles.lightboxCategory}>{selectedArtwork.categoryDisplay}</span>
+              <div className={styles.lightboxHeader}>
+                <span className={styles.lightboxCategory}>{selectedArtwork.categoryDisplay}</span>
+                {selectedArtwork.sold && (
+                  <span className={styles.lightboxSoldBadge}>SOLD</span>
+                )}
+              </div>
               <h2 className={styles.lightboxTitle}>{selectedArtwork.title}</h2>
               <p className={styles.lightboxDescription}>{selectedArtwork.description}</p>
               
-              {selectedArtwork.dimensions && (
-                <div className={styles.lightboxDimensions}>
-                  <strong>Dimensions:</strong> {selectedArtwork.dimensions}
-                </div>
-              )}
-              
-              {selectedArtwork.price > 0 && !selectedArtwork.sold && (
-                <div className={styles.lightboxPrice}>
-                  <strong>Price:</strong> R{selectedArtwork.price.toLocaleString()}
-                </div>
-              )}
+              <div className={styles.lightboxSpecs}>
+                {selectedArtwork.dimensions && (
+                  <div className={styles.lightboxSpec}>
+                    <span className={styles.specLabel}>Dimensions</span>
+                    <span className={styles.specValue}>{selectedArtwork.dimensions}</span>
+                  </div>
+                )}
+                
+                {selectedArtwork.price > 0 && !selectedArtwork.sold && (
+                  <div className={styles.lightboxSpec}>
+                    <span className={styles.specLabel}>Price</span>
+                    <span className={styles.specValue}>R{selectedArtwork.price.toLocaleString()}</span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>,

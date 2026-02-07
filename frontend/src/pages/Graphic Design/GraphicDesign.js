@@ -16,6 +16,7 @@ const GraphicDesign = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedMedia, setSelectedMedia] = useState(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   // ----------------------------------------
   // Effects
@@ -26,15 +27,37 @@ const GraphicDesign = () => {
     setIsVisible(true);
   }, []);
 
-  // Lock body scroll when lightbox is open
+  // Lock body scroll when lightbox is open and save scroll position
   useEffect(() => {
     if (selectedMedia) {
+      // Save current scroll position
+      setScrollPosition(window.pageYOffset || document.documentElement.scrollTop);
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
+      // Restore scroll position after a small delay to ensure DOM is ready
+      if (scrollPosition > 0) {
+        setTimeout(() => {
+          window.scrollTo(0, scrollPosition);
+        }, 0);
+      }
     }
     return () => {
       document.body.style.overflow = 'unset';
+    };
+  }, [selectedMedia]);
+
+  // Handle Escape key to close lightbox
+  useEffect(() => {
+    const handleEscapeKey = (event) => {
+      if (event.key === 'Escape' && selectedMedia) {
+        closeLightbox();
+      }
+    };
+
+    document.addEventListener('keydown', handleEscapeKey);
+    return () => {
+      document.removeEventListener('keydown', handleEscapeKey);
     };
   }, [selectedMedia]);
 

@@ -84,22 +84,20 @@
 	},
 	"skills": {
 		"creative": [
-			{ "name": "Painting (Acrylic, Watercolor, Oil)", "level": 95 },
+			{ "name": "Painting (Acrylic, Watercolor, Oil)", "level": 90 },
 			{ "name": "Drawing (Pencil, Charcoal, Ink)", "level": 90 },
 			{ "name": "Digital Illustration", "level": 85 },
-			{ "name": "Mixed-media Art", "level": 88 },
+			{ "name": "Mixed-media Art", "level": 85 },
 			{ "name": "Concept Art", "level": 82 },
 			{ "name": "Composition & Layout", "level": 87 },
 			{ "name": "Baking & Food Styling", "level": 75 }
 		],
 		"technical": [
-			{ "name": "Adobe Photoshop", "level": 90 },
-			{ "name": "Adobe Illustrator", "level": 88 },
-			{ "name": "Adobe InDesign", "level": 85 },
-			{ "name": "Adobe After Effects", "level": 70 },
-			{ "name": "Adobe XD", "level": 80 },
-			{ "name": "Procreate", "level": 92 },
-			{ "name": "Figma", "level": 20 },
+			{ "name": "Adobe Photoshop", "level": 80 },
+			{ "name": "Adobe Illustrator", "level": 80 },
+			{ "name": "Adobe InDesign", "level": 80 },
+			{ "name": "Adobe After Effects", "level": 80 },
+			{ "name": "Figma", "level": 30 },
 			{ "name": "Computer Applications Technology", "level": 60 }
 		],
 		"soft": [

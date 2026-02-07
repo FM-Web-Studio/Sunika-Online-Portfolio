@@ -546,6 +546,41 @@
   z-index: 1;
 }
 
+.closeBtn {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10001;
+  padding: 0;
+}
+
+.closeBtn svg {
+  color: white;
+  stroke-width: 2.5;
+}
+
+.closeBtn:hover {
+  background: white;
+  border-color: white;
+  transform: rotate(90deg);
+}
+
+.closeBtn:hover svg {
+  color: black;
+}
+
 .lightboxClose {
   display: none;
 }
@@ -616,7 +651,14 @@
   gap: 1.5rem;
   overflow-y: auto;
   border-left: 3px solid var(--accent-1);
-  background: var(--background-1);
+  background: linear-gradient(135deg, var(--background-1) 0%, var(--background-2) 100%);
+}
+
+.lightboxHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .lightboxCategory {
@@ -629,7 +671,18 @@
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  align-self: flex-start;
+}
+
+.lightboxSoldBadge {
+  display: inline-block;
+  background: #dc2626;
+  color: white;
+  padding: 0.625rem 1.25rem;
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .lightboxTitle {
@@ -638,50 +691,59 @@
   margin: 0;
   color: var(--primary-text-color);
   line-height: 1.2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .lightboxDescription {
   font-size: 1.125rem;
   line-height: 1.8;
   color: var(--primary-text-color);
-  opacity: 0.8;
   margin: 0;
-}
-
-.lightboxDimensions {
-  font-size: 1rem;
-  color: var(--primary-text-color);
-  opacity: 0.7;
-  padding: 1rem 1.5rem;
+  padding: 1.25rem;
   background: var(--background-2);
-  border-radius: 8px;
-  border-left: 3px solid var(--accent-1);
+  border-radius: 12px;
+  border: 1px solid var(--background-3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.lightboxDimensions strong {
-  color: var(--accent-1);
-  font-weight: 700;
-  margin-right: 0.5rem;
+.lightboxSpecs {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 0.5rem;
 }
 
-.lightboxPrice {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--accent-1);
-  padding: 1rem 1.5rem;
-  background: var(--accent-1-background);
-  border-radius: 8px;
-  border-left: 3px solid var(--accent-1);
+.lightboxSpec {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--background-2);
+  border-radius: 12px;
+  border-left: 4px solid var(--accent-1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.lightboxPrice strong {
-  display: block;
+.lightboxSpec:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.specLabel {
   font-size: 0.875rem;
   font-weight: 600;
-  opacity: 0.8;
-  margin-bottom: 0.25rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  color: var(--accent-1);
+  opacity: 0.9;
+}
+
+.specValue {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary-text-color);
+  line-height: 1.4;
 }
 
 /* ==================== RESPONSIVE DESIGN ==================== */
@@ -800,6 +862,13 @@
     padding: 1rem;
   }
 
+  .closeBtn {
+    top: 1rem;
+    right: 1rem;
+    width: 44px;
+    height: 44px;
+  }
+
   .lightboxClose {
     top: 1rem;
     right: 1rem;
@@ -819,8 +888,18 @@
     font-size: 2rem;
   }
 
-  .lightboxPrice {
-    font-size: 2rem;
+  .lightboxDescription {
+    font-size: 1rem;
+    line-height: 1.7;
+    padding: 1rem;
+  }
+
+  .lightboxSpec {
+    padding: 1rem 1.25rem;
+  }
+
+  .specValue {
+    font-size: 1.125rem;
   }
 }
 
@@ -881,6 +960,13 @@
     padding: 0.5rem;
   }
 
+  .closeBtn {
+    width: 40px;
+    height: 40px;
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+
   .lightboxContent {
     max-height: 95vh;
     max-width: 95vw;
@@ -904,8 +990,22 @@
     font-size: 1.5rem;
   }
 
-  .lightboxPrice {
-    font-size: 1.5rem;
+  .lightboxDescription {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    padding: 0.875rem;
+  }
+
+  .lightboxSpec {
+    padding: 0.875rem 1rem;
+  }
+
+  .specLabel {
+    font-size: 0.8125rem;
+  }
+
+  .specValue {
+    font-size: 1rem;
   }
 
   .soldBadge span {
