@@ -54,7 +54,7 @@ const Gallery = () => {
     return () => {
       document.body.style.overflow = 'unset';
     };
-  }, [selectedArtwork]);
+  }, [selectedArtwork, scrollPosition]);
 
   // Handle Escape key to close lightbox
   useEffect(() => {

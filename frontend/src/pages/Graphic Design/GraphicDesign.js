@@ -45,7 +45,7 @@ const GraphicDesign = () => {
     return () => {
       document.body.style.overflow = 'unset';
     };
-  }, [selectedMedia]);
+  }, [selectedMedia, scrollPosition]);
 
   // Handle Escape key to close lightbox
   useEffect(() => {
