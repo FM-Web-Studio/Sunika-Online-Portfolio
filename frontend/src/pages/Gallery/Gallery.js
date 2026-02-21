@@ -20,7 +20,8 @@ const Gallery = () => {
   // ----------------------------------------
   // State Management
   // ----------------------------------------
-  const [activeCategory, setActiveCategory] = useState('all');
+  const [activeCategory, setActiveCategory] = useState(Object.keys(galleryData)[0]);
+  const [soldFilter, setSoldFilter] = useState('available');
   const [isVisible, setIsVisible] = useState(false);
   const [viewMode, setViewMode] = useState('grid');
   const [searchTerm, setSearchTerm] = useState('');
@@ -116,35 +117,27 @@ const Gallery = () => {
     return artwork;
   }, []);
 
-  // Get categories
-  const categories = useMemo(() => {
-    const cats = Object.keys(galleryData).map(key => ({
+  // Build per-category sold/available counts
+  const artTypes = useMemo(() => {
+    return Object.keys(galleryData).map(key => ({
       id: key,
       label: key.charAt(0).toUpperCase() + key.slice(1),
-      count: galleryData[key]?.length || 0
+      availableCount: allArtwork.filter(a => a.category === key && !a.sold).length,
+      soldCount: allArtwork.filter(a => a.category === key && a.sold).length,
     }));
-    const soldCount = allArtwork.filter(a => a.sold).length;
-    const availableCount = allArtwork.filter(a => !a.sold).length;
-    return [
-      { id: 'all', label: 'All', count: allArtwork.length },
-      ...cats,
-      { id: 'available', label: 'Available', count: availableCount },
-      { id: 'sold', label: 'Sold', count: soldCount },
-    ];
   }, [allArtwork]);
 
-  // Filter artwork
+  // Switch category and auto-select the right sub-tab
+  const handleCategoryChange = (categoryId) => {
+    setActiveCategory(categoryId);
+    const cat = artTypes.find(a => a.id === categoryId);
+    setSoldFilter(cat && cat.availableCount > 0 ? 'available' : 'sold');
+  };
+
+  // Filter artwork by category + sold/available
   const filteredArtwork = useMemo(() => {
-    let filtered;
-    if (activeCategory === 'all') {
-      filtered = allArtwork;
-    } else if (activeCategory === 'sold') {
-      filtered = allArtwork.filter(art => art.sold);
-    } else if (activeCategory === 'available') {
-      filtered = allArtwork.filter(art => !art.sold);
-    } else {
-      filtered = allArtwork.filter(art => art.category === activeCategory);
-    }
+    let filtered = allArtwork.filter(art => art.category === activeCategory);
+    filtered = filtered.filter(art => soldFilter === 'sold' ? art.sold : !art.sold);
     
     if (searchTerm) {
       filtered = filtered.filter(art => 
@@ -154,7 +147,9 @@ const Gallery = () => {
     }
     
     return filtered;
-  }, [allArtwork, activeCategory, searchTerm]);
+  }, [allArtwork, activeCategory, soldFilter, searchTerm]);
+
+  const activeTypeInfo = artTypes.find(a => a.id === activeCategory);
 
   // ----------------------------------------
   // Render
@@ -209,22 +204,45 @@ const Gallery = () => {
         </div>
       </div>
 
-      {/* Categories */}
+      {/* Art Type Tabs */}
       <div className={styles.categories}>
-        {categories.map(({ id, label, count }) => (
+        {artTypes.map(({ id, label }) => (
           <button
             key={id}
             className={`${styles.categoryBtn} ${activeCategory === id ? styles.active : ''}`}
-            onClick={() => setActiveCategory(id)}
+            onClick={() => handleCategoryChange(id)}
           >
             <span>{label}</span>
-            <span className={styles.categoryCount}>{count}</span>
           </button>
         ))}
       </div>
 
+      {/* Available / Sold Sub-tabs */}
+      {activeTypeInfo && (
+        <div className={styles.subTabs}>
+          {activeTypeInfo.availableCount > 0 && (
+            <button
+              className={`${styles.subTabBtn} ${soldFilter === 'available' ? styles.subTabActive : ''}`}
+              onClick={() => setSoldFilter('available')}
+            >
+              Available
+              <span className={styles.subTabCount}>{activeTypeInfo.availableCount}</span>
+            </button>
+          )}
+          {activeTypeInfo.soldCount > 0 && (
+            <button
+              className={`${styles.subTabBtn} ${soldFilter === 'sold' ? styles.subTabActive : ''}`}
+              onClick={() => setSoldFilter('sold')}
+            >
+              Sold
+              <span className={styles.subTabCount}>{activeTypeInfo.soldCount}</span>
+            </button>
+          )}
+        </div>
+      )}
+
       {/* Sold Notice */}
-      {activeCategory === 'sold' && (
+      {soldFilter === 'sold' && (
         <div className={styles.soldNotice}>
           <div className={styles.soldNoticeContent}>
             <h3 className={styles.soldNoticeTitle}>Sold Works</h3>

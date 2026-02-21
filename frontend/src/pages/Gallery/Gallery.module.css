@@ -231,6 +231,56 @@
   color: var(--primary-text-color);
 }
 
+/* ==================== SUB-TABS (Available / Sold) ==================== */
+.subTabs {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0 2rem 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.subTabBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1.1rem;
+  background: transparent;
+  border: 1.5px solid var(--background-3);
+  color: var(--primary-text-color);
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  opacity: 0.65;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.subTabBtn:hover {
+  border-color: var(--accent-1);
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.subTabBtn.subTabActive {
+  background: var(--accent-1);
+  border-color: var(--accent-1);
+  color: var(--primary-text-color);
+  opacity: 1;
+}
+
+.subTabCount {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.1rem 0.45rem;
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.subTabBtn:not(.subTabActive) .subTabCount {
+  background: var(--background-3);
+}
+
 /* ==================== SOLD NOTICE ==================== */
 .soldNotice {
   max-width: 1400px;
