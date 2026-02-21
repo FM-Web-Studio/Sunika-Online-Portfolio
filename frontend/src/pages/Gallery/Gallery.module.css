@@ -231,6 +231,44 @@
   color: var(--primary-text-color);
 }
 
+/* ==================== SOLD NOTICE ==================== */
+.soldNotice {
+  max-width: 1400px;
+  margin: 0 auto 2rem;
+  padding: 0 2rem;
+}
+
+.soldNoticeContent {
+  background: var(--background-2);
+  border: 1px solid var(--accent-1);
+  border-left: 4px solid var(--accent-1);
+  border-radius: 8px;
+  padding: 1.5rem 2rem;
+}
+
+.soldNoticeTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent-1);
+  margin: 0 0 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.soldNoticeText {
+  font-size: 0.95rem;
+  color: var(--primary-text-color);
+  opacity: 0.85;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.soldNoticeText strong {
+  color: var(--accent-1);
+  opacity: 1;
+  font-weight: 600;
+}
+
 /* ==================== GALLERY ==================== */
 .gallery {
   padding: 0 2rem 4rem;

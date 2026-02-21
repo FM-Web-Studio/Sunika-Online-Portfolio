@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import { Sparkles, LayoutGrid, List, Search, X } from 'lucide-react';
 
@@ -25,7 +25,7 @@ const Gallery = () => {
   const [viewMode, setViewMode] = useState('grid');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedArtwork, setSelectedArtwork] = useState(null);
-  const [scrollPosition, setScrollPosition] = useState(0);
+  const scrollPositionRef = useRef(0);
 
   // ----------------------------------------
   // Effects
@@ -36,25 +36,19 @@ const Gallery = () => {
     setIsVisible(true);
   }, []);
 
-  // Lock body scroll when lightbox is open and save scroll position
+  // Lock body scroll when lightbox is open and restore position on close
   useEffect(() => {
     if (selectedArtwork) {
-      // Save current scroll position
-      setScrollPosition(window.pageYOffset || document.documentElement.scrollTop);
+      scrollPositionRef.current = window.pageYOffset || document.documentElement.scrollTop;
       document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'unset';
-      // Restore scroll position after a small delay to ensure DOM is ready
-      if (scrollPosition > 0) {
-        setTimeout(() => {
-          window.scrollTo(0, scrollPosition);
-        }, 0);
-      }
+      document.body.style.overflow = '';
+      window.scrollTo(0, scrollPositionRef.current);
     }
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = '';
     };
-  }, [selectedArtwork, scrollPosition]);
+  }, [selectedArtwork]);
 
   // Handle Escape key to close lightbox
   useEffect(() => {
@@ -129,14 +123,28 @@ const Gallery = () => {
       label: key.charAt(0).toUpperCase() + key.slice(1),
       count: galleryData[key]?.length || 0
     }));
-    return [{ id: 'all', label: 'All', count: allArtwork.length }, ...cats];
+    const soldCount = allArtwork.filter(a => a.sold).length;
+    const availableCount = allArtwork.filter(a => !a.sold).length;
+    return [
+      { id: 'all', label: 'All', count: allArtwork.length },
+      ...cats,
+      { id: 'available', label: 'Available', count: availableCount },
+      { id: 'sold', label: 'Sold', count: soldCount },
+    ];
   }, [allArtwork]);
 
   // Filter artwork
   const filteredArtwork = useMemo(() => {
-    let filtered = activeCategory === 'all' 
-      ? allArtwork 
-      : allArtwork.filter(art => art.category === activeCategory);
+    let filtered;
+    if (activeCategory === 'all') {
+      filtered = allArtwork;
+    } else if (activeCategory === 'sold') {
+      filtered = allArtwork.filter(art => art.sold);
+    } else if (activeCategory === 'available') {
+      filtered = allArtwork.filter(art => !art.sold);
+    } else {
+      filtered = allArtwork.filter(art => art.category === activeCategory);
+    }
     
     if (searchTerm) {
       filtered = filtered.filter(art => 
@@ -215,8 +223,22 @@ const Gallery = () => {
         ))}
       </div>
 
+      {/* Sold Notice */}
+      {activeCategory === 'sold' && (
+        <div className={styles.soldNotice}>
+          <div className={styles.soldNoticeContent}>
+            <h3 className={styles.soldNoticeTitle}>Sold Works</h3>
+            <p className={styles.soldNoticeText}>
+              These pieces have already found a home — but that doesn't mean they're gone forever.
+              Each sold work can be <strong>recreated</strong> or used as <strong>inspiration for a personal commission</strong>.
+              If something here catches your eye, reach out and we can bring something similar to life, tailored just for you.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Gallery */}
-      <div className={`${styles.gallery} ${styles[viewMode]}`}>
+      <div className={`${styles.gallery} ${styles[viewMode]}` }>
         {filteredArtwork.map((artwork, index) => (
           <article
             key={`${artwork.category}-${artwork.number}`}
