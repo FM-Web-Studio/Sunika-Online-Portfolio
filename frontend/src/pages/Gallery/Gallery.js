@@ -278,18 +278,14 @@ const Gallery = () => {
                   <p>No image</p>
                 </div>
               )}
-              {artwork.sold && (
-                <div className={styles.soldBadge}>
-                  <span>SOLD</span>
-                </div>
-              )}
             </div>
             <div className={styles.artworkContent}>
               <div className={styles.artworkHeader}>
                 <h3 className={styles.artworkTitle}>{artwork.title}</h3>
-                {artwork.price > 0 && !artwork.sold && (
-                  <span className={styles.artworkPrice}>R{artwork.price.toLocaleString()}</span>
-                )}
+                {artwork.sold
+                  ? <span className={styles.soldPill}>Sold</span>
+                  : artwork.price > 0 && <span className={styles.artworkPrice}>R{artwork.price.toLocaleString()}</span>
+                }
               </div>
               <p className={styles.artworkDescription}>{artwork.description}</p>
               

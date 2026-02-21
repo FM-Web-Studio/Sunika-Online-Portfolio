@@ -451,30 +451,19 @@
   min-height: 300px;
 }
 
-/* ==================== SOLD BADGE ==================== */
-.soldBadge {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(-8deg);
-  z-index: 10;
-}
-
-.soldBadge span {
-  display: block;
+/* ==================== SOLD PILL ==================== */
+.soldPill {
+  display: inline-block;
   background: var(--accent-1);
   color: var(--primary-text-color);
-  padding: 1rem 2.5rem;
-  font-size: 2rem;
-  font-weight: 800;
-  border-radius: 8px;
-  letter-spacing: 0.2em;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-}
-
-.list .soldBadge span {
-  font-size: 1rem;
-  padding: 0.5rem 1rem;
+  padding: 0.2rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* ==================== ARTWORK CONTENT ==================== */
@@ -1094,12 +1083,6 @@
 
   .specValue {
     font-size: 1rem;
-  }
-
-  .soldBadge span {
-    font-size: 1.25rem;
-    padding: 0.625rem 1.5rem;
-    letter-spacing: 0.15em;
   }
 }
 
