@@ -35,8 +35,8 @@
 			"institution": "Open Window",
 			"campus": "Centurion",
 			"status": "In progress (3rd year)",
-			"startYear": 2023,
-			"expectedGraduation": 2025,
+			"startYear": 2024,
+			"expectedGraduation": 2026,
 			"gpa": "",
 			"relevantCoursework": [
 				"Typography",
@@ -52,7 +52,7 @@
 			"level": "Matric (National Senior Certificate)",
 			"school": "Hoërskool Noordheuwel",
 			"completed": true,
-			"yearCompleted": 2022,
+			"yearCompleted": 2023,
 			"subjects": [
 				"Afrikaans Home Language",
 				"English First Additional Language",
