@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { Sparkles, LayoutGrid, List, Search, X } from 'lucide-react';
 
@@ -26,7 +26,6 @@ const Gallery = () => {
   const [viewMode, setViewMode] = useState('grid');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedArtwork, setSelectedArtwork] = useState(null);
-  const scrollPositionRef = useRef(0);
 
   // ----------------------------------------
   // Effects
@@ -36,20 +35,6 @@ const Gallery = () => {
   useEffect(() => {
     setIsVisible(true);
   }, []);
-
-  // Lock body scroll when lightbox is open and restore position on close
-  useEffect(() => {
-    if (selectedArtwork) {
-      scrollPositionRef.current = window.pageYOffset || document.documentElement.scrollTop;
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-      window.scrollTo(0, scrollPositionRef.current);
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [selectedArtwork]);
 
   // Handle Escape key to close lightbox
   useEffect(() => {
@@ -314,10 +299,10 @@ const Gallery = () => {
         <div className={styles.lightbox} onClick={() => setSelectedArtwork(null)}>
           <div className={styles.lightboxOverlay} />
           <button className={styles.closeBtn} onClick={() => setSelectedArtwork(null)} aria-label="Close">
-            <X size={32} />
+            <X size={24} />
           </button>
           <div className={styles.lightboxContent} onClick={(e) => e.stopPropagation()}>
-            <div className={styles.lightboxImageWrapper}>
+            <div className={styles.lightboxImageSection}>
               {selectedArtwork.image && (
                 <LazyImage 
                   src={selectedArtwork.image} 
@@ -327,7 +312,7 @@ const Gallery = () => {
                 />
               )}
             </div>
-            <div className={styles.lightboxDetails}>
+            <div className={styles.lightboxInfo}>
               <div className={styles.lightboxHeader}>
                 <span className={styles.lightboxCategory}>{selectedArtwork.categoryDisplay}</span>
                 {selectedArtwork.sold && (

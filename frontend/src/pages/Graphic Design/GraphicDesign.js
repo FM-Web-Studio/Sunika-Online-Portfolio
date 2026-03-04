@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { Palette, Search, X, Play, Image as ImageIcon, FolderOpen } from 'lucide-react';
 import styles from './GraphicDesign.module.css';
@@ -16,7 +16,6 @@ const GraphicDesign = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedMedia, setSelectedMedia] = useState(null);
-  const scrollPositionRef = useRef(0);
 
   // ----------------------------------------
   // Effects
@@ -26,20 +25,6 @@ const GraphicDesign = () => {
   useEffect(() => {
     setIsVisible(true);
   }, []);
-
-  // Lock body scroll when lightbox is open and restore position on close
-  useEffect(() => {
-    if (selectedMedia) {
-      scrollPositionRef.current = window.pageYOffset || document.documentElement.scrollTop;
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-      window.scrollTo(0, scrollPositionRef.current);
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [selectedMedia]);
 
   // Handle Escape key to close lightbox
   useEffect(() => {
@@ -261,31 +246,37 @@ const GraphicDesign = () => {
       {/* Lightbox Modal */}
       {selectedMedia && ReactDOM.createPortal(
         <div className={styles.lightbox} onClick={closeLightbox}>
-          <button className={styles.closeBtn} onClick={closeLightbox}>
-            <X size={32} />
+          <div className={styles.lightboxOverlay} />
+          <button className={styles.closeBtn} onClick={closeLightbox} aria-label="Close">
+            <X size={24} />
           </button>
           
           <div className={styles.lightboxContent} onClick={(e) => e.stopPropagation()}>
-            {selectedMedia.type === 'image' ? (
-              <LazyImage 
-                src={selectedMedia.src} 
-                alt={selectedMedia.name}
-                className={styles.lightboxImage}
-                threshold={0}
-                rootMargin="0px"
-              />
-            ) : (
-              <video 
-                src={selectedMedia.src}
-                controls
-                autoPlay
-                className={styles.lightboxVideo}
-              />
-            )}
+            <div className={styles.lightboxMediaSection}>
+              {selectedMedia.type === 'image' ? (
+                <LazyImage 
+                  src={selectedMedia.src} 
+                  alt={selectedMedia.name}
+                  className={styles.lightboxImage}
+                  threshold={0}
+                  rootMargin="0px"
+                />
+              ) : (
+                <video 
+                  src={selectedMedia.src}
+                  controls
+                  autoPlay
+                  className={styles.lightboxVideo}
+                />
+              )}
+            </div>
             
             <div className={styles.lightboxInfo}>
-              <h3>{selectedMedia.project.name}</h3>
-              <p>{selectedMedia.name}</p>
+              <span className={styles.projectBadge}>{selectedMedia.project.name}</span>
+              <h3 className={styles.lightboxTitle}>{selectedMedia.project.description || selectedMedia.name}</h3>
+              {selectedMedia.project.category && (
+                <p className={styles.lightboxCategory}><strong>Category:</strong> {selectedMedia.project.category}</p>
+              )}
             </div>
           </div>
         </div>,

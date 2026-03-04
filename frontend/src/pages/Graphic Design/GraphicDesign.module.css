@@ -372,72 +372,99 @@
   font-size: 1rem;
 }
 
-/* ==================== LIGHTBOX ==================== */
+/* ==================== LIGHTBOX MODAL ==================== */
 .lightbox {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.95);
+  inset: 0;
+  z-index: 10000;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10000;
   padding: 2rem;
-  animation: fadeIn 0.3s ease-out;
+  background: transparent;
+}
+
+.lightboxOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 1;
 }
 
 .closeBtn {
-  position: absolute;
-  top: 2rem;
-  right: 2rem;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
-  border: 2px solid rgba(255, 255, 255, 0.8);
-  color: white;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: var(--background-1);
+  border: none;
+  color: var(--primary-text-color);
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 10001;
+  transition: all var(--transition-fast);
+  z-index: 10002;
   padding: 0;
-}
-
-.closeBtn svg {
-  color: white;
-  stroke-width: 2.5;
+  box-shadow: var(--shadow-lg);
 }
 
 .closeBtn:hover {
-  background: white;
-  border-color: white;
-  transform: rotate(90deg);
-}
-
-.closeBtn:hover svg {
-  color: black;
+  background: var(--accent-1);
+  color: var(--background-1);
+  transform: scale(1.05);
 }
 
 .lightboxContent {
-  max-width: 90vw;
-  max-height: 90vh;
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
+  max-width: 800px;
+  width: 100%;
+  max-height: calc(100vh - 4rem);
+  background: var(--background-1);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--border-color);
+  animation: modalIn var(--transition-slow) ease-out;
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.lightboxMediaSection {
+  display: flex;
   align-items: center;
-  gap: 1.5rem;
+  justify-content: center;
+  background: var(--background-2);
+  padding: var(--spacing-xl);
+  max-height: 65vh;
+  overflow: hidden;
 }
 
 .lightboxImage,
 .lightboxVideo {
   max-width: 100%;
-  max-height: calc(90vh - 100px);
-  border-radius: 8px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  max-height: calc(65vh - 4rem);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
 }
 
 .lightboxVideo {
@@ -445,20 +472,47 @@
 }
 
 .lightboxInfo {
-  text-align: center;
-  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.75rem var(--spacing-xl);
+  background: var(--background-1);
+  border-top: 1px solid var(--border-color);
 }
 
-.lightboxInfo h3 {
+.projectBadge {
+  display: inline-flex;
+  align-items: center;
+  background: var(--accent-1);
+  color: var(--background-1);
+  padding: 0.4rem 0.875rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.lightboxTitle {
   font-size: 1.5rem;
-  margin: 0 0 0.5rem;
-  color: var(--accent-1);
+  font-weight: 600;
+  margin: 0;
+  color: var(--primary-text-color);
+  line-height: 1.3;
 }
 
-.lightboxInfo p {
+.lightboxCategory {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--secondary-text-color);
   margin: 0;
-  opacity: 0.7;
-  font-size: 0.95rem;
+  font-weight: 400;
+}
+
+.lightboxCategory strong {
+  font-weight: 500;
+  color: var(--primary-text-color);
 }
 
 /* ==================== RESPONSIVE DESIGN ==================== */
@@ -547,109 +601,65 @@
     font-size: 0.9375rem;
   }
 
+  .lightbox {
+    padding: 1rem;
+  }
+
   .closeBtn {
     top: 1rem;
     right: 1rem;
-    width: 44px;
-    height: 44px;
-  }
-
-  .lightbox {
-    padding: 1rem;
-  }
-
-  .lightboxContent {
-    max-height: 90vh;
-    max-width: 90vw;
-    border-radius: var(--radius-lg);
-  }
-}
-
-@media (max-width: 480px) {
-  .hero {
-    padding: 5rem 1rem 2rem;
-  }
-
-  .heroTitle {
-    letter-spacing: 0.1em;
-    font-size: 2.5rem;
-  }
-
-  .searchSection {
-    padding: 1rem;
-  }
-
-  .searchInput {
-    padding: 0.75rem 2.75rem;
-    font-size: 0.875rem;
-  }
-
-  .projectsContainer {
-    padding: 1rem 0.75rem;
-  }
-
-  .projectSection {
-    margin-bottom: 2.5rem;
-  }
-
-  .projectHeader {
-    gap: 0.75rem;
-    margin-bottom: 1rem;
-  }
-
-  .projectNumber {
-    font-size: 1.75rem;
-  }
-
-  .projectTitle {
-    font-size: 1.25rem;
-  }
-
-  .projectDescription {
-    font-size: 0.875rem;
-    line-height: 1.6;
-  }
-
-  .mediaGrid {
-    gap: 0.625rem;
-  }
-
-  .mediaTitle {
-    padding: 0.75rem;
-    font-size: 0.875rem;
-  }
-
-  .closeBtn {
     width: 40px;
     height: 40px;
-    top: 0.75rem;
-    right: 0.75rem;
-  }
-
-  .lightbox {
-    padding: 0.5rem;
   }
 
   .lightboxContent {
-    max-height: 95vh;
-    max-width: 95vw;
-    border-radius: var(--radius-md);
+    border-radius: 12px;
   }
 
-  .lightboxImageWrapper,
-  .lightboxVideoWrapper {
+  .lightboxMediaSection {
+    padding: 1.5rem;
     max-height: 50vh;
   }
 
   .lightboxInfo {
-    padding: 1rem;
+    padding: 1.5rem;
   }
 
-  .lightboxInfo h3 {
+  .lightboxTitle {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .lightbox {
+    padding: 0.5rem;
+  }
+
+  .closeBtn {
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 36px;
+    height: 36px;
+  }
+
+  .lightboxContent {
+    border-radius: 10px;
+  }
+
+  .lightboxMediaSection {
+    padding: 1rem;
+    max-height: 45vh;
+  }
+
+  .lightboxInfo {
+    padding: 1.25rem;
+  }
+
+  .lightboxTitle {
     font-size: 1.125rem;
   }
 
-  .lightboxInfo p {
+  .lightboxCategory {
     font-size: 0.875rem;
   }
 }
