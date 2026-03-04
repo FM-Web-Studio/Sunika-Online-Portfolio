@@ -99,7 +99,8 @@ const Gallery = () => {
       }
     });
     
-    return artwork;
+    // Sort artwork alphanumerically by number
+    return artwork.sort((a, b) => a.number - b.number);
   }, []);
 
   // Build per-category sold/available counts
@@ -131,7 +132,8 @@ const Gallery = () => {
       );
     }
     
-    return filtered;
+    // Sort by number to maintain alphanumeric order
+    return filtered.sort((a, b) => a.number - b.number);
   }, [allArtwork, activeCategory, soldFilter, searchTerm]);
 
   const activeTypeInfo = artTypes.find(a => a.id === activeCategory);

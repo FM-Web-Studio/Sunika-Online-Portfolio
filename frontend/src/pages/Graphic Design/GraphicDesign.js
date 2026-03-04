@@ -95,7 +95,8 @@ const GraphicDesign = () => {
       console.error(`Error loading media from ${folderName}:`, error);
     }
     
-    return media;
+    // Sort media alphanumerically by filename
+    return media.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }));
   };
 
   // ----------------------------------------

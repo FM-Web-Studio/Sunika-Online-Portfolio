@@ -10,11 +10,11 @@
     },
     {
       "id": 2,
-      "name": "Random Designs",
-      "folder": "Random Designs",
-      "description": "An eclectic mix of experimental design work, illustrations, and creative explorations. This collection showcases versatility and creative freedom across various design disciplines.",
-      "category": "Mixed Media",
-      "year": "2022-2024"
+      "name": "Book & Magazine Designs",
+      "folder": "Book & Magazine Designs",
+      "description": "A comprehensive collection of editorial layouts, book covers, and magazine spreads showcasing typography, grid systems, and visual hierarchy. This project demonstrates expertise in long-form content design and publication standards.",
+      "category": "Editorial Design",
+      "year": "2023-2024"
     },
     {
       "id": 3,
@@ -36,7 +36,7 @@
       "id": 5,
       "name": "Spotify Podcast Album Cover",
       "folder": "Spotify Podcast",
-      "description": "Podcast album cover artwork designed for Spotify, focusing on bold visuals and mood-driven typography to match the music’s vibe.",
+      "description": "Podcast album cover artwork designed for Spotify, focusing on bold visuals and mood-driven typography to match the music's vibe.",
       "category": "Cover Art",
       "year": "2023"
     },
@@ -70,6 +70,38 @@
       "folder": "Wonders Of The Universe Magazine",
       "description": "Magazine design focused on imaginative creature concepts, blending surreal illustrations with editorial layouts inspired by the mysteries of the universe.",
       "category": "Editorial Design",
+      "year": "2023"
+    },
+    {
+      "id": 10,
+      "name": "Motion Design",
+      "folder": "Motion Design",
+      "description": "Dynamic motion graphics and animated design work exploring movement, timing, and visual transitions. This collection demonstrates expertise in kinetic typography, animated logos, and digital storytelling.",
+      "category": "Motion Graphics",
+      "year": "2023-2024"
+    },
+    {
+      "id": 11,
+      "name": "Postcards",
+      "folder": "Postcards",
+      "description": "Creative postcard designs combining illustration, photography, and typography. Each piece is designed to capture moments, emotions, and destinations in a compact, collectible format.",
+      "category": "Print Design",
+      "year": "2023"
+    },
+    {
+      "id": 12,
+      "name": "Storybook",
+      "folder": "Storybook",
+      "description": "Illustrated storybook design featuring narrative layouts, character illustrations, and whimsical typography. This project showcases the ability to blend visual art with storytelling for children's literature.",
+      "category": "Illustration & Layout",
+      "year": "2023"
+    },
+    {
+      "id": 13,
+      "name": "Sunlight",
+      "folder": "Sunlight",
+      "description": "A visual identity and design project centered around themes of light, warmth, and natural energy. This work explores bright color palettes, organic forms, and uplifting design aesthetics.",
+      "category": "Brand Identity",
       "year": "2023"
     }
   ]
