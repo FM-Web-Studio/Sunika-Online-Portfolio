@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import { Palette, Search, X, Play, Image as ImageIcon, FolderOpen } from 'lucide-react';
 import styles from './GraphicDesign.module.css';
@@ -16,7 +16,7 @@ const GraphicDesign = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedMedia, setSelectedMedia] = useState(null);
-  const [scrollPosition, setScrollPosition] = useState(0);
+  const scrollPositionRef = useRef(0);
 
   // ----------------------------------------
   // Effects
@@ -27,25 +27,19 @@ const GraphicDesign = () => {
     setIsVisible(true);
   }, []);
 
-  // Lock body scroll when lightbox is open and save scroll position
+  // Lock body scroll when lightbox is open and restore position on close
   useEffect(() => {
     if (selectedMedia) {
-      // Save current scroll position
-      setScrollPosition(window.pageYOffset || document.documentElement.scrollTop);
+      scrollPositionRef.current = window.pageYOffset || document.documentElement.scrollTop;
       document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'unset';
-      // Restore scroll position after a small delay to ensure DOM is ready
-      if (scrollPosition > 0) {
-        setTimeout(() => {
-          window.scrollTo(0, scrollPosition);
-        }, 0);
-      }
+      document.body.style.overflow = '';
+      window.scrollTo(0, scrollPositionRef.current);
     }
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = '';
     };
-  }, [selectedMedia, scrollPosition]);
+  }, [selectedMedia]);
 
   // Handle Escape key to close lightbox
   useEffect(() => {
