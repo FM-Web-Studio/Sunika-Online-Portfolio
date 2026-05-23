@@ -1,226 +1,232 @@
-import React from 'react';
-import {
-  Mail,
-  Phone,
-  MapPin,
-  Clock,
-  Briefcase,
-  Instagram,
-  Linkedin,
-  Music2,
-  ImageIcon
-} from 'lucide-react';
-
+import { useState, useEffect } from 'react';
+import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaYoutube, FaEnvelope, FaGlobe, FaFacebook } from 'react-icons/fa';
+import { SiOrcid } from 'react-icons/si';
+import { MdArrowOutward } from 'react-icons/md';
+import { useToast } from '../../components';
+import { submitContactForm, getSocial } from '../../firebase/firestore';
 import styles from './Connect.module.css';
-import contactData from '../../information/contact.json';
 
-// ============================================
-// HELPER FUNCTIONS
-// ============================================
+const EMPTY_FORM    = { name: '', email: '', message: '' };
+const EMPTY_ERRORS  = { name: '',  email: '',  message: ''  };
+const EMPTY_TOUCHED = { name: false, email: false, message: false };
 
-/**
- * Maps social media platform names to their Lucide icons
- */
-const getSocialIcon = (iconName) => {
-  const iconMap = {
-    instagram: Instagram,
-    linkedin: Linkedin,
-    tiktok: Music2,
-    pinterest: ImageIcon,
-  };
-  
-  const IconComponent = iconMap[iconName.toLowerCase()] || ImageIcon;
-  return <IconComponent className={styles.socialIcon} />;
+const SOCIAL_ICONS = {
+  github:     FaGithub,
+  linkedin:   FaLinkedin,
+  twitter:    FaTwitter,
+  x:          FaTwitter,
+  instagram:  FaInstagram,
+  youtube:    FaYoutube,
+  email:      FaEnvelope,
+  facebook:   FaFacebook,
+  orcid:      SiOrcid,
 };
 
-// ============================================
-// CONNECT COMPONENT
-// ============================================
+const getSocialIcon = (key = '') => SOCIAL_ICONS[(key || '').toLowerCase()] ?? FaGlobe;
 
-/**
- * Professional contact page with minimalistic design
- * Fully responsive across all device sizes
- */
-function Connect() {
-  // Filter active social platforms
-  const activeSocial = contactData.social.filter(
-    platform => platform.url && platform.url.trim() !== ''
-  );
+const validate = ({ name, email, message }) => ({
+  name:    !name.trim()    ? 'Name is required'              : '',
+  email:   !email.trim()   ? 'Email is required'
+         : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+                           ? 'Enter a valid email address'   : '',
+  message: !message.trim() ? 'Message is required'           : '',
+});
 
-  // ----------------------------------------
-  // RENDER
-  // ----------------------------------------
+const SkeletonSocialCard = () => (
+  <div className={styles.card}>
+    <div className={`${styles.skeleton} ${styles.skeletonHeading}`} />
+    {[0, 1, 2].map(i => (
+      <div key={i} className={styles.skeletonRow}>
+        <div className={`${styles.skeleton} ${styles.skeletonIcon}`} />
+        <div className={`${styles.skeleton} ${styles.skeletonLabel}`} />
+      </div>
+    ))}
+  </div>
+);
+
+const Connect = () => {
+  const { showToast } = useToast();
+  const [form,       setForm      ] = useState(EMPTY_FORM);
+  const [errors,     setErrors    ] = useState(EMPTY_ERRORS);
+  const [touched,    setTouched   ] = useState(EMPTY_TOUCHED);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted,  setSubmitted ] = useState(false);
+  const [social,     setSocial    ] = useState(null);
+
+  useEffect(() => {
+    getSocial()
+      .then(d  => setSocial(d ?? []))
+      .catch(() => setSocial([]));
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm(prev => ({ ...prev, [name]: value }));
+    if (touched[name]) {
+      setErrors(prev => ({ ...prev, [name]: validate({ ...form, [name]: value })[name] }));
+    }
+  };
+
+  const handleBlur = (e) => {
+    const { name } = e.target;
+    setTouched(prev => ({ ...prev, [name]: true }));
+    setErrors(prev => ({ ...prev, [name]: validate(form)[name] }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const errs = validate(form);
+    if (Object.values(errs).some(Boolean)) {
+      setErrors(errs);
+      setTouched({ name: true, email: true, message: true });
+      return;
+    }
+    setSubmitting(true);
+    try {
+      await submitContactForm(form);
+      setSubmitted(true);
+      setForm(EMPTY_FORM);
+      setErrors(EMPTY_ERRORS);
+      setTouched(EMPTY_TOUCHED);
+      showToast('success', 'Message sent', "Thanks — I'll get back to you soon.");
+    } catch (err) {
+      console.error('[Connect] submitContactForm failed:', err?.code, err?.message, err);
+      showToast('error', 'Failed to send', 'Something went wrong. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const showRightCol = social === null || (Array.isArray(social) && social.length > 0);
 
   return (
-    <div className={styles.connectContainer}>
-      
-      {/* ========== HERO SECTION ========== */}
-      <section className={styles.heroSection}>
-        <h1 className={styles.pageTitle}>Get in Touch</h1>
-        <p className={styles.pageSubtitle}>{contactData.tagline}</p>
-      </section>
+    <section className={styles.page}>
 
-      {/* ========== MAIN CONTENT ========== */}
-      <main className={styles.mainContent}>
-        
-        {/* ========== PRIMARY CONTACT ========== */}
-        <section className={styles.section}>
-          <div className={styles.contactGrid}>
-            
-            {/* Email Card */}
-            <a 
-              href={`mailto:${contactData.email}`}
-              className={styles.contactCard}
-              aria-label={`Email ${contactData.email}`}
-            >
-              <div className={styles.cardIcon}>
-                <Mail />
+      <div className={styles.container}>
+
+        <header className={styles.header}>
+          <p className={styles.chapterEyebrow}>
+            <span className={styles.chapterMark}>Chapter III</span>
+            <span className={styles.chapterDash} aria-hidden="true">—</span>
+            <span className={styles.chapterName}>An Impression</span>
+          </p>
+          <h1 className={styles.heading}>Make an impression</h1>
+          <p>Have a project, a question, or just want to say hello? Drop a note and I will get back to you.</p>
+        </header>
+
+        <div className={`${styles.grid} ${!showRightCol ? styles.gridSingle : ''}`}>
+
+          {/* ── Contact form ─────────────────────────────────────────────── */}
+          <div className={`${styles.card} ${styles.formCard}`}>
+            {submitted ? (
+              <div className={styles.success}>
+                <h2>Message sent</h2>
+                <p>Thanks for reaching out. I&rsquo;ll get back to you soon.</p>
+                <button type="button" onClick={() => setSubmitted(false)}>
+                  Send another
+                </button>
               </div>
-              <div className={styles.cardContent}>
-                <span className={styles.cardLabel}>Email</span>
-                <span className={styles.cardValue}>{contactData.email}</span>
-              </div>
-            </a>
+            ) : (
+              <>
+                <h2>Send a Message</h2>
+                <form className={styles.form} onSubmit={handleSubmit} noValidate>
 
-            {/* Phone Card */}
-            <a 
-              href={`tel:${contactData.phone}`}
-              className={styles.contactCard}
-              aria-label={`Call ${contactData.phone}`}
-            >
-              <div className={styles.cardIcon}>
-                <Phone />
-              </div>
-              <div className={styles.cardContent}>
-                <span className={styles.cardLabel}>Phone</span>
-                <span className={styles.cardValue}>{contactData.phone}</span>
-              </div>
-            </a>
-
-            {/* Location Card */}
-            <div 
-              className={`${styles.contactCard} ${styles.nonInteractive}`}
-              role="article"
-              aria-label={`Location: ${contactData.location.displayText}`}
-            >
-              <div className={styles.cardIcon}>
-                <MapPin />
-              </div>
-              <div className={styles.cardContent}>
-                <span className={styles.cardLabel}>Location</span>
-                <span className={styles.cardValue}>{contactData.location.displayText}</span>
-              </div>
-            </div>
-
-          </div>
-        </section>
-
-        {/* ========== TWO COLUMN LAYOUT ========== */}
-        <div className={styles.twoColumnLayout}>
-          
-          {/* ========== LEFT COLUMN: OFFERINGS & SOCIAL ========== */}
-          <div className={styles.leftColumn}>
-            
-            {/* Offerings Section */}
-            {contactData.offerings && contactData.offerings.length > 0 && (
-              <section className={styles.section}>
-                <h2 className={styles.sectionTitle}>
-                  <Briefcase className={styles.titleIcon} />
-                  What I Offer
-                </h2>
-                <div className={styles.offeringsList}>
-                  {contactData.offerings.map((offering, index) => (
-                    <div key={index} className={styles.offeringItem}>
-                      <div className={styles.offeringBullet}></div>
-                      <p className={styles.offeringText}>{offering}</p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {/* Social Media Section */}
-            {activeSocial.length > 0 && (
-              <section className={styles.section}>
-                <h2 className={styles.sectionTitle}>Connect on Social</h2>
-                <div className={styles.socialGrid}>
-                  {activeSocial.map((platform, index) => (
-                    <a
-                      key={index}
-                      href={platform.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={styles.socialCard}
-                      aria-label={`Visit ${platform.platform}: ${platform.username}`}
-                    >
-                      <div 
-                        className={styles.socialIconCircle}
-                        style={{ backgroundColor: platform.color }}
-                      >
-                        {getSocialIcon(platform.icon)}
-                      </div>
-                      <div className={styles.socialInfo}>
-                        <span className={styles.socialPlatform}>{platform.platform}</span>
-                        <span className={styles.socialUsername}>{platform.username}</span>
-                      </div>
-                    </a>
-                  ))}
-                </div>
-              </section>
-            )}
-
-          </div>
-
-          {/* ========== RIGHT COLUMN: AVAILABILITY ========== */}
-          <div className={styles.rightColumn}>
-            
-            <section className={styles.section}>
-              <h2 className={styles.sectionTitle}>
-                <Clock className={styles.titleIcon} />
-                Availability
-              </h2>
-              
-              <div className={styles.availabilityCard}>
-                
-                {/* Availability Status */}
-                <div className={styles.availabilityStatus}>
-                  <div className={styles.statusIndicator}></div>
-                  <p className={styles.availabilityText}>{contactData.availability}</p>
-                </div>
-
-                {/* Business Hours */}
-                {contactData.businessHours && (
-                  <div className={styles.businessHours}>
-                    <div className={styles.hoursRow}>
-                      <Clock size={18} />
-                      <span>{contactData.businessHours.availability}</span>
-                    </div>
-                    <div className={styles.timezone}>
-                      {contactData.businessHours.timezone}
-                    </div>
+                  <div className={styles.field}>
+                    <label htmlFor="name">Name</label>
+                    <input
+                      id="name" name="name" type="text"
+                      value={form.name}
+                      onChange={handleChange} onBlur={handleBlur}
+                      placeholder="Your name" autoComplete="name" required
+                      className={touched.name && errors.name ? styles.inputError : ''}
+                    />
+                    {touched.name && errors.name && (
+                      <span className={styles.fieldError}>{errors.name}</span>
+                    )}
                   </div>
-                )}
 
-                {/* Response Time */}
-                <div className={styles.responseTime}>
-                  <span className={styles.responseLabel}>Typical Response</span>
-                  <span className={styles.responseValue}>{contactData.responseTime}</span>
-                </div>
+                  <div className={styles.field}>
+                    <label htmlFor="email">Email</label>
+                    <input
+                      id="email" name="email" type="email"
+                      value={form.email}
+                      onChange={handleChange} onBlur={handleBlur}
+                      placeholder="your@email.com" autoComplete="email" required
+                      className={touched.email && errors.email ? styles.inputError : ''}
+                    />
+                    {touched.email && errors.email && (
+                      <span className={styles.fieldError}>{errors.email}</span>
+                    )}
+                  </div>
 
-              </div>
-            </section>
+                  <div className={`${styles.field} ${styles.fieldGrow}`}>
+                    <label htmlFor="message">Message</label>
+                    <textarea
+                      id="message" name="message"
+                      value={form.message}
+                      onChange={handleChange} onBlur={handleBlur}
+                      placeholder="What's on your mind?" rows={4} required
+                      className={touched.message && errors.message ? styles.inputError : ''}
+                    />
+                    {touched.message && errors.message && (
+                      <span className={styles.fieldError}>{errors.message}</span>
+                    )}
+                  </div>
 
+                  <div className={styles.formActions}>
+                    <button type="submit" disabled={submitting}>
+                      {submitting ? 'Sending…' : 'Send Message'}
+                    </button>
+                  </div>
+
+                </form>
+              </>
+            )}
           </div>
+
+          {/* ── Right column ─────────────────────────────────────────────── */}
+          {showRightCol && (
+            <div className={styles.rightCol}>
+
+              {/* Social links */}
+              {social === null ? (
+                <SkeletonSocialCard />
+              ) : (
+                <div className={styles.card}>
+                  <h2>Find Me Online</h2>
+                  <ul className={styles.socialList}>
+                    {social.map(({ key, url, platform }, i) => {
+                      if (!url) return null;
+                      const Icon = getSocialIcon(key);
+                      const display = platform || (key ? key.charAt(0).toUpperCase() + key.slice(1) : '');
+                      return (
+                        <li key={key ?? i}>
+                          <a
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.socialLink}
+                          >
+                            <span className={styles.socialIcon} aria-hidden="true">
+                              <Icon />
+                            </span>
+                            <span className={styles.socialName}>{display}</span>
+                            <MdArrowOutward className={styles.socialArrow} aria-hidden="true" />
+                          </a>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
+
+            </div>
+          )}
 
         </div>
-
-      </main>
-    </div>
+      </div>
+    </section>
   );
-}
-
-// ============================================
-// EXPORTS
-// ============================================
+};
 
 export default Connect;

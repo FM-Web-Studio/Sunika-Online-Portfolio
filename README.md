@@ -1,262 +1,264 @@
-# Portfolio Website - Update Guide
+# Sunika Lombard — Portfolio
 
-This is a simple guide for updating this portfolio website without needing to know how to code. I built this for someone who's never touched code before, so if that's you - you're in the right place.
-
-## Important Thing to Know Upfront
-
-When you save your changes here and push them, they go live on the actual website pretty much immediately. So just make sure you're happy with what you changed before you hit that button.
+React 19 + Firebase Hosting portfolio. Built with Create React App, Firestore for data, and a custom component library.
 
 ---
 
-## First Time Setup
+## Tech Stack
 
-### What You'll Need
-
-You need two free programs:
-
-**GitHub Desktop** (https://desktop.github.com/)
-- This is how you'll download the website files and publish changes
-- Just download it, install it, and sign in with GitHub
-
-**Visual Studio Code** (https://code.visualstudio.com/)
-- This is a text editor that makes it way easier to change files
-- Download, install, done
-
-### Getting the Files
-
-1. Open GitHub Desktop
-2. Click File → Clone Repository
-3. Find this repository in the list (or paste the URL)
-4. Pick a folder on your computer where you want to save everything
-5. Click Clone and wait for it to download
-
-### Installing Node.js
-
-You need Node.js installed to run the website on your computer. Let's check if you have it first.
-
-**Check if you already have it:**
-
-On Windows:
-1. Press Windows key + R
-2. Type `cmd` and press Enter
-3. Type `node --version` and press Enter
-4. If you see something like "v18.0.0" or any version number, you're good - skip to the next section
-
-On Mac:
-1. Open Spotlight (Cmd + Space)
-2. Type `terminal` and press Enter
-3. Type `node --version` and press Enter
-4. If you see something like "v18.0.0" or any version number, you're good - skip to the next section
-
-**If you don't have it, install it:**
-
-1. Go to https://nodejs.org/
-2. Download the LTS version (the one that says "Recommended for most users")
-3. Run the installer
-4. Just click Next through everything, the defaults are fine
-5. Restart your computer
-6. Test again using the steps above to make sure it worked
-
-Node.js comes with npm automatically, so once Node is installed, you're set.
-
-### Opening the Project
-
-1. In GitHub Desktop, click Repository → Open in Visual Studio Code
-2. You'll see a bunch of folders on the left
-3. The main one you care about is **frontend/src** - that's where you'll make most changes
-
-### Running the Website Locally
-
-Before you push changes, you probably want to see what they look like. Here's how to run the site on your computer:
-
-**First time only:**
-1. In VS Code, click **Terminal** at the top → **New Terminal**
-2. Type `cd frontend` and press Enter
-3. Type `npm install` and press Enter (this installs all the website dependencies - takes a minute)
-
-**Every time you want to preview:**
-1. Open the terminal in VS Code (Terminal → New Terminal)
-2. If you're not in the frontend folder, type `cd frontend` and press Enter
-3. Type `npm run dev` and press Enter
-4. Wait a few seconds - you'll see a message with an address like `http://localhost:3000`
-5. Hold Ctrl (or Cmd on Mac) and click that address, or just open it in your browser
-
-Now the website is running on your computer. Any time you save a file (Ctrl+S or Cmd+S), the page automatically refreshes to show your changes.
-
-**To stop the server:**
-- Just press Ctrl+C (Cmd+C on Mac) in the terminal, or close the terminal tab
-
-The commands are the same for Windows and Mac.
+- **React 19** (Create React App / react-scripts 5)
+- **Firebase Hosting** — SPA with `/**` → `/index.html` rewrites
+- **Cloud Firestore** — portfolio data + contact form
+- **react-icons** — icon library
+- **CSS Modules** + CSS custom properties for theming (light/dark)
 
 ---
 
-## Adding Gallery Images
+## Local Development
 
-The gallery has different categories: paintings, drawings, baking, and artistic mix. Here's how to add new stuff:
+### 1. Prerequisites
 
-### Put the Image File in the Right Place
+- Node.js 18+
+- A Firebase project (see setup below)
 
-1. Go to **frontend/src/images/Gallery**
-2. Pick the folder that matches your art type:
-   - **Paintings** - paintings
-   - **Drawings** - drawings  
-   - **Baking** - photos of baked stuff
-   - **Artistic Mix** - clay, mosaic, whatever else
+### 2. Clone and install
 
-3. Just drag your image into that folder
-   - Keep the filename simple - like "Blue Lion.jpg" or "Chocolate Cake.jpg"
-   - Avoid weird characters (%, #, @, etc)
-
-### Tell the Website About It
-
-Open **frontend/src/information/gallery.json**
-
-This file has all the info about each piece. Find the section that matches what you added ("paintings", "drawings", etc).
-
-Each entry looks like this:
-```json
-{ "number": 32, "title": "Yellow Bird", "description": "Bright yellow bird.", "price": 100, "dimensions": "20x20 cm", "sold": true }
+```bash
+git clone <repo-url>
+cd Sunika-Online-Portfolio/frontend
+npm install
 ```
 
-To add a new one:
-1. Find the last entry in that section (look for the `]` bracket)
-2. Add a comma after the last `}`
-3. Press Enter and copy this template:
+### 3. Environment variables
 
-```json
-{ "number": 33, "title": "Your Title", "description": "Description here", "price": 150, "dimensions": "30x40 cm", "sold": false }
+```bash
+cp .env.local.example .env.local
 ```
 
-Few things:
-- The number should be the next one in sequence
-- Title should match your image filename
-- Set sold to `true` or `false`
-- Don't mess with the commas and quotes - they're important
+Fill in `.env.local` with values from your Firebase project (see Firebase Setup below). **Never commit `.env.local`.**
 
-**Example** - adding a new painting:
+### 4. Start the dev server
 
-Before:
-```json
-"paintings": [
-  { "number": 31, "title": "Swans", "description": "Graceful swans on water.", "price": 150, "dimensions": "30x40 cm", "sold": true },
-  { "number": 32, "title": "Yellow Bird", "description": "Bright yellow bird.", "price": 100, "dimensions": "20x20 cm", "sold": true }
-],
+```bash
+npm start
 ```
 
-After:
-```json
-"paintings": [
-  { "number": 31, "title": "Swans", "description": "Graceful swans on water.", "price": 150, "dimensions": "30x40 cm", "sold": true },
-  { "number": 32, "title": "Yellow Bird", "description": "Bright yellow bird.", "price": 100, "dimensions": "20x20 cm", "sold": true },
-  { "number": 33, "title": "Purple Sunset", "description": "Beautiful purple and orange sunset over the ocean.", "price": 180, "dimensions": "40x50 cm", "sold": false }
-],
-```
-
-### Removing Something
-
-Just delete the entire line for that item in gallery.json (including the commas). You can also delete the image file itself if you want.
+Runs at `http://localhost:3000`.
 
 ---
 
-## Adding Design Projects
+## Firebase Setup (one-time)
 
-### Add Your Images
+### Step 1 — Create a Firebase project
 
-1. Go to **frontend/src/images/Graphic Design**
-2. Make a new folder and name it whatever your project is called
-3. Drop all your project images in there
+1. Go to [console.firebase.google.com](https://console.firebase.google.com) and sign in.
+2. Click **Add project**, name it (e.g. `sunika-portfolio`), accept the terms.
+3. Enable Google Analytics if you like (optional).
 
-### Add the Project Info
+### Step 2 — Enable Firestore
 
-Open **frontend/src/information/projects.json**
+1. In the Firebase Console, open your project.
+2. Go to **Build → Firestore Database**.
+3. Click **Create database**.
+4. Choose **Start in production mode** (the rules in `firestore.rules` handle permissions).
+5. Pick the region closest to South Africa: **europe-west1** or **us-central1**.
+6. Click **Enable**.
 
-Find the last project, add a comma after its `}`, then add yours:
+### Step 3 — Enable Hosting
+
+1. Go to **Build → Hosting**.
+2. Click **Get started** and follow the prompts.
+3. You don't need to install the Firebase CLI on your machine right now — the GitHub Action handles deployment.
+
+### Step 4 — Register the web app and get config values
+
+1. Go to **Project Settings** (gear icon, top left) → **General**.
+2. Scroll to **Your apps** and click **Add app → Web** (`</>`).
+3. Register the app (name it anything, e.g. "portfolio-web").
+4. Copy the config object — it looks like this:
+
+```js
+const firebaseConfig = {
+  apiKey:            "AIzaSy...",
+  authDomain:        "sunika-portfolio.firebaseapp.com",
+  projectId:         "sunika-portfolio",
+  storageBucket:     "sunika-portfolio.appspot.com",
+  messagingSenderId: "123456789012",
+  appId:             "1:123456789012:web:abc123",
+  measurementId:     "G-XXXXXXXXXX"
+};
+```
+
+5. Put these values in `frontend/.env.local`:
+
+```
+REACT_APP_FIREBASE_API_KEY=AIzaSy...
+REACT_APP_FIREBASE_AUTH_DOMAIN=sunika-portfolio.firebaseapp.com
+REACT_APP_FIREBASE_PROJECT_ID=sunika-portfolio
+REACT_APP_FIREBASE_STORAGE_BUCKET=sunika-portfolio.appspot.com
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=123456789012
+REACT_APP_FIREBASE_APP_ID=1:123456789012:web:abc123
+REACT_APP_FIREBASE_MEASUREMENT_ID=G-XXXXXXXXXX
+```
+
+### Step 5 — Update `.firebaserc`
+
+Edit `.firebaserc` and replace `sunika-portfolio` with your actual Firebase project ID:
 
 ```json
 {
-  "id": 7,
-  "name": "Coffee Shop Branding",
-  "folder": "Coffee Shop Branding",
-  "description": "A complete branding package for a local coffee shop including logo, menu design, and merchandise.",
-  "category": "Branding",
-  "year": "2024"
+  "projects": {
+    "default": "YOUR-PROJECT-ID"
+  }
 }
 ```
 
-Important: The folder name here must match EXACTLY what you named the folder.
+### Step 6 — Seed Firestore with portfolio data
 
-### Editing Existing Projects
+The seed script uses the Firebase Admin SDK. You need a **service account key**:
 
-Just open projects.json, find what you want to change, and edit the text between the quotes. Pretty straightforward.
+1. Go to **Project Settings → Service accounts**.
+2. Click **Generate new private key** → **Generate key**.
+3. Save the downloaded JSON file somewhere safe on your computer. **Do not commit it to git.**
 
----
+Run the seed script (from the repo root):
 
-## Updating Bio and Contact Info
+```bash
+node scripts/seedFirestore.mjs /path/to/serviceAccountKey.json
+```
 
-**Bio stuff:** frontend/src/information/bio.json
-- Name, title, headline
-- Hobbies, achievements
-- Education, work experience
+This populates:
+- `portfolio/personal` — name, title, bio, photo URL
+- `portfolio/contact` — email, phone, location
+- `portfolio/social` — Instagram + LinkedIn
+- `portfolio/skills` — creative / technical / soft skills
+- `portfolio/interests` — interest tags
+- `education/` — Open Window BA + Matric
+- `projects/` — 13 design projects with metadata
 
-**Contact info:** frontend/src/information/contact.json  
-- Email, phone
-- Social media handles
-- What you're available for
+### Step 7 — Deploy Firestore rules
 
-Just change the text between the quotes. Leave the commas, brackets, and quotes alone - they need to stay.
+Install the Firebase CLI if you haven't:
 
----
+```bash
+npm install -g firebase-tools
+firebase login
+```
 
-## Publishing Your Changes
+Then deploy:
 
-Once you've made changes and tested them locally (see "Running the Website Locally" above):
-
-1. **Save everything** - Hit Ctrl+S in VS Code (Cmd+S on Mac)
-
-2. **Open GitHub Desktop** - You'll see what changed
-
-3. **Write what you did** - Bottom left, there's a box that says "Summary". Write something like "Added new painting" or "Updated contact info"
-
-4. **Commit to main** - Click that blue button
-
-5. **Push origin** - Click this to send it to the web
-
-That's it. Give it a few minutes and the website updates automatically.
+```bash
+firebase deploy --only firestore:rules
+```
 
 ---
 
-## Common Mistakes
+## GitHub Actions CI/CD (auto-deploy on push)
 
-Stuff that'll probably trip you up at first:
-- **Commas** - Every entry needs a comma after it except the last one
-- **Quotes** - Keep the quotation marks, they're not optional
-- **Folder names** - In projects.json, the folder name has to match exactly
-- **Numbers** - Use the next number in sequence, don't skip
-- **Filenames** - Keep them simple, no special characters
+The workflow in `.github/workflows/deploy-frontend.yml` builds the React app and deploys to Firebase Hosting on every push to `main`.
+
+### Required GitHub Secrets
+
+Go to your GitHub repo → **Settings → Secrets and variables → Actions → New repository secret**.
+
+Add all of these:
+
+| Secret name | Where to find it |
+|---|---|
+| `REACT_APP_FIREBASE_API_KEY` | Firebase Console → Project Settings → Web app config |
+| `REACT_APP_FIREBASE_AUTH_DOMAIN` | Same |
+| `REACT_APP_FIREBASE_PROJECT_ID` | Same |
+| `REACT_APP_FIREBASE_STORAGE_BUCKET` | Same |
+| `REACT_APP_FIREBASE_MESSAGING_SENDER_ID` | Same |
+| `REACT_APP_FIREBASE_APP_ID` | Same |
+| `REACT_APP_FIREBASE_MEASUREMENT_ID` | Same |
+| `FIREBASE_SERVICE_ACCOUNT` | See below |
+
+### Getting `FIREBASE_SERVICE_ACCOUNT`
+
+1. Go to **Project Settings → Service accounts**.
+2. Click **Generate new private key**.
+3. Open the downloaded JSON file in a text editor.
+4. Copy the **entire file contents** (the whole JSON object).
+5. Paste that as the value of the `FIREBASE_SERVICE_ACCOUNT` secret.
+
+Once these secrets are set, every push to `main` automatically builds and deploys the site.
 
 ---
 
-## If You Break Something
+## Adding a New Design Project
 
-Don't stress. In GitHub Desktop:
-1. Click History at the top
-2. Right-click your last change
-3. Click "Revert Changes in Commit"
+### 1. Add images
 
-This undoes whatever you just did. Problem solved.
+Create a folder inside `frontend/src/images/Graphic Design/` with the project name, and add your images there.
+
+### 2. Add a Firestore document
+
+Go to the Firebase Console → **Firestore Database → projects** collection and click **Add document**.
+
+Fields to set:
+
+| Field | Type | Example |
+|---|---|---|
+| `title` | string | `Coffee Shop Branding` |
+| `imageFolder` | string | `Coffee Shop Branding` ← must match the folder name exactly |
+| `category` | string | `Branding` |
+| `year` | string | `2025` |
+| `description` | string | Short description of the project |
+| `tags` | array | `["Logo", "Packaging", "Print"]` |
+| `order` | number | `14` ← controls display order |
+
+### 3. Deploy
+
+Commit and push — GitHub Actions builds and deploys automatically.
 
 ---
 
-## Quick Checklist
+## Updating Portfolio Content
 
-Before you push:
-- [ ] Saved everything? (Ctrl+S)
-- [ ] Commas and quotes look right?
-- [ ] Wrote a commit message?
-- [ ] Actually want this live?
+All content is stored in Firestore. Edit documents directly in the Firebase Console:
+
+| What to change | Collection / document |
+|---|---|
+| Name, bio, photo | `portfolio/personal` |
+| Contact info | `portfolio/contact` |
+| Instagram / LinkedIn URLs | `portfolio/social` → `platforms` array |
+| Skills | `portfolio/skills` → `categories` array |
+| Interests | `portfolio/interests` → `items` array |
+| Education | `education/` collection |
+| Design projects | `projects/` collection |
 
 ---
 
-That's pretty much it. The site's built to be simple to update - no coding needed. Just change the files, push, and you're done.
+## Personal Photos (Polaroid section on Home page)
 
-If something's confusing or breaks, just revert it or reach out for help.
+Place photos named `photo-1.jpg`, `photo-2.jpg`, etc. in `frontend/public/photos/`. The site auto-detects how many there are (up to 12). `profile.jpg` in the same folder is used as the Bio portrait.
+
+---
+
+## Folder Structure
+
+```
+Sunika-Online-Portfolio/
+├── .github/workflows/deploy-frontend.yml   # CI/CD
+├── firebase.json                            # Hosting + Firestore config
+├── .firebaserc                              # Firebase project alias
+├── firestore.rules                          # Security rules
+├── scripts/
+│   └── seedFirestore.mjs                   # One-time data seed
+└── frontend/
+    ├── .env.local.example                  # Copy → .env.local
+    ├── public/
+    │   └── photos/                         # Polaroid + profile photos
+    └── src/
+        ├── components/                     # Shared UI components
+        ├── firebase/                       # Firebase init + Firestore helpers
+        ├── hooks/                          # Custom React hooks
+        ├── images/Graphic Design/          # Project images (bundled at build)
+        ├── pages/
+        │   ├── Home/                       # Landing page
+        │   ├── Bio/                        # About + education
+        │   ├── Projects/                   # Design portfolio grid
+        │   └── Connect/                    # Contact form
+        └── styles/                         # Global CSS + theme variables
+```

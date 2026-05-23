@@ -1,107 +1,70 @@
 import { useState, useEffect } from 'react';
 
-// ============================================
-// THEME INITIALIZATION
-// ============================================
-// Get initial theme from localStorage or browser preference
+// ─── CONSTANTS ────────────────────────────────────────────────────────────────
+const STORAGE_KEY = 'userSessionInfo';
+const THEME_FIELD = 'prefersColorScheme';
 
+// ─── INITIAL VALUE ────────────────────────────────────────────────────────────
+// Reads stored theme; falls back to OS prefers-color-scheme.
 export const getInitialTheme = () => {
-  const sessionInfo = localStorage.getItem('userSessionInfo');
-  if (sessionInfo) {
-    try {
-      const parsed = JSON.parse(sessionInfo);
-      if (parsed.prefersColorScheme) return parsed.prefersColorScheme;
-    } catch {
-      // fallback to browser default
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (parsed[THEME_FIELD] === 'dark' || parsed[THEME_FIELD] === 'light') {
+        return parsed[THEME_FIELD];
+      }
     }
+  } catch {
+    // corrupted storage — fall through to system preference
   }
 
-  // Use browser default if no stored preference
-  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  return prefersDark ? 'dark' : 'light';
+  return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 };
 
-// ============================================
-// USE THEME HOOK
-// ============================================
-// Custom hook for managing theme state across the application
-// Syncs with localStorage and broadcasts changes
-
+// ─── HOOK ────────────────────────────────────────────────────────────────────
+// Manages light/dark state — syncs DOM attribute and persists to storage.
 export const useTheme = () => {
-  // ----------------------------------------
-  // State Management
-  // ----------------------------------------
-  
-  const [theme, setTheme] = useState(getInitialTheme());
+  const [theme, setTheme] = useState(getInitialTheme);
 
-  // ----------------------------------------
-  // Effects
-  // ----------------------------------------
-  // Apply theme to DOM and sync with localStorage
-  
+  // ─── DOM SYNC ─────────────────────────────────────────────────────────────
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
 
-    const sessionInfo = localStorage.getItem('userSessionInfo');
-    let updatedInfo = {};
-
-    if (sessionInfo) {
-      try {
-        updatedInfo = JSON.parse(sessionInfo);
-      } catch {
-        updatedInfo = {};
-      }
-    }
-
-    updatedInfo.prefersColorScheme = theme;
-    localStorage.setItem('userSessionInfo', JSON.stringify(updatedInfo));
-
-    // Broadcast theme change to other hook instances in this window
     try {
-      const ev = new CustomEvent('themechange', { detail: theme });
-      window.dispatchEvent(ev);
-    } catch (e) {
-      // ignore
+      const stored = localStorage.getItem(STORAGE_KEY);
+      const info = stored ? JSON.parse(stored) : {};
+      info[THEME_FIELD] = theme;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(info));
+    } catch {
+      // storage unavailable — DOM attribute is still updated
     }
   }, [theme]);
 
-  // Listen for theme changes from other instances and storage events
+  // ─── OS PREFERENCE LISTENER ─────────────────────────────────────────────────
+  // Only auto-switches when the user has no explicit stored preference.
   useEffect(() => {
-    const handler = (e) => {
-      if (e && e.detail && e.detail !== theme) setTheme(e.detail);
-    };
+    const mq = window.matchMedia?.('(prefers-color-scheme: dark)');
+    if (!mq) return;
 
-    const storageHandler = (e) => {
-      if (e.key === 'userSessionInfo') {
-        try {
-          const parsed = JSON.parse(e.newValue || '{}');
-          if (parsed.prefersColorScheme && parsed.prefersColorScheme !== theme) {
-            setTheme(parsed.prefersColorScheme);
-          }
-        } catch {
-          // ignore
+    const handleChange = (e) => {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        const info = stored ? JSON.parse(stored) : {};
+        // Only auto-switch if the user has never explicitly chosen
+        if (!info[THEME_FIELD]) {
+          setTheme(e.matches ? 'dark' : 'light');
         }
+      } catch {
+        setTheme(e.matches ? 'dark' : 'light');
       }
     };
 
-    window.addEventListener('themechange', handler);
-    window.addEventListener('storage', storageHandler);
+    mq.addEventListener('change', handleChange);
+    return () => mq.removeEventListener('change', handleChange);
+  }, []);
 
-    return () => {
-      window.removeEventListener('themechange', handler);
-      window.removeEventListener('storage', storageHandler);
-    };
-  }, [theme]);
+  const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
 
-  // ----------------------------------------
-  // Theme Toggle Function
-  // ----------------------------------------
-  
-  const toggleTheme = () => setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
-
-  // ----------------------------------------
-  // Return Values
-  // ----------------------------------------
-  
   return { theme, toggleTheme, setTheme };
 };

@@ -1,16 +1,16 @@
 {
   "name": "frontend",
   "version": "1.0.0",
-  "homepage": "https://FM-Web-Studio.github.io/Sunika-Online-Portfolio",
   "private": true,
   "dependencies": {
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
-    "lucide-react": "^0.562.0",
+    "firebase": "^12.13.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-icons": "^5.5.0",
     "react-router-dom": "^7.9.4",
     "react-scripts": "5.0.1",
     "react-select": "^5.10.2",
@@ -25,7 +25,6 @@
     "dev": "npm install && cross-env BROWSER=none react-scripts start",
     "build": "cross-env GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
-    "analyze": "cross-env GENERATE_SOURCEMAP=true ANALYZE=true react-app-rewired build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

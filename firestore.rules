@@ -1,0 +1,33 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Portfolio sections — public read, no writes
+    match /portfolio/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Education collection — public read
+    match /education/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Design projects collection — public read
+    match /projects/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Contact form submissions — write-only (no read)
+    match /contacts/{docId} {
+      allow create: if request.resource.data.keys().hasAll(['name', 'email', 'message'])
+        && request.resource.data.name is string
+        && request.resource.data.email is string
+        && request.resource.data.message is string;
+      allow read, update, delete: if false;
+    }
+  }
+}

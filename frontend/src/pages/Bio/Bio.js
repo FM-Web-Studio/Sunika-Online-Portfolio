@@ -1,445 +1,344 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  MapPin, Calendar, Globe, Award,
-  Briefcase, GraduationCap, Palette, Code, Heart,
-  Languages, TrendingUp, Sparkles, BookOpen, Target
-} from 'lucide-react';
-
-// ============================================
-// IMPORTS - DATA & COMPONENTS
-// ============================================
-
+import { useNavigate } from 'react-router-dom';
+import { FaEnvelope, FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
+import { MdArrowOutward } from 'react-icons/md';
+import usePortfolioData from '../../hooks/usePortfolioData';
 import styles from './Bio.module.css';
-import bioData from '../../information/bio.json';
-import profileImage from './Profile.jpg';
-import { LazyImage } from '../../components';
 
-// ============================================
-// BIO COMPONENT
-// ============================================
-// Professional biography page showcasing education,
-// skills, experience, and professional journey
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function Bio() {
-  // ----------------------------------------
-  // State Management
-  // ----------------------------------------
-  
-  const [isVisible, setIsVisible] = useState(false);
+const toSkillGroups = (skills) => {
+  if (!skills) return [];
+  if (Array.isArray(skills.categories)) return skills.categories;
+  if (Array.isArray(skills.items))      return [{ name: null, items: skills.items }];
+  return Object.entries(skills)
+    .filter(([, v]) => Array.isArray(v) && v.length)
+    .map(([name, items]) => ({ name, items }));
+};
 
-  // ----------------------------------------
-  // Effects
-  // ----------------------------------------
-  
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
+const itemLabel = (s) => (typeof s === 'string' ? s : s?.name ?? s?.title ?? String(s));
 
-  // ----------------------------------------
-  // Helper Functions
-  // ----------------------------------------
-  
-  const calculateAge = (birthDate) => {
-    const today = new Date();
-    const birth = new Date(birthDate);
-    let age = today.getFullYear() - birth.getFullYear();
-    const monthDiff = today.getMonth() - birth.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-      age--;
-    }
-    return age;
-  };
+const period = (e) =>
+  e.period || e.dates ||
+  (e.start ? `${e.start}${e.end ? ` – ${e.end}` : ' – Present'}` : null);
 
-  const formatDate = (dateString) => {
-    if (!dateString) return 'Present';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-  };
+// ─── Skeleton ─────────────────────────────────────────────────────────────────
 
-  // ----------------------------------------
-  // Render
-  // ----------------------------------------
-  
-  return (
-    <div className={styles.bioContainer}>
-      {/* Hero Section */}
-      <section className={`${styles.hero} ${isVisible ? styles.visible : ''}`}>
-        <div className={styles.heroBackground}>
-          <div className={styles.gridPattern} />
+const Skel = ({ w, h = '0.85rem' }) => (
+  <span className={styles.skel} style={{ width: w, height: h }} />
+);
+
+const SkelEntry = () => (
+  <div className={styles.entry}>
+    <div className={styles.entryDot} aria-hidden="true" />
+    <div className={styles.entryBody}>
+      <div className={styles.entryTop}>
+        <Skel w="42%" h="1rem" />
+        <Skel w="80px" />
+      </div>
+      <Skel w="32%" />
+      <Skel w="90%" />
+      <Skel w="65%" />
+    </div>
+  </div>
+);
+
+// ─── Timeline entry ───────────────────────────────────────────────────────────
+
+const TimelineEntry = ({ title, subtitle, p, current, description, tags }) => (
+  <div className={styles.entry}>
+    <div className={styles.entryDot} aria-hidden="true" />
+    <div className={styles.entryBody}>
+      <div className={styles.entryTop}>
+        <div className={styles.entryTitleRow}>
+          <span className={styles.entryTitle}>{title}</span>
+          {current && <span className={styles.presentBadge}>Present</span>}
         </div>
-        
-        <div className={styles.heroContent}>
-          <div className={styles.profileSection}>
-            <div className={styles.profileImageWrapper}>
-              <LazyImage 
-                src={profileImage} 
-                alt={bioData.fullName}
-                className={styles.profileImage}
-                threshold={0}
-                rootMargin="0px"
-              />
-            </div>
-            
-            <div className={styles.profileInfo}>
-              <div className={styles.badge}>
-                <Sparkles size={14} />
-                <span>Professional Profile</span>
-              </div>
-              <h1 className={styles.name}>{bioData.fullName}</h1>
-              <p className={styles.title}>{bioData.professional.headline}</p>
-              
-              <div className={styles.quickStats}>
-                <div className={styles.stat}>
-                  <MapPin size={18} />
-                  <span>{bioData.personal.location}</span>
-                </div>
-                <div className={styles.stat}>
-                  <Calendar size={18} />
-                  <span>{calculateAge(bioData.personal.birthDate)} years old</span>
-                </div>
-                <div className={styles.stat}>
-                  <Globe size={18} />
-                  <span>{bioData.personal.nationality}</span>
-                </div>
-              </div>
-            </div>
-          </div>
+        {p && <span className={styles.entryPeriod}>{p}</span>}
+      </div>
+      {subtitle && <p className={styles.entryRole}>{subtitle}</p>}
+      {description && <p className={styles.entryDesc}>{description}</p>}
+      {tags?.length > 0 && (
+        <div className={styles.tagRow}>
+          {tags.map((t, i) => <span key={i} className={styles.tag}>{t}</span>)}
+        </div>
+      )}
+    </div>
+  </div>
+);
 
-          <div className={styles.summaryCard}>
-            <div className={styles.summaryHeader}>
-              <Target size={20} />
-              <h2>Professional Summary</h2>
-            </div>
-            <p className={styles.summary}>{bioData.summary}</p>
+// ─── Page ─────────────────────────────────────────────────────────────────────
+
+const Bio = () => {
+  const { data, loading, error } = usePortfolioData();
+  const navigate = useNavigate();
+
+  const personal   = data?.personal   ?? {};
+  const contact    = data?.contact    ?? {};
+  const skills     = toSkillGroups(data?.skills);
+  const interests  = data?.interests  ?? [];
+  const experience = data?.experience ?? [];
+  const education  = data?.education  ?? [];
+  const social     = data?.social     ?? [];
+
+  const email    = personal.email    || contact.email;
+  const phone    = personal.phone    || contact.phone;
+  const location = personal.location || contact.location;
+  const linkedin  = social.find(s => (s.key || '').toLowerCase() === 'linkedin');
+  const cvUrl     = personal.cvUrl;
+
+  const photoUrl = personal.photoUrl ?? null;
+
+  if (!loading && error) {
+    return (
+      <section className={styles.page}>
+        <div className={styles.container}>
+          <div className={styles.errorCard}>
+            <p>Could not load portfolio data. Please try again later.</p>
           </div>
         </div>
       </section>
+    );
+  }
 
-      {/* Main Content */}
-      <div className={styles.mainContent}>
-        {/* Education Section */}
-        <section className={styles.section}>
-          <div className={styles.sectionHeader}>
-            <div className={styles.sectionIcon}>
-              <GraduationCap size={24} />
-            </div>
-            <div>
-              <h2 className={styles.sectionTitle}>Education</h2>
-              <p className={styles.sectionSubtitle}>Academic Background & Qualifications</p>
-            </div>
-          </div>
+  return (
+    <section className={styles.page}>
+      <div className={styles.container}>
 
-          <div className={styles.timelineContainer}>
-            {bioData.education.map((edu, index) => (
-              <div key={index} className={styles.timelineItem}>
-                <div className={styles.timelineLine} />
-                <div className={styles.timelineDot} />
-                <div className={styles.timelineContent}>
-                  <div className={styles.timelineHeader}>
-                    <div>
-                      <h3 className={styles.itemTitle}>{edu.degree || edu.level}</h3>
-                      <p className={styles.itemInstitution}>
-                        {edu.institution || edu.school}
-                        {edu.campus && ` • ${edu.campus}`}
-                      </p>
-                    </div>
-                    <div className={styles.itemDate}>
-                      {edu.startYear ? `${edu.startYear} - ${edu.expectedGraduation || edu.yearCompleted || 'Present'}` : edu.yearCompleted}
-                    </div>
-                  </div>
+        {/* ── Header ──────────────────────────────────────────────────────── */}
+        <header className={styles.header}>
+          <p className={styles.chapterEyebrow}>
+            <span className={styles.chapterMark}>Chapter I</span>
+            <span className={styles.chapterDash} aria-hidden="true">—</span>
+            <span className={styles.chapterName}>The Artist</span>
+          </p>
+          <div className={styles.headerInner}>
 
-                  {edu.status && (
-                    <div className={styles.statusBadge}>{edu.status}</div>
-                  )}
-
-                  {edu.notes && (
-                    <p className={styles.itemDescription}>{edu.notes}</p>
-                  )}
-
-                  {edu.relevantCoursework && edu.relevantCoursework.length > 0 && (
-                    <div className={styles.detailSection}>
-                      <div className={styles.detailHeader}>
-                        <BookOpen size={16} />
-                        <span>Key Coursework</span>
-                      </div>
-                      <div className={styles.chipGrid}>
-                        {edu.relevantCoursework.map((course, idx) => (
-                          <span key={idx} className={styles.chip}>{course}</span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {edu.subjects && edu.subjects.length > 0 && (
-                    <div className={styles.detailSection}>
-                      <div className={styles.detailHeader}>
-                        <BookOpen size={16} />
-                        <span>Subjects</span>
-                      </div>
-                      <div className={styles.chipGrid}>
-                        {edu.subjects.map((subject, idx) => (
-                          <span key={idx} className={styles.chip}>{subject}</span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Skills Section */}
-        <section className={styles.section}>
-          <div className={styles.sectionHeader}>
-            <div className={styles.sectionIcon}>
-              <TrendingUp size={24} />
-            </div>
-            <div>
-              <h2 className={styles.sectionTitle}>Skills & Expertise</h2>
-              <p className={styles.sectionSubtitle}>Professional Competencies & Proficiency Levels</p>
-            </div>
-          </div>
-
-          <div className={styles.skillsContainer}>
-            {/* Creative Skills */}
-            <div className={styles.skillCategory}>
-              <div className={styles.categoryHeader}>
-                <Palette size={20} />
-                <h3>Creative Skills</h3>
-              </div>
-              <div className={styles.skillsList}>
-                {bioData.skills.creative.map((skill, idx) => (
-                  <div key={idx} className={styles.skillItem}>
-                    <div className={styles.skillHeader}>
-                      <span className={styles.skillName}>{typeof skill === 'string' ? skill : skill.name}</span>
-                      <span className={styles.skillLevel}>
-                        {typeof skill === 'string' ? '85%' : `${skill.level}%`}
-                      </span>
-                    </div>
-                    <div className={styles.skillBar}>
-                      <div 
-                        className={styles.skillFill}
-                        style={{ width: typeof skill === 'string' ? '85%' : `${skill.level}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Technical Skills */}
-            <div className={styles.skillCategory}>
-              <div className={styles.categoryHeader}>
-                <Code size={20} />
-                <h3>Technical Skills</h3>
-              </div>
-              <div className={styles.skillsList}>
-                {bioData.skills.technical.map((skill, idx) => (
-                  <div key={idx} className={styles.skillItem}>
-                    <div className={styles.skillHeader}>
-                      <span className={styles.skillName}>{typeof skill === 'string' ? skill : skill.name}</span>
-                      <span className={styles.skillLevel}>
-                        {typeof skill === 'string' ? '85%' : `${skill.level}%`}
-                      </span>
-                    </div>
-                    <div className={styles.skillBar}>
-                      <div 
-                        className={styles.skillFill}
-                        style={{ width: typeof skill === 'string' ? '85%' : `${skill.level}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Soft Skills */}
-            <div className={styles.skillCategory}>
-              <div className={styles.categoryHeader}>
-                <Heart size={20} />
-                <h3>Soft Skills</h3>
-              </div>
-              <div className={styles.skillsList}>
-                {bioData.skills.soft.map((skill, idx) => (
-                  <div key={idx} className={styles.skillItem}>
-                    <div className={styles.skillHeader}>
-                      <span className={styles.skillName}>{typeof skill === 'string' ? skill : skill.name}</span>
-                      <span className={styles.skillLevel}>
-                        {typeof skill === 'string' ? '85%' : `${skill.level}%`}
-                      </span>
-                    </div>
-                    <div className={styles.skillBar}>
-                      <div 
-                        className={styles.skillFill}
-                        style={{ width: typeof skill === 'string' ? '85%' : `${skill.level}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Languages & Personal Section */}
-        <section className={styles.section}>
-          <div className={styles.sectionHeader}>
-            <div className={styles.sectionIcon}>
-              <Heart size={24} />
-            </div>
-            <div>
-              <h2 className={styles.sectionTitle}>Personal Information</h2>
-              <p className={styles.sectionSubtitle}>Languages, Interests & Achievements</p>
-            </div>
-          </div>
-
-          <div className={styles.personalGrid}>
-            {/* Languages */}
-            {bioData.personal.languages && bioData.personal.languages.length > 0 && (
-              <div className={styles.infoCard}>
-                <div className={styles.cardHeader}>
-                  <Languages size={20} />
-                  <h3>Languages</h3>
-                </div>
-                <div className={styles.cardContent}>
-                  {bioData.personal.languages.map((lang, idx) => (
-                    <div key={idx} className={styles.listItem}>
-                      <div className={styles.listDot} />
-                      <span>{lang}</span>
-                    </div>
-                  ))}
-                </div>
+            {/* Profile photo */}
+            {(loading || photoUrl) && (
+              <div className={styles.photoWrap}>
+                {loading
+                  ? <span className={`${styles.skel} ${styles.photoSkel}`} />
+                  : <img
+                      src={photoUrl}
+                      alt={personal.name ?? 'Profile'}
+                      className={styles.photo}
+                    />
+                }
               </div>
             )}
 
-            {/* Hobbies */}
-            {bioData.personal.hobbies && bioData.personal.hobbies.length > 0 && (
-              <div className={styles.infoCard}>
-                <div className={styles.cardHeader}>
-                  <Palette size={20} />
-                  <h3>Hobbies & Interests</h3>
+            <div className={styles.headerMain}>
+              {loading ? (
+                <>
+                  <Skel w="240px" h="2.4rem" />
+                  <Skel w="200px" h="1.1rem" />
+                </>
+              ) : (
+                <>
+                  <h1 className={styles.name}>{personal.name ?? 'Bio'}</h1>
+                  {personal.title && <p className={styles.titleLine}>{personal.title}</p>}
+                </>
+              )}
+            </div>
+
+          </div>
+
+          <div className={styles.contactRow}>
+            {loading ? (
+              <><Skel w="120px" /><Skel w="160px" /></>
+            ) : (
+              <>
+                {location && (
+                  <span className={styles.contactItem}>
+                    <FaMapMarkerAlt aria-hidden="true" />
+                    {location}
+                  </span>
+                )}
+                {email && (
+                  <a href={`mailto:${email}`} className={styles.contactItem}>
+                    <FaEnvelope aria-hidden="true" />
+                    {email}
+                  </a>
+                )}
+                {phone && (
+                  <a href={`tel:${phone}`} className={styles.contactItem}>
+                    <FaPhone aria-hidden="true" />
+                    {phone}
+                  </a>
+                )}
+                {linkedin && (
+                  <a
+                    href={linkedin.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.contactItem}
+                  >
+                    LinkedIn
+                    <MdArrowOutward aria-hidden="true" />
+                  </a>
+                )}
+                {cvUrl && (
+                  <a
+                    href={cvUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`${styles.contactItem} ${styles.cvLink}`}
+                  >
+                    Download CV
+                    <MdArrowOutward aria-hidden="true" />
+                  </a>
+                )}
+              </>
+            )}
+          </div>
+        </header>
+
+        {/* ── Content ─────────────────────────────────────────────────────── */}
+        <div className={styles.content}>
+
+          {/* ── Sidebar ───────────────────────────────────────────────────── */}
+          <aside className={styles.sidebar}>
+
+            {/* About */}
+            <div className={styles.card}>
+              <h2 className={styles.cardLabel}>About</h2>
+              {loading ? (
+                <div className={styles.skelStack}>
+                  <Skel w="100%" /><Skel w="88%" /><Skel w="75%" /><Skel w="93%" />
                 </div>
-                <div className={styles.cardContent}>
-                  {bioData.personal.hobbies.map((hobby, idx) => (
-                    <div key={idx} className={styles.listItem}>
-                      <div className={styles.listDot} />
-                      <span>{hobby}</span>
+              ) : (() => {
+                  const text = personal.bio ?? personal.summary ?? '—';
+                  if (!text || text.length < 2) return <p className={styles.bio}>{text}</p>;
+                  const [first, ...rest] = text;
+                  return (
+                    <p className={styles.bio}>
+                      <span className={styles.bioDropcap}>{first}</span>
+                      {rest.join('')}
+                    </p>
+                  );
+                })()
+              }
+            </div>
+
+            {/* Skills */}
+            {(loading || skills.length > 0) && (
+              <div className={styles.card}>
+                <h2 className={styles.cardLabel}>Skills</h2>
+                {loading ? (
+                  <div className={styles.chipRow}>
+                    {[72, 56, 88, 64, 80, 50].map(w => (
+                      <Skel key={w} w={w} h="1.6rem" />
+                    ))}
+                  </div>
+                ) : (
+                  skills.map(({ name, items }) => (
+                    <div key={name ?? '_skills'} className={styles.skillGroup}>
+                      {name && <p className={styles.skillGroupLabel}>{name}</p>}
+                      <div className={styles.chipRow}>
+                        {(items ?? []).map((s, i) => (
+                          <span key={i} className={styles.chip}>{itemLabel(s)}</span>
+                        ))}
+                      </div>
                     </div>
-                  ))}
-                </div>
+                  ))
+                )}
               </div>
             )}
 
             {/* Interests */}
-            {bioData.interests && bioData.interests.length > 0 && (
-              <div className={styles.infoCard}>
-                <div className={styles.cardHeader}>
-                  <Sparkles size={20} />
-                  <h3>Professional Interests</h3>
-                </div>
-                <div className={styles.cardContent}>
-                  {bioData.interests.map((interest, idx) => (
-                    <div key={idx} className={styles.listItem}>
-                      <div className={styles.listDot} />
-                      <span>{interest}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Achievements */}
-            {bioData.personal.achievements && bioData.personal.achievements.length > 0 && (
-              <div className={styles.infoCard}>
-                <div className={styles.cardHeader}>
-                  <Award size={20} />
-                  <h3>Achievements</h3>
-                </div>
-                <div className={styles.cardContent}>
-                  {bioData.personal.achievements.map((achievement, idx) => (
-                    <div key={idx} className={styles.listItem}>
-                      <div className={styles.listDot} />
-                      <span>{achievement}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* Experience Section (if exists) */}
-        {bioData.professional_experience && bioData.professional_experience.length > 0 && (
-          <section className={styles.section}>
-            <div className={styles.sectionHeader}>
-              <div className={styles.sectionIcon}>
-                <Briefcase size={24} />
-              </div>
-              <div>
-                <h2 className={styles.sectionTitle}>Professional Experience</h2>
-                <p className={styles.sectionSubtitle}>Work History & Accomplishments</p>
-              </div>
-            </div>
-
-            <div className={styles.timelineContainer}>
-              {bioData.professional_experience.map((exp, index) => (
-                <div key={index} className={styles.timelineItem}>
-                  <div className={styles.timelineLine} />
-                  <div className={styles.timelineDot} />
-                  <div className={styles.timelineContent}>
-                    <div className={styles.timelineHeader}>
-                      <div>
-                        <h3 className={styles.itemTitle}>{exp.title}</h3>
-                        <p className={styles.itemInstitution}>
-                          {exp.company} • {exp.location}
-                        </p>
-                      </div>
-                      <div className={styles.itemDate}>
-                        {formatDate(exp.startDate)} - {formatDate(exp.endDate)}
-                      </div>
-                    </div>
-                    
-                    <p className={styles.itemDescription}>{exp.description}</p>
-                    
-                    {exp.responsibilities && exp.responsibilities.length > 0 && (
-                      <div className={styles.detailSection}>
-                        <div className={styles.detailHeader}>
-                          <span>Key Responsibilities</span>
-                        </div>
-                        <ul className={styles.detailList}>
-                          {exp.responsibilities.map((resp, idx) => (
-                            <li key={idx}>{resp}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {exp.achievements && exp.achievements.length > 0 && (
-                      <div className={styles.detailSection}>
-                        <div className={styles.detailHeader}>
-                          <span>Achievements</span>
-                        </div>
-                        <ul className={styles.detailList}>
-                          {exp.achievements.map((ach, idx) => (
-                            <li key={idx}>{ach}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+            {(loading || interests.length > 0) && (
+              <div className={styles.card}>
+                <h2 className={styles.cardLabel}>Interests</h2>
+                {loading ? (
+                  <div className={styles.chipRow}>
+                    {[96, 80, 68, 88].map(w => <Skel key={w} w={w} h="1.6rem" />)}
                   </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-      </div>
-    </div>
-  );
-}
+                ) : (
+                  <div className={styles.chipRow}>
+                    {interests.map((item, i) => (
+                      <span key={i} className={styles.interestChip}>{itemLabel(item)}</span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
 
-// ============================================
-// EXPORTS
-// ============================================
+          </aside>
+
+          {/* ── Main ──────────────────────────────────────────────────────── */}
+          <main className={styles.main}>
+
+            {/* Experience */}
+            <div className={styles.section}>
+              <h2 className={styles.sectionHeading}>Experience</h2>
+              <div className={styles.timeline}>
+                {loading
+                  ? [0, 1].map(i => <SkelEntry key={i} />)
+                  : experience.length === 0
+                    ? <p className={styles.empty}>No experience listed.</p>
+                    : experience.map(e => (
+                        <TimelineEntry
+                          key={e.id}
+                          title={e.company || e.employer || e.organisation}
+                          subtitle={e.role || e.position || e.title}
+                          p={period(e)}
+                          current={e.current}
+                          description={e.description || e.summary}
+                          tags={e.tech || e.technologies || e.stack || e.tags}
+                        />
+                      ))
+                }
+              </div>
+            </div>
+
+            {/* Education */}
+            <div className={styles.section}>
+              <h2 className={styles.sectionHeading}>Education</h2>
+              <div className={styles.timeline}>
+                {loading
+                  ? [0, 1].map(i => <SkelEntry key={i} />)
+                  : education.length === 0
+                    ? <p className={styles.empty}>No education listed.</p>
+                    : education.map(e => (
+                        <TimelineEntry
+                          key={e.id}
+                          title={e.institution || e.school || e.university}
+                          subtitle={
+                            [e.degree || e.qualification, e.field || e.major]
+                              .filter(Boolean)
+                              .join(' — ') || null
+                          }
+                          p={period(e)}
+                          description={e.description || e.summary}
+                          tags={e.tags}
+                        />
+                      ))
+                }
+              </div>
+            </div>
+
+          </main>
+        </div>
+
+        {/* ── Next chapter ─────────────────────────────────────────────── */}
+        <footer className={styles.nextChapter}>
+          <span className={styles.nextChapterLabel}>Turn the page</span>
+          <button
+            type="button"
+            className={styles.nextChapterBtn}
+            onClick={() => navigate('/projects')}
+          >
+            <span className={styles.nextChapterTitle}>
+              Chapter II — The Workshop
+            </span>
+            <span className={styles.nextChapterHint}>
+              See what I’ve been building <MdArrowOutward aria-hidden="true" />
+            </span>
+          </button>
+        </footer>
+      </div>
+    </section>
+  );
+};
 
 export default Bio;

@@ -1,456 +1,590 @@
-/* ==================== CONTAINER ==================== */
-.container {
-  position: relative;
-  min-height: 100vh;
+﻿/* ============================================================================
+ * NOT FOUND PAGE STYLES
+ * ============================================================================
+ * Glass squares float, rotate, and drift randomly in the background.
+ * Physics driven by JS (translate + rotate). CSS drives border-radius morphing.
+ * Cursor-reactive inner glow and mask punch-out border ring on glass squares.
+ * All colours from Theme.css variables only.
+ * ============================================================================ */
+
+
+/* ========== PAGE ROOT ========== */
+
+.root {
+  min-height: 100svh;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: var(--spacing-xl) var(--spacing-md);
+  background: var(--background-0);
+  position: relative;
   overflow: hidden;
+}
+
+
+/* ========== BLOB FIELD ========== */
+
+.blobField {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+
+/* ========== AMBIENT GLOW SQUARES ========== */
+
+.ambientSquare {
+  position: absolute;
+  top: 0;
+  left: 0;
+  filter: blur(90px);
+  opacity: 0.28;
+  will-change: transform, border-radius;
+  pointer-events: none;
+}
+
+.ambient1 {
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(ellipse at 40% 40%, var(--accent-1), var(--accent-2) 55%, transparent 80%);
+  border-radius: 10%;
+  animation: ambientMorph1 52s ease-in-out infinite;
+  animation-delay: -8s;
+}
+
+.ambient2 {
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(ellipse at 60% 60%, var(--accent-2), var(--accent-3) 50%, transparent 80%);
+  border-radius: 20% 8% 20% 8%;
+  animation: ambientMorph2 62s ease-in-out infinite;
+  animation-delay: -32s;
+}
+
+.ambient3 {
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(ellipse at 50% 50%, var(--accent-3), var(--accent-1) 55%, transparent 80%);
+  border-radius: 8% 20% 8% 20%;
+  animation: ambientMorph3 46s ease-in-out infinite;
+  animation-delay: -18s;
+}
+
+@keyframes ambientMorph1 {
+  0%   { border-radius: 10% 10% 10% 10%; }
+  25%  { border-radius: 28%  8% 24% 12%; }
+  50%  { border-radius: 12% 28%  8% 24%; }
+  75%  { border-radius: 22% 14% 28%  8%; }
+  100% { border-radius: 10% 10% 10% 10%; }
+}
+
+@keyframes ambientMorph2 {
+  0%   { border-radius: 20%  8% 20%  8%; }
+  33%  { border-radius:  8% 26% 10% 28%; }
+  66%  { border-radius: 28% 12% 24%  6%; }
+  100% { border-radius: 20%  8% 20%  8%; }
+}
+
+@keyframes ambientMorph3 {
+  0%   { border-radius:  8% 20%  8% 20%; }
+  50%  { border-radius: 24%  6% 28% 10%; }
+  100% { border-radius:  8% 20%  8% 20%; }
+}
+
+
+/* ========== GLASS LENS SQUARES ========== */
+
+.glassSquare {
+  position: absolute;
+  top: 0;
+  left: 0;
+  --cursor-x: -500px;
+  --cursor-y: -500px;
+  will-change: transform, border-radius;
+  pointer-events: none;
   background: linear-gradient(
-    135deg,
-    var(--background-1) 0%,
-    var(--background-2) 50%,
-    var(--background-3) 100%
+    160deg,
+    rgba(var(--accent-2-rgb), 0.09) 0%,
+    rgba(var(--accent-1-rgb), 0.05) 50%,
+    rgba(var(--accent-3-rgb), 0.08) 100%
   );
 }
 
-/* ==================== BACKGROUND ORBS ==================== */
-.backgroundOrbs {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.orb1,
-.orb2,
-.orb3 {
+.glassSquare::before {
+  content: '';
   position: absolute;
-  border-radius: 50%;
-  filter: blur(100px);
-  opacity: 0.2;
-  animation: orbFloat 20s ease-in-out infinite;
-}
-
-.orb1 {
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, var(--accent-1) 0%, transparent 70%);
-  top: -10%;
-  left: -10%;
-  animation-delay: 0s;
-}
-
-.orb2 {
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, var(--accent-2) 0%, transparent 70%);
-  bottom: -10%;
-  right: -5%;
-  animation-delay: 7s;
-}
-
-.orb3 {
-  width: 350px;
-  height: 350px;
-  background: radial-gradient(circle, var(--accent-3) 0%, transparent 70%);
-  top: 40%;
-  right: 20%;
-  animation-delay: 14s;
-}
-
-@keyframes orbFloat {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-  }
-  33% {
-    transform: translate(50px, -50px) scale(1.1);
-  }
-  66% {
-    transform: translate(-40px, 40px) scale(0.9);
-  }
-}
-
-/* ==================== FLOATING SHAPES ==================== */
-.floatingShapes {
-  position: fixed;
   inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle 200px at var(--cursor-x, -500px) var(--cursor-y, -500px),
+    rgba(var(--accent-1-rgb), 0.30) 0%,
+    rgba(var(--accent-1-rgb), 0.10) 45%,
+    transparent 70%
+  );
+  pointer-events: none;
   z-index: 1;
-  pointer-events: none;
-  overflow: hidden;
 }
 
-.shape {
+.glassSquare::after {
+  content: '';
   position: absolute;
-  width: 60px;
-  height: 60px;
-  opacity: 0.1;
-  animation: shapeFloat 15s ease-in-out infinite;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(
+    circle 160px at var(--cursor-x, -500px) var(--cursor-y, -500px),
+    rgba(var(--accent-2-rgb), 0.95) 0%,
+    rgba(var(--accent-1-rgb), 0.45) 40%,
+    rgba(var(--accent-1-rgb), 0.10) 65%,
+    transparent 100%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
 }
 
-.shape[data-shape="1"] {
-  background: var(--accent-1);
-  border-radius: 50%;
-  top: 15%;
-  left: 10%;
-  animation-delay: 0s;
+.square1 {
+  width: 260px;
+  height: 260px;
+  border-radius: 6%;
+  backdrop-filter: blur(18px) saturate(160%) brightness(1.06);
+  -webkit-backdrop-filter: blur(18px) saturate(160%) brightness(1.06);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow:
+    var(--shadow-md),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.50),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.10);
+  animation: squareMorph1 44s ease-in-out infinite;
+  animation-delay: -11s;
 }
 
-.shape[data-shape="2"] {
-  background: var(--accent-2);
-  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-  top: 60%;
-  left: 80%;
-  animation-delay: 5s;
+.square2 {
+  width: 300px;
+  height: 300px;
+  border-radius: 20% 6% 18% 8%;
+  backdrop-filter: blur(22px) saturate(180%) brightness(1.05);
+  -webkit-backdrop-filter: blur(22px) saturate(180%) brightness(1.05);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow:
+    var(--shadow-lg),
+    inset 0 2px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+  animation: squareMorph2 52s ease-in-out infinite;
+  animation-delay: -22s;
 }
 
-.shape[data-shape="3"] {
-  background: var(--accent-3);
-  border-radius: 50% 50% 0 0;
-  bottom: 20%;
-  left: 15%;
-  animation-delay: 10s;
+.square3 {
+  width: 220px;
+  height: 220px;
+  border-radius: 8% 24% 6% 20%;
+  backdrop-filter: blur(14px) saturate(150%) brightness(1.07);
+  -webkit-backdrop-filter: blur(14px) saturate(150%) brightness(1.07);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  box-shadow:
+    var(--shadow-sm),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+  animation: squareMorph3 38s ease-in-out infinite;
+  animation-delay: -7s;
 }
 
-@keyframes shapeFloat {
-  0%, 100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-30px) rotate(180deg);
-  }
+@keyframes squareMorph1 {
+  0%   { border-radius:  6%  6%  6%  6%; }
+  20%  { border-radius: 20%  6% 18%  8%; }
+  40%  { border-radius:  6% 22%  6% 20%; }
+  60%  { border-radius: 16%  8% 24%  6%; }
+  80%  { border-radius:  8% 18%  6% 22%; }
+  100% { border-radius:  6%  6%  6%  6%; }
 }
 
-/* ==================== CONTENT ==================== */
-.content {
+@keyframes squareMorph2 {
+  0%   { border-radius: 20%  6% 18%  8%; }
+  25%  { border-radius:  6% 20%  8% 18%; }
+  50%  { border-radius: 24%  8% 20%  6%; }
+  75%  { border-radius:  8% 24%  6% 22%; }
+  100% { border-radius: 20%  6% 18%  8%; }
+}
+
+@keyframes squareMorph3 {
+  0%   { border-radius:  8% 24%  6% 20%; }
+  33%  { border-radius: 22%  6% 24%  8%; }
+  66%  { border-radius:  6% 18% 10% 26%; }
+  100% { border-radius:  8% 24%  6% 20%; }
+}
+
+
+/* ========== FROSTED GLASS CARD ========== */
+
+.card {
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 700px;
-  padding: 2rem;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  max-width: 520px;
+  padding: var(--spacing-3xl) var(--spacing-2xl);
+  border-radius: var(--radius-xl);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.13) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0.10) 100%
+  );
+  backdrop-filter: blur(48px) saturate(200%) brightness(1.04);
+  -webkit-backdrop-filter: blur(48px) saturate(200%) brightness(1.04);
+  border: 1px solid var(--border-color);
+  box-shadow:
+    var(--shadow-xl),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.06);
+  text-align: center;
+  animation: cardEntrance 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
-.content.visible {
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.10) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.95);
+    backdrop-filter: blur(0px) saturate(100%);
+    -webkit-backdrop-filter: blur(0px) saturate(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    backdrop-filter: blur(48px) saturate(200%);
+    -webkit-backdrop-filter: blur(48px) saturate(200%);
+  }
+}
+
+
+/* ========== STATUS BADGE ========== */
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+  border-radius: var(--radius-full);
+  background: rgba(var(--accent-1-rgb), 0.08);
+  border: 1px solid rgba(var(--accent-1-rgb), 0.20);
+  color: var(--accent-1);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  animation: fadeUp 0.4s 0.10s ease both;
+}
+
+.statusDot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--accent-1);
+  box-shadow: 0 0 6px rgba(var(--accent-1-rgb), 0.70);
+  animation: dotPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+  0%, 100% { opacity: 1;    box-shadow: 0 0  6px rgba(var(--accent-1-rgb), 0.70); }
+  50%       { opacity: 0.55; box-shadow: 0 0 10px rgba(var(--accent-1-rgb), 0.25); }
+}
+
+
+/* ========== 404 CODE DISPLAY ========== */
+
+.codeDisplay {
+  font-size: clamp(5rem, 18vw, 8.5rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  margin-bottom: var(--spacing-xl);
+  background: linear-gradient(138deg, var(--accent-1) 0%, var(--accent-2) 60%, var(--accent-3) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 28px rgba(var(--accent-1-rgb), 0.28));
+  animation: fadeUp 0.4s 0.15s ease both;
+}
+
+
+/* ========== HEADING & SUBTEXT ========== */
+
+.heading {
+  color: var(--primary-text-color) !important;
+  margin-top: 0;
+  margin-bottom: var(--spacing-md);
+  animation: fadeUp 0.4s 0.22s ease both;
+}
+
+.subtext {
+  color: var(--secondary-text-color);
+  font-size: var(--font-size-base);
+  line-height: 1.75;
+  max-width: 38ch;
+  margin: 0 auto;
+  animation: fadeUp 0.4s 0.28s ease both;
+}
+
+
+/* ========== DIVIDER ========== */
+
+.divider {
+  width: 100%;
+  height: 1px;
+  margin: var(--spacing-lg) 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(var(--accent-1-rgb), 0.22) 30%,
+    rgba(var(--accent-2-rgb), 0.18) 70%,
+    transparent 100%
+  );
+  animation: fadeUp 0.4s 0.32s ease both;
+}
+
+
+/* ========== FUNNY SAYING BLOCK ========== */
+
+.sayingBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  text-align: center;
+  max-width: 420px;
+  margin: 0 auto;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  animation: fadeUp 0.4s 0.35s ease both;
+}
+
+.sayingVisible {
   opacity: 1;
   transform: translateY(0);
 }
 
-.glassContainer {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.15) 0%,
-    rgba(255, 255, 255, 0.08) 100%
-  );
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border-radius: 32px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 
-    0 20px 60px rgba(0, 0, 0, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  padding: clamp(2rem, 5vw, 3.5rem);
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  box-sizing: border-box;
+.sayingHidden {
+  opacity: 0;
+  transform: translateY(6px);
 }
 
-.glassContainer::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    135deg,
-    var(--accent-1-background) 0%,
-    transparent 50%,
-    var(--accent-2-background) 100%
-  );
-  opacity: 0.2;
-  pointer-events: none;
+.sayingText {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  line-height: 1.75;
+  color: var(--secondary-text-color);
+  font-style: italic;
 }
 
-/* ==================== ERROR NUMBER ==================== */
-.errorNumber {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: clamp(0.5rem, 2vw, 1rem);
-  margin-bottom: 2rem;
-  position: relative;
-  z-index: 1;
-}
-
-.number {
-  font-size: clamp(5rem, 15vw, 8rem);
-  font-weight: 900;
-  line-height: 1;
-  background: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-3));
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: gradientShift 4s ease infinite;
-  text-shadow: 0 10px 30px var(--accent-1-background);
-}
-
-.number.middle {
-  animation-delay: 0.5s;
-}
-
-@keyframes gradientShift {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-/* ==================== TEXT ==================== */
-.title {
-  font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: 800;
-  color: var(--primary-text-color);
-  margin: 0 0 1rem 0;
-  letter-spacing: -0.02em;
-  position: relative;
-  z-index: 1;
-}
-
-.message {
-  font-size: clamp(1rem, 2vw, 1.125rem);
-  color: var(--primary-text-color);
+.quoteMark {
+  color: var(--accent-1);
+  font-size: 1.15em;
+  font-style: normal;
+  font-weight: 700;
   opacity: 0.8;
-  line-height: 1.7;
-  margin: 0 0 2.5rem 0;
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-  position: relative;
-  z-index: 1;
+  margin: 0 1px;
 }
 
-/* ==================== ACTIONS ==================== */
+.sayingAttribution {
+  font-size: var(--font-size-xs);
+  font-style: normal;
+  color: var(--tertiary-text-color);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+
+/* ========== ACTION BUTTONS ========== */
+
 .actions {
   display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 3rem;
-  position: relative;
-  z-index: 1;
-}
-
-.btnPrimary,
-.btnSecondary {
-  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 1rem 2rem;
-  border-radius: 14px;
-  font-size: 1rem;
-  font-weight: 600;
-  border: 2px solid transparent;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  position: relative;
-  overflow: hidden;
-  text-decoration: none;
-}
-
-.btnPrimary::before,
-.btnSecondary::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.btnPrimary:hover::before,
-.btnSecondary:hover::before {
-  transform: translateX(100%);
-}
-
-.btnPrimary {
-  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-  color: var(--background-1);
-  box-shadow: 0 4px 16px var(--accent-1-background);
-}
-
-.btnPrimary:hover {
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 8px 24px var(--accent-1-background);
-}
-
-.btnSecondary {
-  background: var(--background-2);
-  color: var(--primary-text-color);
-  border-color: var(--accent-2);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.btnSecondary:hover {
-  transform: translateY(-3px) scale(1.03);
-  background: var(--accent-2-background);
-  box-shadow: 0 8px 24px var(--accent-2-background);
-}
-
-.btnPrimary:active,
-.btnSecondary:active {
-  transform: translateY(0) scale(0.98);
-}
-
-/* ==================== QUICK LINKS ==================== */
-.quickLinks {
-  position: relative;
-  z-index: 1;
-}
-
-.quickLinksTitle {
-  font-size: 0.875rem;
-  color: var(--primary-text-color);
-  opacity: 0.6;
-  margin: 0 0 1rem 0;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.links {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
+  gap: var(--spacing-md);
   flex-wrap: wrap;
+  animation: fadeUp 0.4s 0.42s ease both;
 }
 
-.link {
+.actions svg {
+  font-size: 1.15em;
+  flex-shrink: 0;
+}
+
+.backButton {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.625rem 1.25rem;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 50px;
-  color: var(--primary-text-color);
-  font-size: 0.9rem;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--secondary-text-color);
+  font-family: inherit;
+  font-size: var(--font-size-sm);
   font-weight: 500;
-  text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  position: relative;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    background var(--transition-fast);
 }
 
-.link::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-  border-radius: 50px;
-  opacity: 0;
-  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.backButton:hover {
+  color: var(--accent-1);
+  border-color: rgba(var(--accent-1-rgb), 0.40);
+  background: rgba(var(--accent-1-rgb), 0.06);
 }
 
-.link:hover::before {
-  opacity: 0.15;
+.backButton:active {
+  opacity: 0.8;
 }
 
-.link:hover {
-  transform: translateY(-2px) scale(1.05);
-  border-color: var(--accent-1);
-  box-shadow: 0 4px 12px var(--accent-1-background);
+
+/* ========== SHARED KEYFRAMES ========== */
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0);    }
 }
 
-/* ==================== RESPONSIVE ==================== */
-@media (max-width: 768px) {
-  .content {
-    padding: 1.5rem;
+
+/* ========== RESPONSIVE ========== */
+
+@media (max-width: 600px) {
+  .card {
+    padding: var(--spacing-xl) var(--spacing-md);
+    border-radius: 22px;
+    width: 74vw;
+    max-width: 360px;
   }
 
-  .glassContainer {
-    padding: 2rem 1.5rem;
-    border-radius: 24px;
+  .ambientSquare {
+    filter: blur(65px);
+    opacity: 0.38;
   }
 
-  .errorNumber {
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
+  .glassSquare {
+    opacity: 0.85;
   }
 
-  .number {
-    font-size: 4rem;
+  /* Scaled ~57% to match JS blobScale=0.57 */
+  .ambient1 { width: 370px; height: 370px; }
+  .ambient2 { width: 290px; height: 290px; }
+  .ambient3 { width: 245px; height: 245px; }
+  .square1  { width: 200px; height: 200px; }
+  .square2  { width: 230px; height: 230px; }
+  .square3  { width: 175px; height: 175px; }
+}
+
+@media (max-width: 400px) {
+  .card {
+    padding: var(--spacing-lg) var(--spacing-sm);
+    width: 80vw;
+    max-width: 300px;
   }
 
   .actions {
     flex-direction: column;
     width: 100%;
-    margin-bottom: 2rem;
   }
 
-  .btnPrimary,
-  .btnSecondary {
+  .actions > * {
     width: 100%;
-    max-width: 100%;
-    padding: 0.875rem 1.5rem;
+    justify-content: center;
   }
 
-  .links {
-    gap: 0.75rem;
-  }
-
-  .link {
-    font-size: 0.875rem;
-    padding: 0.5rem 1rem;
-  }
+  /* Scaled ~38% to match JS blobScale=0.38 */
+  .ambient1 { width: 250px; height: 250px; }
+  .ambient2 { width: 195px; height: 195px; }
+  .ambient3 { width: 160px; height: 160px; }
+  .square1  { width: 135px; height: 135px; }
+  .square2  { width: 155px; height: 155px; }
+  .square3  { width: 115px; height: 115px; }
 }
 
-@media (max-width: 480px) {
-  .content {
-    padding: 1rem;
+/* Landscape phones / short viewports */
+@media (max-height: 480px) {
+  .root {
+    align-items: flex-start;
+    overflow-y: auto;
+    padding-block: var(--spacing-md);
   }
 
-  .glassContainer {
-    padding: 1.5rem 1rem;
-    border-radius: 20px;
+  .card {
+    padding: var(--spacing-lg) var(--spacing-xl);
+    max-width: 560px;
+    width: 70vw;
   }
 
-  .errorNumber {
-    margin-bottom: 1rem;
+  .statusBadge { margin-bottom: var(--spacing-md); }
+
+  .codeDisplay {
+    font-size: clamp(3rem, 12vw, 5rem);
+    margin-bottom: var(--spacing-md);
   }
 
-  .number {
-    font-size: 3.5rem;
-  }
+  .heading { margin-bottom: var(--spacing-sm); }
+  .divider { margin: var(--spacing-md) 0; }
 
-  .message {
-    font-size: 0.9375rem;
-    margin-bottom: 2rem;
-  }
-
-  .btnPrimary,
-  .btnSecondary {
-    padding: 0.75rem 1.25rem;
-    font-size: 0.9375rem;
-  }
+  .ambient1 { width: 280px; height: 280px; }
+  .ambient2 { width: 230px; height: 230px; }
+  .ambient3 { width: 190px; height: 190px; }
+  .square1  { width: 160px; height: 160px; }
+  .square2  { width: 180px; height: 180px; }
+  .square3  { width: 135px; height: 135px; }
 }
 
-/* ==================== ANIMATION OVERRIDES ==================== */
-[data-no-animations="true"] .number,
-[data-no-animations="true"] .orb1,
-[data-no-animations="true"] .orb2,
-[data-no-animations="true"] .orb3,
-[data-no-animations="true"] .shape {
-  animation: none !important;
+
+/* ========== LIGHT MODE OVERRIDES ========== */
+/*
+ * useTheme sets data-theme on <html>. In CSS Modules, selectors targeting
+ * ancestor elements MUST use :global() or they compile broken.
+ */
+
+:global([data-theme="light"]) .ambientSquare {
+  opacity: 0.52;
 }
 
-[data-no-animations="true"] .content {
-  opacity: 1 !important;
-  transform: none !important;
+:global([data-theme="light"]) .card {
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(48px) saturate(180%) brightness(0.98);
+  -webkit-backdrop-filter: blur(48px) saturate(180%) brightness(0.98);
+  border-color: var(--border-color);
+  box-shadow:
+    var(--shadow-xl),
+    inset 0 1.5px 0 rgba(255, 255, 255, 1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.04);
 }
 
+:global([data-theme="light"]) .card::before {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, transparent 40%);
+}
+
+:global([data-theme="light"]) .square1,
+:global([data-theme="light"]) .square2,
+:global([data-theme="light"]) .square3 {
+  background: rgba(var(--accent-2-rgb), 0.05);
+  backdrop-filter: blur(18px) saturate(140%) brightness(0.97);
+  -webkit-backdrop-filter: blur(18px) saturate(140%) brightness(0.97);
+  border-color: var(--border-color);
+  box-shadow:
+    var(--shadow-sm),
+    inset 0 1px 0 rgba(255, 255, 255, 0.90);
+}

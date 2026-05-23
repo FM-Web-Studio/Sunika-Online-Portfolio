@@ -1,165 +1,91 @@
 import React from 'react';
 import { useTheme } from '../../hooks/useTheme';
-
-// ============================================
-// IMPORTS - STYLING
-// ============================================
-
 import styles from './ErrorBoundary.module.css';
-import '../../styles/Theme.css';
-import '../../styles/Components.css';
-import '../../styles/Wrappers.css';
-
-// ============================================
-// ERROR BOUNDARY INNER COMPONENT
-// ============================================
-// Class-based component that catches JavaScript errors
-// in child components and displays fallback UI
 
 class ErrorBoundaryInner extends React.Component {
-  // ----------------------------------------
-  // Constructor & State
-  // ----------------------------------------
-  
   constructor(props) {
     super(props);
-    this.state = { 
-      hasError: false, 
-      error: null,
-      errorInfo: null
-    };
+    this.state = { hasError: false, error: null, errorInfo: null };
   }
 
-  // ----------------------------------------
-  // Lifecycle Methods
-  // ----------------------------------------
-  
   static getDerivedStateFromError(error) {
-    // Update state so the next render shows the fallback UI
-    return { hasError: true };
+    return { hasError: true, error };
   }
 
   componentDidCatch(error, errorInfo) {
-    // Log error details to state for display
-    this.setState({
-      error,
-      errorInfo
-    });
+    this.setState({ errorInfo });
   }
 
-  // ----------------------------------------
-  // Event Handlers
-  // ----------------------------------------
-  
+  componentDidUpdate(prevProps) {
+    if (this.state.hasError && prevProps.resetKey !== this.props.resetKey) {
+      this.setState({ hasError: false, error: null, errorInfo: null });
+    }
+  }
+
   handleReload = () => {
-    window.location.reload();
+    const { onReset } = this.props;
+    if (onReset) onReset();
+    else window.location.reload();
   };
 
   handleGoHome = () => {
     window.location.href = '/';
   };
 
-  // ----------------------------------------
-  // Render
-  // ----------------------------------------
-  
   render() {
     if (this.state.hasError) {
       const { theme } = this.props;
 
       return (
-        <div className={styles.errorContainer} data-theme={theme}>
-          {/* Animated background particles */}
-          <div className={styles.particlesContainer}>
-            {[...Array(30)].map((_, i) => (
-              <div
-                key={i}
-                className={styles.particle}
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 5}s`,
-                  animationDuration: `${3 + Math.random() * 4}s`
-                }}
-              />
-            ))}
-          </div>
+        <div className={styles.root} data-theme={theme}>
+          <div className={styles.card}>
 
-          {/* Glowing orbs */}
-          <div className={styles.backgroundEffects}>
-            <div className={styles.glowOrb1}></div>
-            <div className={styles.glowOrb2}></div>
-          </div>
-
-          {/* Main content (wrapped to allow scrolling on small viewports) */}
-          <div className={styles.contentScroll}>
-            <div className={styles.contentWrapper}>
-            {/* Error icon with animation */}
-            <div className={styles.iconContainer}>
-              <div className={styles.alertCircle}>
-                <div className={styles.alertIcon}>!</div>
-              </div>
-              <div className={styles.pulseRing}></div>
+            <div className={styles.iconWrap} aria-hidden="true">
+              <span className={styles.iconText}>!</span>
             </div>
 
-            {/* Error message */}
-            <div className={styles.messageContainer}>
-              <h1 className={styles.title}>Something Went Wrong</h1>
+            <div className={styles.message}>
+              <h1 className={styles.title}>Something went wrong</h1>
               <p className={styles.subtitle}>
-                An unexpected error occurred. Try reloading or going home.
+                An unexpected error occurred. Try reloading — if it keeps
+                happening, go back home.
               </p>
             </div>
 
-            {/* Action buttons */}
-            <div className={styles.actionsContainer}>
-              <button 
-                onClick={this.handleReload} 
-                className={`${styles.button} ${styles.primaryButton}`}
+            <div className={styles.actions}>
+              <button
+                type="button"
+                className={`${styles.btn} ${styles.btnPrimary}`}
+                onClick={this.handleReload}
               >
-                <span className={styles.buttonIcon}>↻</span>
                 Reload Page
               </button>
-              <button 
-                onClick={this.handleGoHome} 
-                className={`${styles.button} ${styles.secondaryButton}`}
+              <button
+                type="button"
+                className={`${styles.btn} ${styles.btnSecondary}`}
+                onClick={this.handleGoHome}
               >
-                <span className={styles.buttonIcon}>←</span>
                 Go Home
               </button>
             </div>
 
-            {/* Technical details collapsible */}
             {this.state.error && (
-              <details className={styles.technicalDetails}>
+              <details className={styles.details}>
                 <summary className={styles.detailsSummary}>
-                  View Technical Details
+                  Technical details
                 </summary>
-                <div className={styles.detailsContent}>
-                  <div className={styles.errorBlock}>
-                    <h3 className={styles.errorBlockTitle}>Error Message:</h3>
-                    <pre className={styles.errorText}>
-                      {this.state.error.toString()}
-                    </pre>
-                  </div>
+                <div className={styles.detailsBody}>
+                  <pre className={styles.pre}>{this.state.error.toString()}</pre>
                   {this.state.errorInfo && (
-                    <div className={styles.errorBlock}>
-                      <h3 className={styles.errorBlockTitle}>Component Stack:</h3>
-                      <pre className={styles.errorText}>
-                        {this.state.errorInfo.componentStack}
-                      </pre>
-                    </div>
+                    <pre className={styles.pre}>
+                      {this.state.errorInfo.componentStack}
+                    </pre>
                   )}
                 </div>
               </details>
             )}
-            </div>
-          </div>
 
-          {/* Corner decorations */}
-          <div className={styles.cornerDeco} style={{ top: '20px', left: '20px' }}>✦</div>
-          <div className={styles.cornerDeco} style={{ top: '20px', right: '20px' }}>✦</div>
-          <div className={styles.cornerDeco} style={{ bottom: '20px', left: '20px' }}>✦</div>
-          <div className={styles.cornerDeco} style={{ bottom: '20px', right: '20px' }}>✦</div>
+          </div>
         </div>
       );
     }
@@ -168,18 +94,9 @@ class ErrorBoundaryInner extends React.Component {
   }
 }
 
-// ============================================
-// ERROR BOUNDARY WRAPPER
-// ============================================
-// Functional wrapper to inject theme context
-
 const ErrorBoundary = (props) => {
   const { theme } = useTheme();
   return <ErrorBoundaryInner {...props} theme={theme} />;
 };
-
-// ============================================
-// EXPORTS
-// ============================================
 
 export default ErrorBoundary;

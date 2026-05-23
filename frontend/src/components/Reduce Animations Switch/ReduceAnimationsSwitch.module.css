@@ -1,182 +1,199 @@
-.artistSwitch {
+/* ============================================================================
+ * REDUCE ANIMATIONS SWITCH — Liquid Glass / Glassmorphism Style
+ * All colors sourced exclusively from Theme.css global CSS variables.
+ * Shares the same visual language as ThemeSwitch for consistency.
+ * ============================================================================ */
+
+/* ------------------------------------------------------------------
+ * Track — the pill-shaped container
+ * ------------------------------------------------------------------ */
+.track {
   position: relative;
-  width: 70px;
-  height: 36px;
-  background: linear-gradient(135deg, var(--background-3), var(--background-4));
-  border: 2px solid var(--accent-1-background);
-  border-radius: 18px;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  width: 64px;
+  height: 34px;
   padding: 0;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-full);
+  /* Frosted glass base */
+  background: var(--frosted-background);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.08),
+    inset 0 -1px 2px rgba(255, 255, 255, 0.05),
+    var(--shadow-sm);
   cursor: pointer;
-  outline: none;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 
-    inset 0 2px 6px rgba(0, 0, 0, 0.1),
-    0 2px 8px rgba(0, 0, 0, 0.05);
   overflow: hidden;
+  transition:
+    border-color var(--transition-base),
+    box-shadow var(--transition-base),
+    background var(--transition-base);
+  /* Reset button defaults */
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  vertical-align: middle;
 }
 
-.artistSwitch:hover {
-  border-color: var(--accent-2);
-  transform: scale(1.05);
-  box-shadow: 
-    inset 0 2px 6px rgba(0, 0, 0, 0.15),
-    0 4px 12px var(--accent-1-background);
+.track:hover {
+  border-color: var(--border-color-hover);
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.1),
+    var(--shadow-md);
 }
 
-.artistSwitch:active {
-  transform: scale(0.98);
+/* ------------------------------------------------------------------
+ * Checked (reduce animations ON) state — accent tint on the track
+ * ------------------------------------------------------------------ */
+.checked {
+  border-color: rgba(var(--accent-1-rgb), 0.5);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--accent-1-rgb), 0.14) 0%,
+    var(--frosted-background) 100%
+  );
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(var(--accent-1-rgb), 0.12),
+    var(--shadow-sm);
 }
 
-.artistSwitch:focus-visible {
+.checked:hover {
+  border-color: rgba(var(--accent-1-rgb), 0.7);
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(var(--accent-1-rgb), 0.22),
+    var(--shadow-md);
+}
+
+/* Focus ring — keyboard navigation */
+.track:focus-visible {
   outline: 2px solid var(--accent-1);
   outline-offset: 3px;
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.08),
+    0 0 0 4px rgba(var(--accent-1-rgb), 0.18),
+    var(--shadow-sm);
 }
 
-/* Canvas container */
-.canvas {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-}
-
-/* Paint trail effect */
-.paintTrail {
+/* ------------------------------------------------------------------
+ * Background (track) icons
+ * ------------------------------------------------------------------ */
+.bgIcon {
   position: absolute;
-  left: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--accent-1), var(--accent-2), var(--accent-3));
-  border-radius: 2px;
-  transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  opacity: 0;
-}
-
-.active .paintTrail {
-  width: 100%;
-  opacity: 0.4;
-}
-
-/* Brush thumb */
-.brushThumb {
-  position: absolute;
-  left: 4px;
-  width: 28px;
-  height: 28px;
-  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-  border-radius: 50%;
+  font-size: 0.8125rem; /* 13px */
+  color: var(--tertiary-text-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--background-1);
-  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 
-    0 2px 8px rgba(0, 0, 0, 0.2),
-    0 0 0 2px var(--background-1);
-  z-index: 2;
+  pointer-events: none;
+  transition:
+    opacity var(--transition-base),
+    color var(--transition-base);
+  z-index: 0;
 }
 
-.artistSwitch:hover .brushThumb {
-  box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.3),
-    0 0 0 3px var(--background-1),
-    0 0 16px var(--accent-1);
-}
-
-.active .brushThumb {
-  left: calc(100% - 32px);
-  background: linear-gradient(135deg, var(--accent-2), var(--accent-3));
-  transform: rotate(180deg);
-}
-
-/* Splatter effect */
-.splatterEffect {
-  position: absolute;
-  right: 8px;
-  display: flex;
-  gap: 4px;
-  align-items: center;
+/* Lightning icon (left) — hidden when animations are on, visible when reduced */
+.bgIconLeft {
+  left: 9px;
   opacity: 0;
-  transform: scale(0);
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Pause icon (right) — visible when animations are on, hidden when reduced */
+.bgIconRight {
+  right: 9px;
+  opacity: 1;
+}
+
+/* When checked (reduce ON): reveal lightning on left, hide pause on right */
+.checked .bgIconLeft {
+  opacity: 1;
+  color: var(--accent-2);
+}
+
+.checked .bgIconRight {
+  opacity: 0;
+}
+
+/* ------------------------------------------------------------------
+ * Thumb — the sliding knob
+ * Track: 64px  Thumb: 26px  Edge padding: 4px  Travel: 64-4-4-26 = 30px
+ * ------------------------------------------------------------------ */
+.thumb {
+  position: absolute;
+  left: 4px;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(
+    145deg,
+    var(--background-1) 0%,
+    var(--background-2) 100%
+  );
+  border: 1px solid rgba(var(--accent-1-rgb), 0.18);
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.16),
+    0 1px 2px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Spring-like transition */
+  transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
   z-index: 1;
 }
 
-.active .splatterEffect {
-  opacity: 0.6;
-  transform: scale(1);
-  animation: splatter 0.6s ease-out;
+/* Thumb slides right when reduce animations is ON (checked) */
+.checked .thumb {
+  transform: translateX(30px);
 }
 
-.dot {
-  width: 4px;
-  height: 4px;
-  background: var(--accent-1);
-  border-radius: 50%;
-  animation: dotPulse 1.5s ease-in-out infinite;
+/* Press squish — thumb stretches on active */
+.track:active .thumb {
+  width: 30px;
 }
 
-.dot:nth-child(1) {
-  animation-delay: 0s;
-  width: 3px;
-  height: 3px;
+.checked:active .thumb {
+  transform: translateX(26px);
+  width: 30px;
 }
 
-.dot:nth-child(2) {
-  animation-delay: 0.2s;
-  width: 5px;
-  height: 5px;
+/* ------------------------------------------------------------------
+ * Thumb icon
+ * ------------------------------------------------------------------ */
+.thumbIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8125rem;
+  color: var(--accent-1);
+  transition: color var(--transition-base);
+  line-height: 1;
 }
 
-.dot:nth-child(3) {
-  animation-delay: 0.4s;
-  width: 3px;
-  height: 3px;
-}
-
-@keyframes splatter {
-  0% {
-    opacity: 0;
-    transform: scale(0) rotate(-45deg);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.3) rotate(0deg);
-  }
-  100% {
-    opacity: 0.6;
-    transform: scale(1) rotate(0deg);
-  }
-}
-
-@keyframes dotPulse {
-  0%, 100% {
-    opacity: 0.4;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.2);
-  }
-}
-
-/* Active state background change */
-.active {
-  background: linear-gradient(135deg, var(--accent-1-background), var(--accent-2-background));
-  border-color: var(--accent-2);
-}
-
-/* Accessibility: reduced motion */
+/* ------------------------------------------------------------------
+ * Reduced-motion overrides
+ * Respects both OS preference and the app-level data-no-animations flag.
+ * ------------------------------------------------------------------ */
 @media (prefers-reduced-motion: reduce) {
-  .artistSwitch,
-  .brushThumb,
-  .paintTrail,
-  .splatterEffect,
-  .dot {
-    transition-duration: 0.01s !important;
-    animation: none !important;
+  .track,
+  .thumb,
+  .bgIcon,
+  .thumbIcon {
+    transition: none;
   }
+}
+
+[data-no-animations='true'] .track,
+[data-no-animations='true'] .thumb,
+[data-no-animations='true'] .bgIcon,
+[data-no-animations='true'] .thumbIcon {
+  transition: none !important;
+  animation: none !important;
 }
