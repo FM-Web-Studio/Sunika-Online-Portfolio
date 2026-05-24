@@ -1,231 +1,154 @@
-import { useState, useEffect } from 'react';
-import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaYoutube, FaEnvelope, FaGlobe, FaFacebook } from 'react-icons/fa';
-import { SiOrcid } from 'react-icons/si';
-import { MdArrowOutward } from 'react-icons/md';
+import React, { useState } from 'react';
+import { LuMail, LuPhone, LuMapPin, LuSend } from 'react-icons/lu';
+import { FaInstagram, FaLinkedin, FaBehance, FaGlobe } from 'react-icons/fa';
+import { usePortfolioData } from '../../hooks';
 import { useToast } from '../../components';
-import { submitContactForm, getSocial } from '../../firebase/firestore';
+import { submitContactForm } from '../../firebase/firestore';
+import Loading from '../Loading';
 import styles from './Connect.module.css';
 
-const EMPTY_FORM    = { name: '', email: '', message: '' };
-const EMPTY_ERRORS  = { name: '',  email: '',  message: ''  };
-const EMPTY_TOUCHED = { name: false, email: false, message: false };
-
 const SOCIAL_ICONS = {
-  github:     FaGithub,
-  linkedin:   FaLinkedin,
-  twitter:    FaTwitter,
-  x:          FaTwitter,
-  instagram:  FaInstagram,
-  youtube:    FaYoutube,
-  email:      FaEnvelope,
-  facebook:   FaFacebook,
-  orcid:      SiOrcid,
+  instagram: FaInstagram,
+  linkedin: FaLinkedin,
+  behance: FaBehance,
 };
 
-const getSocialIcon = (key = '') => SOCIAL_ICONS[(key || '').toLowerCase()] ?? FaGlobe;
-
-const validate = ({ name, email, message }) => ({
-  name:    !name.trim()    ? 'Name is required'              : '',
-  email:   !email.trim()   ? 'Email is required'
-         : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-                           ? 'Enter a valid email address'   : '',
-  message: !message.trim() ? 'Message is required'           : '',
-});
-
-const SkeletonSocialCard = () => (
-  <div className={styles.card}>
-    <div className={`${styles.skeleton} ${styles.skeletonHeading}`} />
-    {[0, 1, 2].map(i => (
-      <div key={i} className={styles.skeletonRow}>
-        <div className={`${styles.skeleton} ${styles.skeletonIcon}`} />
-        <div className={`${styles.skeleton} ${styles.skeletonLabel}`} />
-      </div>
-    ))}
-  </div>
-);
-
 const Connect = () => {
+  const { data, loading } = usePortfolioData();
   const { showToast } = useToast();
-  const [form,       setForm      ] = useState(EMPTY_FORM);
-  const [errors,     setErrors    ] = useState(EMPTY_ERRORS);
-  const [touched,    setTouched   ] = useState(EMPTY_TOUCHED);
+
+  const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [submitting, setSubmitting] = useState(false);
-  const [submitted,  setSubmitted ] = useState(false);
-  const [social,     setSocial    ] = useState(null);
 
-  useEffect(() => {
-    getSocial()
-      .then(d  => setSocial(d ?? []))
-      .catch(() => setSocial([]));
-  }, []);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm(prev => ({ ...prev, [name]: value }));
-    if (touched[name]) {
-      setErrors(prev => ({ ...prev, [name]: validate({ ...form, [name]: value })[name] }));
-    }
-  };
-
-  const handleBlur = (e) => {
-    const { name } = e.target;
-    setTouched(prev => ({ ...prev, [name]: true }));
-    setErrors(prev => ({ ...prev, [name]: validate(form)[name] }));
-  };
+  const handleChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const errs = validate(form);
-    if (Object.values(errs).some(Boolean)) {
-      setErrors(errs);
-      setTouched({ name: true, email: true, message: true });
-      return;
-    }
+    if (submitting) return;
     setSubmitting(true);
     try {
       await submitContactForm(form);
-      setSubmitted(true);
-      setForm(EMPTY_FORM);
-      setErrors(EMPTY_ERRORS);
-      setTouched(EMPTY_TOUCHED);
-      showToast('success', 'Message sent', "Thanks — I'll get back to you soon.");
+      showToast('success', 'Message sent!', `Thanks ${form.name || 'there'} — I’ll get back to you soon.`);
+      setForm({ name: '', email: '', message: '' });
     } catch (err) {
-      console.error('[Connect] submitContactForm failed:', err?.code, err?.message, err);
-      showToast('error', 'Failed to send', 'Something went wrong. Please try again.');
+      showToast('error', 'Could not send message', 'Please try again, or email me directly.');
     } finally {
       setSubmitting(false);
     }
   };
 
-  const showRightCol = social === null || (Array.isArray(social) && social.length > 0);
+  if (loading || !data) return <Loading />;
+
+  const { contact, social } = data;
 
   return (
-    <section className={styles.page}>
+    <main className={styles.page}>
+      <header className={styles.head}>
+        <p className={styles.kicker}>Let’s connect</p>
+        <h1 className={styles.title}>Get in touch</h1>
+        <p className={styles.subtitle}>
+          Have a project in mind, a collaboration idea, or just want to say hi? Send a message —
+          I’d love to hear from you.
+        </p>
+      </header>
 
-      <div className={styles.container}>
-
-        <header className={styles.header}>
-          <p className={styles.chapterEyebrow}>
-            <span className={styles.chapterMark}>Chapter III</span>
-            <span className={styles.chapterDash} aria-hidden="true">—</span>
-            <span className={styles.chapterName}>An Impression</span>
-          </p>
-          <h1 className={styles.heading}>Make an impression</h1>
-          <p>Have a project, a question, or just want to say hello? Drop a note and I will get back to you.</p>
-        </header>
-
-        <div className={`${styles.grid} ${!showRightCol ? styles.gridSingle : ''}`}>
-
-          {/* ── Contact form ─────────────────────────────────────────────── */}
-          <div className={`${styles.card} ${styles.formCard}`}>
-            {submitted ? (
-              <div className={styles.success}>
-                <h2>Message sent</h2>
-                <p>Thanks for reaching out. I&rsquo;ll get back to you soon.</p>
-                <button type="button" onClick={() => setSubmitted(false)}>
-                  Send another
-                </button>
-              </div>
-            ) : (
-              <>
-                <h2>Send a Message</h2>
-                <form className={styles.form} onSubmit={handleSubmit} noValidate>
-
-                  <div className={styles.field}>
-                    <label htmlFor="name">Name</label>
-                    <input
-                      id="name" name="name" type="text"
-                      value={form.name}
-                      onChange={handleChange} onBlur={handleBlur}
-                      placeholder="Your name" autoComplete="name" required
-                      className={touched.name && errors.name ? styles.inputError : ''}
-                    />
-                    {touched.name && errors.name && (
-                      <span className={styles.fieldError}>{errors.name}</span>
-                    )}
-                  </div>
-
-                  <div className={styles.field}>
-                    <label htmlFor="email">Email</label>
-                    <input
-                      id="email" name="email" type="email"
-                      value={form.email}
-                      onChange={handleChange} onBlur={handleBlur}
-                      placeholder="your@email.com" autoComplete="email" required
-                      className={touched.email && errors.email ? styles.inputError : ''}
-                    />
-                    {touched.email && errors.email && (
-                      <span className={styles.fieldError}>{errors.email}</span>
-                    )}
-                  </div>
-
-                  <div className={`${styles.field} ${styles.fieldGrow}`}>
-                    <label htmlFor="message">Message</label>
-                    <textarea
-                      id="message" name="message"
-                      value={form.message}
-                      onChange={handleChange} onBlur={handleBlur}
-                      placeholder="What's on your mind?" rows={4} required
-                      className={touched.message && errors.message ? styles.inputError : ''}
-                    />
-                    {touched.message && errors.message && (
-                      <span className={styles.fieldError}>{errors.message}</span>
-                    )}
-                  </div>
-
-                  <div className={styles.formActions}>
-                    <button type="submit" disabled={submitting}>
-                      {submitting ? 'Sending…' : 'Send Message'}
-                    </button>
-                  </div>
-
-                </form>
-              </>
-            )}
-          </div>
-
-          {/* ── Right column ─────────────────────────────────────────────── */}
-          {showRightCol && (
-            <div className={styles.rightCol}>
-
-              {/* Social links */}
-              {social === null ? (
-                <SkeletonSocialCard />
-              ) : (
-                <div className={styles.card}>
-                  <h2>Find Me Online</h2>
-                  <ul className={styles.socialList}>
-                    {social.map(({ key, url, platform }, i) => {
-                      if (!url) return null;
-                      const Icon = getSocialIcon(key);
-                      const display = platform || (key ? key.charAt(0).toUpperCase() + key.slice(1) : '');
-                      return (
-                        <li key={key ?? i}>
-                          <a
-                            href={url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={styles.socialLink}
-                          >
-                            <span className={styles.socialIcon} aria-hidden="true">
-                              <Icon />
-                            </span>
-                            <span className={styles.socialName}>{display}</span>
-                            <MdArrowOutward className={styles.socialArrow} aria-hidden="true" />
-                          </a>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              )}
-
+      <div className={styles.layout}>
+        <aside className={styles.info}>
+          {contact?.email && (
+            <a className={styles.infoItem} href={`mailto:${contact.email}`}>
+              <span className={`${styles.infoIcon} ${styles.icon1}`}><LuMail aria-hidden="true" /></span>
+              <span className={styles.infoText}>
+                <span className={styles.infoLabel}>Email</span>
+                <span className={styles.infoValue}>{contact.email}</span>
+              </span>
+            </a>
+          )}
+          {contact?.phone && (
+            <a className={styles.infoItem} href={`tel:${contact.phone.replace(/\s+/g, '')}`}>
+              <span className={`${styles.infoIcon} ${styles.icon2}`}><LuPhone aria-hidden="true" /></span>
+              <span className={styles.infoText}>
+                <span className={styles.infoLabel}>Phone</span>
+                <span className={styles.infoValue}>{contact.phone}</span>
+              </span>
+            </a>
+          )}
+          {contact?.location && (
+            <div className={styles.infoItem}>
+              <span className={`${styles.infoIcon} ${styles.icon3}`}><LuMapPin aria-hidden="true" /></span>
+              <span className={styles.infoText}>
+                <span className={styles.infoLabel}>Location</span>
+                <span className={styles.infoValue}>{contact.location}</span>
+              </span>
             </div>
           )}
 
-        </div>
+          {social?.length > 0 && (
+            <div className={styles.socialRow}>
+              {social.map((s) => {
+                const Icon = SOCIAL_ICONS[s.key] || FaGlobe;
+                return (
+                  <a
+                    key={s.key}
+                    href={s.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.socialLink}
+                    aria-label={s.platform}
+                  >
+                    <Icon aria-hidden="true" />
+                  </a>
+                );
+              })}
+            </div>
+          )}
+        </aside>
+
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <div className="input-container">
+            <label htmlFor="name">Name</label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              value={form.name}
+              onChange={handleChange}
+              placeholder="Your name"
+              required
+            />
+          </div>
+
+          <div className="input-container">
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              value={form.email}
+              onChange={handleChange}
+              placeholder="you@example.com"
+              required
+            />
+          </div>
+
+          <div className="input-container">
+            <label htmlFor="message">Message</label>
+            <textarea
+              id="message"
+              name="message"
+              value={form.message}
+              onChange={handleChange}
+              placeholder="Tell me a little about what you have in mind…"
+              rows={6}
+              required
+            />
+          </div>
+
+          <button className="btn-primary" type="submit" disabled={submitting}>
+            {submitting ? 'Sending…' : <>Send message <LuSend aria-hidden="true" /></>}
+          </button>
+        </form>
       </div>
-    </section>
+    </main>
   );
 };
 

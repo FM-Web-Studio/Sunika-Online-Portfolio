@@ -1,12 +1,13 @@
 import React, { Suspense, useCallback, useMemo, useTransition, useEffect } from 'react';
 import { Routes, Route, useNavigate, Outlet, useLocation } from 'react-router-dom';
-import { NotFound, Loading, Connect, Projects, Home } from './pages';
+import { NotFound, Loading, Connect, Projects, Bio, Home } from './pages';
 import { NavigationBar, Settings, ToastProvider } from './components';
 import { useTheme, useAnimations } from './hooks';
 import styles from './App.module.css';
 
 const NAVIGATION_PAGES = [
   { label: 'Home',     to: '/'        },
+  { label: 'Bio',      to: '/bio'     },
   { label: 'Projects', to: '/projects'},
   { label: 'Contact',  to: '/connect' },
 ];
@@ -56,6 +57,7 @@ const AppContent = () => (
     <Routes>
       <Route path="/" element={<AppLayout />}>
         <Route index             element={<Home />} />
+        <Route path="bio"        element={<Bio />} />
         <Route path="connect"    element={<Connect />} />
         <Route path="projects"   element={<Projects />} />
         <Route path="loading"    element={<Loading />} />

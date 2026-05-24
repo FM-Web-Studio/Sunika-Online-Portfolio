@@ -119,7 +119,8 @@
     --background-2-light: #fef3ec;
     --background-3-light: #fde8df;
     --background-4-light: #fbd8ca;
-    --frosted-background-light: rgba(255, 252, 247, 0.86);
+    --frosted-background-light: #ffffff;
+    --surface-light:            #ffffff;
     --border-color-light:       #f0ddd8;
     --border-color-hover-light: #e8c4bb;
 
@@ -129,7 +130,8 @@
     --background-2-dark: #201835;
     --background-3-dark: #2a2040;
     --background-4-dark: #36294e;
-    --frosted-background-dark: rgba(15, 11, 22, 0.90);
+    --frosted-background-dark: #1b1430;
+    --surface-dark:            #1b1430;
     --border-color-dark:       #3d2f55;
     --border-color-hover-dark: #5a4470;
 
@@ -145,6 +147,7 @@
     --background-3: var(--background-3-light);
     --background-4: var(--background-4-light);
     --frosted-background: var(--frosted-background-light);
+    --surface: var(--surface-light);
     --border-color: var(--border-color-light);
     --border-color-hover: var(--border-color-hover-light);
 
@@ -182,6 +185,7 @@
     --background-3: var(--background-3-dark);
     --background-4: var(--background-4-dark);
     --frosted-background: var(--frosted-background-dark);
+    --surface: var(--surface-dark);
     --border-color: var(--border-color-dark);
     --border-color-hover: var(--border-color-hover-dark);
 
@@ -228,13 +232,13 @@ html, body, #root {
     min-height: 100%;
     margin: 0;
     background:
-        radial-gradient(ellipse 90% 60% at 15% 0%,  rgba(var(--accent-1-rgb), 0.12) 0%, transparent 60%),
-        radial-gradient(ellipse 80% 70% at 85% 100%, rgba(var(--accent-2-rgb), 0.10) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 40% at 50% 50%,  rgba(var(--accent-3-rgb), 0.06) 0%, transparent 55%),
+        radial-gradient(ellipse 70% 55% at 8% -5%,   rgba(var(--accent-1-rgb), 0.16) 0%, transparent 55%),
+        radial-gradient(ellipse 65% 55% at 95% 8%,   rgba(var(--accent-2-rgb), 0.15) 0%, transparent 55%),
+        radial-gradient(ellipse 75% 60% at 50% 108%, rgba(var(--accent-3-rgb), 0.13) 0%, transparent 60%),
         linear-gradient(
-            155deg,
+            160deg,
             var(--background-0) 0%,
-            var(--background-1) 45%,
+            var(--background-1) 55%,
             var(--background-2) 100%
         );
     background-attachment: fixed;
